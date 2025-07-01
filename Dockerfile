@@ -15,9 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy dependency manifest
 COPY requirements.txt .
 
-# Install CPU-only PyTorch wheel and build wheels for other requirements  [oai_citation:9‡stackoverflow.com](https://stackoverflow.com/questions/76395122/how-to-build-an-efficient-and-fast-dockerfile-for-a-pytorch-model-running-on)
-RUN pip install --no-cache-dir torch==2.6.0+cpu \
-        --index-url https://download.pytorch.org/whl/cpu \
+# Install Python dependencies  
+RUN pip install --no-cache-dir -r requirements.txt \
     && pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
 
 ####################################################
@@ -28,11 +27,10 @@ WORKDIR /app
 
 # Copy prebuilt wheels and requirements file from builder
 COPY --from=builder /wheels /wheels
-COPY --from=builder requirements.txt .
+COPY --from=builder /app/requirements.txt .
 
-# Install all Python dependencies from wheel cache, including torchtext  [oai_citation:10‡docs.vultr.com](https://docs.vultr.com/how-to-build-a-pytorch-container-image?utm_source=chatgpt.com)
-RUN pip install --no-cache /wheels/* \
-    && pip install --no-cache-dir torchtext
+# Install all Python dependencies from wheel cache
+RUN pip install --no-cache /wheels/*
 
 # Copy the rest of the application code
 COPY . .
