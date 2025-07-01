@@ -1,0 +1,9 @@
+# Ignore Git repository metadata
+.git
+
+# Ignore Python bytecode caches
+__pycache__/
+
+# Ignore markdown documentation files
+*.md
+
