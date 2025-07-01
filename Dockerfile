@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 
 # Install CPU-only PyTorch wheel and build wheels for other requirements  [oai_citation:9‡stackoverflow.com](https://stackoverflow.com/questions/76395122/how-to-build-an-efficient-and-fast-dockerfile-for-a-pytorch-model-running-on)
-RUN pip install --no-cache-dir torch==2.0.1+cpu \
+RUN pip install --no-cache-dir torch==2.6.0+cpu \
         --index-url https://download.pytorch.org/whl/cpu \
     && pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
 
