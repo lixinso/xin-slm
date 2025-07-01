@@ -3,10 +3,10 @@ import time
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchtext.datasets import WikiText2
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 from torch.utils.data import DataLoader
+from datasets import load_dataset
 
 # ====== Configuration ======
 BATCH_SIZE = 20      # number of sequences per batch  [oai_citation:7‡github.com](https://github.com/liux2/RNN-on-wikitext2?utm_source=chatgpt.com)
@@ -26,26 +26,25 @@ print(f"Using device: {DEVICE}")  # supports Apple MPS  [oai_citation:15‡docs.
 
 # ====== Data Preparation ======
 tokenizer = get_tokenizer('basic_english')
+raw_datasets = load_dataset('wikitext', 'wikitext-2-raw-v1')
+
 def yield_tokens(data_iter):
-    for text in data_iter:
-        yield tokenizer(text)
+    for item in data_iter:
+        if item['text']:
+            yield tokenizer(item['text'])
 
 # Build vocabulary from training set
-train_iter = WikiText2(split='train')
-vocab = build_vocab_from_iterator(yield_tokens(train_iter), specials=['<unk>', '<eos>'])
+vocab = build_vocab_from_iterator(yield_tokens(raw_datasets['train']), specials=['<unk>', '<eos>'])
 vocab.set_default_index(vocab['<unk>'])
-
-# Reload train/valid/test iterators
-train_iter, val_iter, test_iter = WikiText2()
 
 def data_process(raw_text_iter):
     """Tokenize, numericalize, and append <eos> token."""
-    data = [torch.tensor(vocab(tokenizer(item)) + [vocab['<eos>']], dtype=torch.long)
-            for item in raw_text_iter]
+    data = [torch.tensor(vocab(tokenizer(item['text'])) + [vocab['<eos>']], dtype=torch.long)
+            for item in raw_text_iter if item['text']]
     return torch.cat(tuple(data))
 
-train_data = data_process(train_iter)
-val_data   = data_process(val_iter)
+train_data = data_process(raw_datasets['train'])
+val_data   = data_process(raw_datasets['validation'])
 
 def batchify(data, batch_size):
     # Drop extra tokens so that data can be evenly divided
