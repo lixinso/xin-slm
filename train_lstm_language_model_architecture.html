@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSTM Language Model Architecture</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .layer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .layer-box {
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .layer-box:hover {
+            transform: translateY(-3px);
+        }
+        
+        .input { background: linear-gradient(45deg, #FF6B6B, #FF8E53); }
+        .embedding { background: linear-gradient(45deg, #4ECDC4, #44A08D); }
+        .dropout1 { background: linear-gradient(45deg, #FFA726, #FF7043); }
+        .lstm { background: linear-gradient(45deg, #667eea, #764ba2); }
+        .dropout2 { background: linear-gradient(45deg, #FFA726, #FF7043); }
+        .linear { background: linear-gradient(45deg, #26D0CE, #1A2980); }
+        .output { background: linear-gradient(45deg, #11998e, #38ef7d); }
+        
+        .layer-details {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #333;
+            margin: 5px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .config-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .config-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .config-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .config-value {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .flow-step {
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .weight-tying {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            border-radius: 5px;
+        }
+        
+        .weight-tying-title {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 5px;
+        }
+        
+        .dimensions {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .dim-box {
+            background: #333;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">LSTM Language Model Architecture</h1>
+        
+        <div class="flow-diagram">
+            <div class="flow-step">Input Tokens</div>
+            <div class="flow-step">Embedding</div>
+            <div class="flow-step">LSTM Layers</div>
+            <div class="flow-step">Linear Decoder</div>
+            <div class="flow-step">Probability Distribution</div>
+        </div>
+        
+        <div class="architecture">
+            <div class="layer">
+                <div class="layer-box input">
+                    Input Sequence
+                </div>
+                <div class="layer-details">
+                    Token indices from vocabulary<br>
+                    Shape: [SEQ_LEN, BATCH_SIZE]
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="layer">
+                <div class="layer-box embedding">
+                    Embedding Layer
+                </div>
+                <div class="layer-details">
+                    nn.Embedding(vocab_size, embed_size)<br>
+                    Maps tokens to dense vectors<br>
+                    Output: [SEQ_LEN, BATCH_SIZE, EMBED_SIZE]
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="layer">
+                <div class="layer-box dropout1">
+                    Dropout (0.5)
+                </div>
+                <div class="layer-details">
+                    Regularization layer<br>
+                    Prevents overfitting
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="layer">
+                <div class="layer-box lstm">
+                    LSTM Layers (2 layers)
+                </div>
+                <div class="layer-details">
+                    nn.LSTM(embed_size, hidden_size, num_layers)<br>
+                    Hidden Size: 100, Num Layers: 2<br>
+                    Output: [SEQ_LEN, BATCH_SIZE, HIDDEN_SIZE]<br>
+                    Hidden State: [NUM_LAYERS, BATCH_SIZE, HIDDEN_SIZE]
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="layer">
+                <div class="layer-box dropout2">
+                    Dropout (0.5)
+                </div>
+                <div class="layer-details">
+                    Applied to LSTM output<br>
+                    Additional regularization
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="layer">
+                <div class="layer-box linear">
+                    Linear Decoder
+                </div>
+                <div class="layer-details">
+                    nn.Linear(hidden_size, vocab_size)<br>
+                    Projects hidden states to vocabulary<br>
+                    Output: [SEQ_LEN*BATCH_SIZE, VOCAB_SIZE]
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="layer">
+                <div class="layer-box output">
+                    Output Logits
+                </div>
+                <div class="layer-details">
+                    Raw scores for each vocabulary token<br>
+                    Applied to CrossEntropyLoss for training<br>
+                    Softmax for text generation
+                </div>
+            </div>
+        </div>
+        
+        <div class="weight-tying">
+            <div class="weight-tying-title">🔗 Weight Tying</div>
+            <div>The embedding layer and linear decoder share the same weight matrix (self.decoder.weight = self.encoder.weight). This reduces parameters and often improves performance in language models.</div>
+        </div>
+        
+        <div class="dimensions">
+            <div class="dim-box">
+                <div>Batch Size</div>
+                <div>20</div>
+            </div>
+            <div class="dim-box">
+                <div>Sequence Length</div>
+                <div>30</div>
+            </div>
+            <div class="dim-box">
+                <div>Embedding Size</div>
+                <div>100</div>
+            </div>
+            <div class="dim-box">
+                <div>Hidden Size</div>
+                <div>100</div>
+            </div>
+            <div class="dim-box">
+                <div>Vocab Size</div>
+                <div>~28K</div>
+            </div>
+        </div>
+        
+        <div class="config-panel">
+            <div class="config-item">
+                <div class="config-title">🏗️ Architecture</div>
+                <div class="config-value">
+                    • 2-layer LSTM<br>
+                    • Embedding dimension: 100<br>
+                    • Hidden dimension: 100<br>
+                    • Dropout: 0.5
+                </div>
+            </div>
+            
+            <div class="config-item">
+                <div class="config-title">📊 Training Setup</div>
+                <div class="config-value">
+                    • Batch size: 20<br>
+                    • Sequence length: 30<br>
+                    • Learning rate: 0.001<br>
+                    • Gradient clipping: 0.25
+                </div>
+            </div>
+            
+            <div class="config-item">
+                <div class="config-title">📚 Dataset</div>
+                <div class="config-value">
+                    • WikiText-2-raw-v1<br>
+                    • Basic English tokenizer<br>
+                    • Special tokens: &lt;unk&gt;, &lt;eos&gt;<br>
+                    • Truncated BPTT
+                </div>
+            </div>
+            
+            <div class="config-item">
+                <div class="config-title">🎯 Objective</div>
+                <div class="config-value">
+                    • Language modeling<br>
+                    • Next token prediction<br>
+                    • CrossEntropyLoss<br>
+                    • Adam optimizer
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
