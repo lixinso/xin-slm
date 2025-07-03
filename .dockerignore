@@ -4,6 +4,7 @@
 # Ignore Python bytecode caches
 __pycache__/
 
-# Ignore markdown documentation files
+# Ignore markdown documentation files (except training docs)
 *.md
+!train_gpt_language_model.md
 
