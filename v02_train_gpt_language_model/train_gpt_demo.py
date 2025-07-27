@@ -1,8 +1,8 @@
-# Minimal GPT-style language model inspired by nanoGPT
-# References:
-# - Vaswani et al., "Attention Is All You Need" (2017) [oai_citation:1‡arxiv.org](https://arxiv.org/abs/1706.03762)
-# - OpenAI GPT-2 (Radford et al., 2019) [oai_citation:2‡openai.com](https://openai.com/research/language-unsupervised)
-# - nanoGPT by Andrej Karpathy [oai_citation:3‡github.com](https://github.com/karpathy/nanoGPT)
+#!/usr/bin/env python3
+"""
+Demo version of GPT training with synthetic data for quick testing.
+This creates metrics without needing to download large datasets.
+"""
 
 import math
 import time
@@ -11,70 +11,36 @@ from dataclasses import dataclass
 
 import torch
 import torch.nn as nn
-from datasets import load_dataset
+import numpy as np
 
 # ====== Configuration ======
-BATCH_SIZE = 16
-BLOCK_SIZE = 64   # context length
-N_LAYER = 4       # number of transformer blocks
-N_HEAD  = 4
-N_EMBD  = 128
+BATCH_SIZE = 8
+BLOCK_SIZE = 32   # context length
+N_LAYER = 2       # number of transformer blocks
+N_HEAD  = 2
+N_EMBD  = 64
 DROP    = 0.1
 LR      = 3e-4
-EPOCHS  = 1
-DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+EPOCHS  = 3
+DEVICE = 'cpu'  # Force CPU for demo
+VOCAB_SIZE = 100  # Small vocabulary
 
-# ====== Simple BPE Tokenizer ======
-# This is a toy Byte-Pair Encoding implementation used for demonstration only.
-@dataclass
-class BPETokenizer:
-    vocab: dict
-    merges: dict
+# ====== Synthetic Dataset ======
+# Create synthetic training data
+def create_synthetic_data(vocab_size, seq_length, num_sequences):
+    """Create synthetic sequential data for language modeling."""
+    np.random.seed(42)  # For reproducibility
+    data = []
+    for _ in range(num_sequences):
+        # Create sequences with some patterns (e.g., arithmetic sequences)
+        start = np.random.randint(0, vocab_size // 2)
+        seq = [(start + i) % vocab_size for i in range(seq_length)]
+        data.extend(seq)
+    return torch.tensor(data, dtype=torch.long)
 
-    @classmethod
-    def train(cls, texts, vocab_size=1000, merges=1000):
-        # Initialize vocabulary with characters
-        vocab = {ch: idx for idx, ch in enumerate(sorted(set(''.join(texts))))}
-        idx = len(vocab)
-        merges_dict = {}
-        for _ in range(merges):
-            pairs = {}
-            for text in texts:
-                tokens = text.split()
-                for token in tokens:
-                    for i in range(len(token)-1):
-                        pair = token[i:i+2]
-                        pairs[pair] = pairs.get(pair, 0) + 1
-            if not pairs:
-                break
-            best = max(pairs, key=pairs.get)
-            merges_dict[best] = idx
-            vocab[best] = idx
-            idx += 1
-        return cls(vocab, merges_dict)
-
-    def encode(self, text):
-        tokens = []
-        i = 0
-        while i < len(text):
-            if i+1 < len(text) and text[i:i+2] in self.merges:
-                tokens.append(self.merges[text[i:i+2]])
-                i += 2
-            else:
-                tokens.append(self.vocab[text[i]])
-                i += 1
-        return tokens
-
-# ====== Dataset ======
-raw_datasets = load_dataset('wikitext', 'wikitext-2-raw-v1')
-train_texts = [item['text'] for item in raw_datasets['train'] if item['text']]
-val_texts   = [item['text'] for item in raw_datasets['validation'] if item['text']]
-
-bpe_tokenizer = BPETokenizer.train(train_texts, merges=2000)
-
-# Numericalize
-train_data = torch.tensor([tok for line in train_texts for tok in bpe_tokenizer.encode(line + '\n')], dtype=torch.long)
-val_data   = torch.tensor([tok for line in val_texts for tok in bpe_tokenizer.encode(line + '\n')], dtype=torch.long)
+# Generate synthetic training and validation data
+train_data = create_synthetic_data(VOCAB_SIZE, BLOCK_SIZE * 2, 500)
+val_data = create_synthetic_data(VOCAB_SIZE, BLOCK_SIZE * 2, 100)
 
 def batchify(data):
     n_batch = len(data) // (BATCH_SIZE * BLOCK_SIZE)
@@ -82,9 +48,12 @@ def batchify(data):
     return data.view(BATCH_SIZE, -1)
 
 train_data = batchify(train_data)
-val_data   = batchify(val_data)
+val_data = batchify(val_data)
 
-# ====== Model ======
+print(f"Train data shape: {train_data.shape}")
+print(f"Val data shape: {val_data.shape}")
+
+# ====== Model (simplified version) ======
 class MultiHeadSelfAttention(nn.Module):
     def __init__(self, n_embd, n_head):
         super().__init__()
@@ -154,11 +123,13 @@ class GPT(nn.Module):
         logits = self.head(x)
         return logits
 
-model = GPT(len(bpe_tokenizer.vocab)).to(DEVICE)
+model = GPT(VOCAB_SIZE).to(DEVICE)
 optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
 criterion = nn.CrossEntropyLoss()
 
-# ====== Training Loop ======
+print(f"Model parameters: {sum(p.numel() for p in model.parameters()):,}")
+
+# ====== Training Loop with Metrics ======
 metrics = {
     "train_losses": [],
     "val_losses": [],
@@ -177,7 +148,7 @@ for epoch in range(EPOCHS):
         xb = train_data[:, i:i+BLOCK_SIZE].to(DEVICE)
         yb = train_data[:, i+1:i+1+BLOCK_SIZE].to(DEVICE)
         logits = model(xb)
-        loss = criterion(logits.view(-1, logits.size(-1)), yb.view(-1))
+        loss = criterion(logits.reshape(-1, logits.size(-1)), yb.reshape(-1))
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -185,19 +156,20 @@ for epoch in range(EPOCHS):
         current_loss = loss.item()
         epoch_train_losses.append(current_loss)
         
-        if i % (BLOCK_SIZE * 100) == 0:
+        # Log every 5 steps for demo
+        if i % (BLOCK_SIZE * 5) == 0:
             print(f"Epoch {epoch} | Step {i//BLOCK_SIZE} | Loss {current_loss:.4f}")
             metrics["train_losses"].append(current_loss)
             metrics["steps"].append(i//BLOCK_SIZE + epoch * (train_data.size(1) // BLOCK_SIZE))
             metrics["timestamps"].append(time.time() - start_time)
     
-    # Validation step (quick)
+    # Validation step
     model.eval()
     with torch.no_grad():
         xb = val_data[:, :BLOCK_SIZE].to(DEVICE)
         yb = val_data[:, 1:BLOCK_SIZE+1].to(DEVICE)
         logits = model(xb)
-        val_loss = criterion(logits.view(-1, logits.size(-1)), yb.view(-1))
+        val_loss = criterion(logits.reshape(-1, logits.size(-1)), yb.reshape(-1))
     
     val_loss_value = val_loss.item()
     avg_train_loss = sum(epoch_train_losses) / len(epoch_train_losses)
@@ -211,20 +183,25 @@ for epoch in range(EPOCHS):
 with open('training_metrics.json', 'w') as f:
     json.dump(metrics, f, indent=2)
 
+print(f"\nTraining completed in {time.time() - start_time:.2f} seconds")
 print(f"Metrics saved to training_metrics.json")
 
-# ====== Text Generation ======
-def generate(prompt: str, max_new_tokens: int = 20):
+# ====== Simple Text Generation Demo ======
+def generate_demo():
     model.eval()
-    tokens = bpe_tokenizer.encode(prompt)
-    idx = torch.tensor(tokens, dtype=torch.long, device=DEVICE)[None, :]
+    # Start with a random token
+    idx = torch.tensor([[np.random.randint(0, VOCAB_SIZE)]], dtype=torch.long, device=DEVICE)
+    
     with torch.no_grad():
-        for _ in range(max_new_tokens):
+        for _ in range(10):
             idx_cond = idx[:, -BLOCK_SIZE:]
             logits = model(idx_cond)
-            next_token = torch.argmax(logits[:, -1, :], dim=-1)
-            idx = torch.cat([idx, next_token[:, None]], dim=1)
-    inv_vocab = {v: k for k, v in bpe_tokenizer.vocab.items()}
-    return ''.join(inv_vocab[i] for i in idx[0].tolist())
+            # Use sampling instead of argmax for more interesting generation
+            probs = torch.softmax(logits[:, -1, :] / 0.8, dim=-1)
+            next_token = torch.multinomial(probs, 1)
+            idx = torch.cat([idx, next_token], dim=1)
+    
+    generated_sequence = idx[0].tolist()
+    print(f"\nGenerated sequence: {generated_sequence}")
 
-print(generate("The meaning of life is"))
+generate_demo()
