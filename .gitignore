@@ -1,4 +1,4 @@
 .DS_Store
-v02_train_gpt_language_model/.venv/
-v03_slm_llama_architecture/.venv/
-v03_slm_llama_architecture/test_model/
+xinSLM_v02_train_gpt_language_model/.venv/
+xinSLM_v03_slm_llama_architecture/.venv/
+xinSLM_v03_slm_llama_architecture/test_model/
