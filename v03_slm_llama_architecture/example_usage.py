@@ -242,10 +242,12 @@ def save_and_load_example():
     tokenizer.save_pretrained(save_dir)
     print(f"Tokenizer saved to {save_dir}")
     
-    # Save model config
+    # Save model config (exclude computed attributes)
     config_path = Path(save_dir) / "config.json"
+    config_dict = {k: v for k, v in config.__dict__.items() 
+                   if k not in ['head_dim', 'num_queries_per_kv']}
     with open(config_path, 'w') as f:
-        json.dump(config.__dict__, f, indent=2)
+        json.dump(config_dict, f, indent=2)
     print(f"Config saved to {config_path}")
     
     # Save model weights

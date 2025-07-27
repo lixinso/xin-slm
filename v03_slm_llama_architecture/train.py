@@ -208,19 +208,18 @@ class SLMTrainer:
         input_ids = batch.to(self.device)
         
         # Forward pass
-        with torch.cuda.amp.autocast() if torch.cuda.is_available() else torch.no_grad():
-            outputs = self.model(input_ids=input_ids, labels=input_ids)
-            student_logits = outputs[1]  # logits are second output
-            
-            # Get teacher logits if available
-            teacher_logits = None
-            if self.teacher_model is not None:
-                with torch.no_grad():
-                    teacher_outputs = self.teacher_model(input_ids=input_ids)
-                    teacher_logits = teacher_outputs[1] if len(teacher_outputs) > 1 else teacher_outputs[0]
-            
-            # Compute loss
-            loss, loss_dict = self.loss_fn(student_logits, teacher_logits, input_ids)
+        outputs = self.model(input_ids=input_ids, labels=input_ids)
+        student_logits = outputs[1]  # logits are second output
+        
+        # Get teacher logits if available
+        teacher_logits = None
+        if self.teacher_model is not None:
+            with torch.no_grad():
+                teacher_outputs = self.teacher_model(input_ids=input_ids)
+                teacher_logits = teacher_outputs[1] if len(teacher_outputs) > 1 else teacher_outputs[0]
+        
+        # Compute loss
+        loss, loss_dict = self.loss_fn(student_logits, teacher_logits, input_ids)
         
         # Backward pass
         loss.backward()

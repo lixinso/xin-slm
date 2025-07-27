@@ -41,6 +41,8 @@ class SLMConfig:
     use_cache: bool = True
     tie_word_embeddings: bool = True  # Share input/output embeddings
     rms_norm_eps: float = 1e-6
+    output_attentions: bool = False
+    output_hidden_states: bool = False
     
     # Distillation
     use_distillation: bool = False
