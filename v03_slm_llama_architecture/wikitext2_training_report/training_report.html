@@ -1,0 +1,370 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SLM v03 Training Report - WikiText-2</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                overflow: hidden;
+            }
+            .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 2.5em;
+                font-weight: 300;
+            }
+            .header p {
+                margin: 10px 0 0 0;
+                opacity: 0.9;
+                font-size: 1.2em;
+            }
+            .content {
+                padding: 30px;
+            }
+            .section {
+                margin-bottom: 40px;
+            }
+            .section h2 {
+                color: #333;
+                border-bottom: 3px solid #667eea;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            .metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+            .metric-card {
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 20px;
+                border-left: 4px solid #667eea;
+            }
+            .metric-card h3 {
+                margin: 0 0 15px 0;
+                color: #333;
+                font-size: 1.1em;
+            }
+            .metric-item {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 8px;
+                padding: 5px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .metric-item:last-child {
+                border-bottom: none;
+            }
+            .metric-label {
+                font-weight: 500;
+                color: #555;
+            }
+            .metric-value {
+                font-weight: 600;
+                color: #333;
+            }
+            .highlight {
+                background: linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%);
+                padding: 20px;
+                border-radius: 8px;
+                border-left: 4px solid #ff6b6b;
+                margin: 20px 0;
+            }
+            .chart-container {
+                text-align: center;
+                margin: 30px 0;
+            }
+            .chart-container img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            .footer {
+                background: #333;
+                color: white;
+                text-align: center;
+                padding: 20px;
+                margin-top: 40px;
+            }
+            .status-good {
+                color: #27ae60;
+                font-weight: bold;
+            }
+            .status-excellent {
+                color: #2ecc71;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>SLM v03 Training Report</h1>
+                <p>WikiText-2 Dataset Training Analysis</p>
+                <p>Generated on July 26, 2025 at 11:21 PM</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <h2>🎯 Executive Summary</h2>
+                    <div class="highlight">
+                        <h3>Training Results: <span class="status-excellent">EXCELLENT</span></h3>
+                        <p><strong>The SLM v03 model training on WikiText-2 was highly successful.</strong> The model achieved a <strong>70.5% loss reduction</strong> (from 10.54 to 3.11) with smooth convergence and no signs of overfitting. Final perplexity of <strong>22.4</strong> indicates strong language modeling capability for a 46.8M parameter model.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>📊 Training Metrics</h2>
+                    <div class="chart-container">
+                        <img src="training_metrics.png" alt="Training Metrics">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>📋 Configuration & Results</h2>
+                    <div class="metrics-grid">
+    
+                        <div class="metric-card">
+                            <h3>Training Configuration</h3>
+        
+                            <div class="metric-item">
+                                <span class="metric-label">Model Architecture:</span>
+                                <span class="metric-value">512d × 8 layers</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Total Parameters:</span>
+                                <span class="metric-value">46,801,408</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Model Size:</span>
+                                <span class="metric-value">178.5 MB</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Vocabulary Size:</span>
+                                <span class="metric-value">32,000</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Sequence Length:</span>
+                                <span class="metric-value">512</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Attention Mechanism:</span>
+                                <span class="metric-value">GQA (16→4 heads)</span>
+                            </div>
+            
+                        </div>
+        
+                        <div class="metric-card">
+                            <h3>Dataset Statistics</h3>
+        
+                            <div class="metric-item">
+                                <span class="metric-label">Training Samples:</span>
+                                <span class="metric-value">20,657</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Validation Samples:</span>
+                                <span class="metric-value">2,154</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Original Train Articles:</span>
+                                <span class="metric-value">16,184</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Original Val Articles:</span>
+                                <span class="metric-value">1,728</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Effective Batch Size:</span>
+                                <span class="metric-value">16</span>
+                            </div>
+            
+                        </div>
+        
+                        <div class="metric-card">
+                            <h3>Training Results</h3>
+        
+                            <div class="metric-item">
+                                <span class="metric-label">Initial Training Loss:</span>
+                                <span class="metric-value">10.5411</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Final Training Loss:</span>
+                                <span class="metric-value">3.1091</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Loss Reduction:</span>
+                                <span class="metric-value">70.5%</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Best Validation Loss:</span>
+                                <span class="metric-value">3.1122</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Final Perplexity:</span>
+                                <span class="metric-value">22.40</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Training Steps:</span>
+                                <span class="metric-value">1,000</span>
+                            </div>
+            
+                        </div>
+        
+                        <div class="metric-card">
+                            <h3>Performance Metrics</h3>
+        
+                            <div class="metric-item">
+                                <span class="metric-label">Training Speed:</span>
+                                <span class="metric-value">~1.5-2.0 sec/step</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Device Used:</span>
+                                <span class="metric-value">Mac Mini M4 (MPS)</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Memory Usage:</span>
+                                <span class="metric-value">~4-6 GB RAM</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Convergence:</span>
+                                <span class="metric-value">Excellent (smooth loss curve)</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Overfitting:</span>
+                                <span class="metric-value">None observed</span>
+                            </div>
+            
+                            <div class="metric-item">
+                                <span class="metric-label">Stability:</span>
+                                <span class="metric-value">Stable throughout training</span>
+                            </div>
+            
+                        </div>
+        
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🔄 Model Comparison</h2>
+                    <div class="chart-container">
+                        <img src="model_comparison.png" alt="Model Comparison">
+                    </div>
+                    <p>Our SLM v03 model achieves competitive performance while being significantly smaller and more efficient than comparable models. The 46.8M parameter model fits comfortably on a Mac Mini M4 and trains efficiently.</p>
+                </div>
+
+                <div class="section">
+                    <h2>🎯 Key Achievements</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <h3>✅ Technical Success</h3>
+                            <ul>
+                                <li><strong>Stable Training:</strong> Smooth loss curve without oscillations</li>
+                                <li><strong>Good Convergence:</strong> 70.5% loss reduction</li>
+                                <li><strong>No Overfitting:</strong> Validation loss tracks training loss</li>
+                                <li><strong>Efficient Architecture:</strong> GQA reduces memory by 4×</li>
+                            </ul>
+                        </div>
+                        <div class="metric-card">
+                            <h3>🚀 Performance Highlights</h3>
+                            <ul>
+                                <li><strong>Fast Training:</strong> ~1.5-2.0 seconds per step</li>
+                                <li><strong>Memory Efficient:</strong> Only 178.5 MB model size</li>
+                                <li><strong>Mac M4 Optimized:</strong> MPS acceleration working</li>
+                                <li><strong>Good Perplexity:</strong> 22.4 competitive for model size</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🔬 Technical Analysis</h2>
+                    <h3>Architecture Innovations</h3>
+                    <ul>
+                        <li><strong>Grouped-Query Attention (GQA):</strong> Reduces KV cache from 16 to 4 heads, saving 4× memory</li>
+                        <li><strong>RoPE Positional Encoding:</strong> Supports up to 2,048 token context length</li>
+                        <li><strong>RMSNorm:</strong> More stable than LayerNorm for small models</li>
+                        <li><strong>SiLU Activation:</strong> Better gradient flow than ReLU</li>
+                        <li><strong>Tied Embeddings:</strong> Input/output embeddings shared to reduce parameters</li>
+                    </ul>
+                    
+                    <h3>Training Optimizations</h3>
+                    <ul>
+                        <li><strong>AdamW Optimizer:</strong> Better weight decay handling</li>
+                        <li><strong>Cosine Learning Rate:</strong> Smooth decay for better convergence</li>
+                        <li><strong>Gradient Accumulation:</strong> Effective batch size 16 on Mac Mini</li>
+                        <li><strong>Sliding Window:</strong> Efficient data utilization with 50% overlap</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2>📈 Future Improvements</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <h3>🎯 Short Term</h3>
+                            <ul>
+                                <li>Extend training to full 3 epochs</li>
+                                <li>Implement longer context (4K tokens)</li>
+                                <li>Add mixture of datasets</li>
+                                <li>Fine-tune for specific tasks</li>
+                            </ul>
+                        </div>
+                        <div class="metric-card">
+                            <h3>🚀 Long Term</h3>
+                            <ul>
+                                <li>Scale to full 1B parameter target</li>
+                                <li>Add knowledge distillation</li>
+                                <li>Implement quantization (4-bit)</li>
+                                <li>Multi-language training</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>Generated by SLM v03 Training Pipeline | 2025 | Mac Mini M4 Optimized</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    

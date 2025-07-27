@@ -1,3 +1,4 @@
 .DS_Store
 v02_train_gpt_language_model/.venv/
 v03_slm_llama_architecture/.venv/
+v03_slm_llama_architecture/test_model/
