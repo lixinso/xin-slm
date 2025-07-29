@@ -37,28 +37,32 @@ def prepare_wikitext103_data(dataset, tokenizer, max_length=1024):
     train_texts = []
     eval_texts = []
     
-    # Process training data with filtering for quality
-    print("Processing training data...")
+    # Process training data with filtering for quality - FASTER processing
+    print("Processing training data (limited for speed)...")
     for i, text in enumerate(dataset['train']['text']):
-        if text.strip() and len(text.strip()) > 100:  # Higher threshold for larger dataset
+        if i >= 50000:  # Limit to first 50k examples for speed
+            break
+        if text.strip() and len(text.strip()) > 50:  # Lower threshold for speed
             train_texts.append(text.strip())
         
-        # Progress indicator for large dataset
-        if i > 0 and i % 10000 == 0:
+        # Progress indicator
+        if i > 0 and i % 20000 == 0:
             print(f"  Processed {i:,} training texts, kept {len(train_texts):,}")
     
-    # Process validation data
-    print("Processing validation data...")
-    for text in dataset['validation']['text']:
-        if text.strip() and len(text.strip()) > 100:
+    # Process validation data - LIMITED
+    print("Processing validation data (limited for speed)...")
+    for i, text in enumerate(dataset['validation']['text']):
+        if i >= 5000:  # Further limit validation data
+            break
+        if text.strip() and len(text.strip()) > 50:
             eval_texts.append(text.strip())
     
     print(f"Original training texts: {len(train_texts):,}")
     print(f"Original validation texts: {len(eval_texts):,}")
     
-    # For WikiText-103, use smaller stride to get more training examples
-    train_dataset = TextDataset(train_texts, tokenizer, max_length=max_length, stride=max_length//4)
-    eval_dataset = TextDataset(eval_texts, tokenizer, max_length=max_length, stride=max_length//2)
+    # Aggressive data limitation for 8-hour target
+    train_dataset = TextDataset(train_texts[:15000], tokenizer, max_length=max_length, stride=max_length)  # Half the data
+    eval_dataset = TextDataset(eval_texts[:1000], tokenizer, max_length=max_length, stride=max_length)  # Minimal eval
     
     print(f"Training samples (after windowing): {len(train_dataset):,}")
     print(f"Evaluation samples (after windowing): {len(eval_dataset):,}")
@@ -68,33 +72,33 @@ def prepare_wikitext103_data(dataset, tokenizer, max_length=1024):
 def create_optimized_slm_config():
     """Create an optimized SLM configuration for WikiText-103 training"""
     config = SLMConfig(
-        # Model architecture - optimized for WikiText-103
+        # Model architecture - further optimized for 8-hour target
         vocab_size=32000,           # Same vocabulary size
-        hidden_size=768,            # Larger hidden size for better capacity
-        intermediate_size=3072,     # 4x hidden size
-        num_hidden_layers=12,       # More layers for better modeling
-        num_attention_heads=12,     # More attention heads
-        num_key_value_heads=4,      # GQA: 12 heads -> 4 KV heads
-        max_position_embeddings=2048,  # Longer context
+        hidden_size=384,            # Further reduced for speed
+        intermediate_size=1536,     # 4x hidden size
+        num_hidden_layers=6,        # Even fewer layers
+        num_attention_heads=6,      # Fewer attention heads
+        num_key_value_heads=2,      # GQA: 6 heads -> 2 KV heads
+        max_position_embeddings=512,   # Much shorter context
         
-        # Training parameters optimized for larger dataset
-        learning_rate=3e-4,         # Lower learning rate for stability
+        # Training parameters optimized for speed
+        learning_rate=5e-4,         # Higher learning rate for faster convergence
         weight_decay=0.1,
         beta1=0.9,
         beta2=0.95,
         eps=1e-8,
         gradient_clip_norm=1.0,
-        warmup_steps=1000,          # More warmup steps for larger dataset
+        warmup_steps=500,           # Fewer warmup steps
         
-        # Batch and sequence settings
-        batch_size=2,               # Smaller batch size due to larger model
-        sequence_length=1024,       # Longer sequences for better context
-        gradient_accumulation_steps=8,  # Effective batch size = 2 * 8 = 16
+        # Batch and sequence settings - aggressive optimization
+        batch_size=16,              # Much larger batch size
+        sequence_length=256,        # Much shorter sequences
+        gradient_accumulation_steps=2,  # Effective batch size = 16 * 2 = 32
         
-        # Logging and saving - less frequent for longer training
-        save_steps=500,             # Save less frequently
-        eval_steps=250,             # Evaluate less frequently  
-        logging_steps=50,           # Log less frequently
+        # Logging and saving - more frequent for monitoring
+        save_steps=1000,            # Save checkpoints
+        eval_steps=500,             # Evaluate periodically
+        logging_steps=25,           # Log frequently for monitoring
         
         # Regularization
         attention_dropout=0.1,
@@ -186,7 +190,7 @@ def main():
     # Step 6: Start training
     print("\n6. STARTING TRAINING")
     print("-" * 25)
-    num_epochs = 2  # Fewer epochs for larger dataset
+    num_epochs = 1  # Single epoch for 8-hour target
     print("Training configuration:")
     print(f"  - Epochs: {num_epochs}")
     print(f"  - Batch size: {config.batch_size}")
@@ -198,7 +202,7 @@ def main():
     print(f"  - Eval samples: {len(eval_dataset):,}")
     
     estimated_steps = len(train_dataset) // (config.batch_size * config.gradient_accumulation_steps) * num_epochs
-    estimated_time_hours = estimated_steps * 0.5 / 3600  # Rough estimate
+    estimated_time_hours = estimated_steps * 2.0 / 3600  # Updated estimate based on optimizations
     print(f"  - Estimated total steps: {estimated_steps:,}")
     print(f"  - Estimated training time: ~{estimated_time_hours:.1f} hours")
     
@@ -212,7 +216,7 @@ def main():
         print(f"Total training time: {training_time:.2f} seconds ({training_time/3600:.2f} hours)")
         
         # Save detailed training time metrics
-        save_training_time_summary(training_time, estimated_steps, config, output_dir)
+        save_training_time_summary(training_time, estimated_steps, config, output_dir, model)
         
         # Test generation
         print("\n7. TESTING GENERATION")
@@ -224,7 +228,7 @@ def main():
         import traceback
         traceback.print_exc()
 
-def save_training_time_summary(training_time, estimated_steps, config, output_dir):
+def save_training_time_summary(training_time, estimated_steps, config, output_dir, model):
     """Save detailed training time summary for reporting"""
     from datetime import timedelta
     import json
@@ -281,7 +285,6 @@ def test_generation(model, tokenizer, device):
         
         # Encode prompt
         input_ids = tokenizer.encode(prompt, add_special_tokens=True)
-        input_tensor = torch.tensor([input_ids]).to(device)
         
         # Generate
         generated_ids = input_ids.copy()
