@@ -271,6 +271,11 @@ def test_generation(model, tokenizer, device):
     model.eval()
     model.to(device)
     
+    # Ensure device is set correctly - handle MPS issues
+    if device.type == "mps":
+        device = torch.device("cpu")  # Use CPU for generation to avoid MPS issues
+        model.to(device)
+    
     test_prompts = [
         "The quick brown fox",
         "In the beginning",

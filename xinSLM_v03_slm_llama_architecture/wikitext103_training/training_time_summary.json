@@ -1,0 +1,21 @@
+{
+  "total_training_time_seconds": 3591.0652480125427,
+  "total_training_time_hours": 0.9975181244479285,
+  "total_training_time_formatted": "0:59:51",
+  "estimated_steps": 1008,
+  "average_time_per_step": 3.5625647301711734,
+  "steps_per_hour": 1010.5079549886601,
+  "training_config": {
+    "batch_size": 16,
+    "gradient_accumulation_steps": 2,
+    "effective_batch_size": 32,
+    "sequence_length": 256,
+    "model_parameters": 25269120
+  },
+  "hardware_info": {
+    "device": "Mac Mini M4",
+    "accelerator": "MPS",
+    "memory_optimization": "Grouped-Query Attention"
+  },
+  "timestamp": "2025-07-29 19:45:02"
+}

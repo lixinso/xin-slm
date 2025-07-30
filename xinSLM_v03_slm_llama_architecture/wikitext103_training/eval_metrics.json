@@ -1,0 +1,30 @@
+[
+  {
+    "eval_total_loss": 1.5854297337077914,
+    "eval_student_loss": 1.5854297337077914,
+    "eval_perplexity": 4.881388625084712,
+    "step": 500,
+    "epoch": 0
+  },
+  {
+    "eval_total_loss": 1.4192154558878096,
+    "eval_student_loss": 1.4192154558878096,
+    "eval_perplexity": 4.1338759596540635,
+    "step": 1000,
+    "epoch": 0
+  },
+  {
+    "eval_total_loss": 1.353329785286434,
+    "eval_student_loss": 1.353329785286434,
+    "eval_perplexity": 3.8702913377727186,
+    "step": 1500,
+    "epoch": 0
+  },
+  {
+    "eval_total_loss": 1.318119084078168,
+    "eval_student_loss": 1.318119084078168,
+    "eval_perplexity": 3.73638693406225,
+    "step": 2000,
+    "epoch": 0
+  }
+]
