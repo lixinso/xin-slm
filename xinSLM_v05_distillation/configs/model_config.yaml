@@ -1,0 +1,87 @@
+# Model Architecture Configuration for Distilled LLaMA
+# ~1B parameter model optimized for Mac Mini deployment
+
+model:
+  # Core architecture parameters
+  vocab_size: 32000
+  hidden_size: 1024
+  intermediate_size: 2752  # ~2.7x hidden_size for SwiGLU
+  num_hidden_layers: 24
+  num_attention_heads: 16
+  num_key_value_heads: 4  # GQA: 4 kv heads, 16 query heads (4:1 ratio)
+  max_position_embeddings: 2048
+  
+  # Normalization and activation
+  rms_norm_eps: 1e-6
+  use_cache: true
+  
+  # Token configuration
+  pad_token_id: 0
+  bos_token_id: 1
+  eos_token_id: 2
+  
+  # Weight sharing and optimization
+  tie_word_embeddings: true  # Share input/output embeddings
+  
+  # RoPE configuration
+  rope_theta: 10000.0
+  
+  # Initialization
+  initializer_range: 0.02
+
+# Alternative configurations for different parameter counts
+model_variants:
+  # Smaller model (~700M parameters)
+  small:
+    hidden_size: 896
+    intermediate_size: 2400
+    num_hidden_layers: 22
+    num_attention_heads: 14
+    num_key_value_heads: 2
+  
+  # Medium model (~1.2B parameters)
+  medium:
+    hidden_size: 1152
+    intermediate_size: 3072
+    num_hidden_layers: 26
+    num_attention_heads: 18
+    num_key_value_heads: 6
+  
+  # Larger model (~1.5B parameters)
+  large:
+    hidden_size: 1280
+    intermediate_size: 3456
+    num_hidden_layers: 28
+    num_attention_heads: 20
+    num_key_value_heads: 5
+
+# Memory optimization settings
+optimization:
+  # Gradient checkpointing to save memory
+  gradient_checkpointing: true
+  
+  # Use flash attention if available
+  use_flash_attention: true
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false  # Use fp16 for better Mac compatibility
+  
+  # Memory efficient attention
+  use_memory_efficient_attention: true
+
+# Quantization configuration for deployment
+quantization:
+  # Post-training quantization
+  enable_quantization: true
+  bits: 4
+  group_size: 32
+  use_gptq: true
+  
+  # Calibration dataset size for quantization
+  calibration_samples: 512
+  
+  # Deployment formats
+  save_gguf: true
+  save_coreml: true
+  save_onnx: false

@@ -1,0 +1,234 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Model checkpoints and training artifacts
+checkpoints/
+*.bin
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+*.h5
+
+# Training logs and outputs
+logs/
+wandb/
+tensorboard_logs/
+mlruns/
+*.log
+
+# Data files (typically large)
+data/
+datasets/
+*.csv
+*.json
+*.jsonl
+*.txt
+*.tsv
+*.parquet
+
+# Model files and caches
+.cache/
+models_cache/
+transformers_cache/
+huggingface_cache/
+
+# GGUF and quantized models
+*.gguf
+*.q4_0
+*.q4_1
+*.q8_0
+
+# CoreML models
+*.mlmodel
+*.mlpackage
+
+# Ollama models
+Modelfile
+
+# Deployment artifacts
+deployed_model/
+quantized_models/
+
+# Benchmark results
+benchmark_results/
+*.png
+*.jpg
+*.jpeg
+*.pdf
+
+# Mac specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Resource monitoring logs
+resource_usage.log
+
+# Training artifacts
+training_*.log
+training_summary.txt
+model_info.json
+training_info.json
+
+# llama.cpp build artifacts
+llama.cpp/
+main
+quantize
+convert.py
+
+# FastAPI uploads
+uploads/

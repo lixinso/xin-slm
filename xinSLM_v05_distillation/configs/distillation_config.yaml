@@ -1,0 +1,226 @@
+# Knowledge Distillation Training Configuration
+
+# Teacher model configuration
+teacher:
+  model_name: "meta-llama/Llama-2-7b-chat-hf"
+  # Alternative teacher models:
+  # model_name: "meta-llama/Llama-2-13b-chat-hf"
+  # model_name: "deepseek-ai/deepseek-llm-7b-chat"
+  # model_name: "microsoft/DialoGPT-medium"
+  
+  # Teacher model loading options
+  torch_dtype: "float16"
+  device_map: "auto"
+  load_in_4bit: false
+  load_in_8bit: false
+  trust_remote_code: false
+
+# Student model configuration (references model_config.yaml)
+student:
+  config_file: "configs/model_config.yaml"
+  variant: "default"  # Options: default, small, medium, large
+  
+  # Initialize from pretrained checkpoint (optional)
+  pretrained_path: null
+  # pretrained_path: "huggingface/model-name"
+  
+  # Model initialization
+  init_from_scratch: true
+
+# Dataset configuration
+data:
+  # Training datasets
+  train_datasets:
+    - name: "alpaca"
+      weight: 0.7  # Relative weight in mixture
+      num_samples: 20000
+    - name: "dolly"
+      weight: 0.3
+      num_samples: 10000
+  
+  # Validation dataset
+  val_dataset:
+    name: "alpaca"
+    num_samples: 2000
+  
+  # Data preprocessing
+  max_length: 512
+  padding: "max_length"
+  truncation: true
+  
+  # Data augmentation (optional)
+  use_data_augmentation: false
+  augmentation_ratio: 0.1
+
+# Distillation loss configuration
+loss:
+  # Loss weights
+  alpha: 0.3  # Ground truth cross-entropy loss weight
+  beta: 0.7   # Knowledge distillation KL loss weight
+  
+  # Temperature for softening teacher distributions
+  temperature: 2.0
+  
+  # Loss computation options
+  reduction: "mean"
+  ignore_index: -100
+
+# Training configuration
+training:
+  # Basic training parameters
+  num_epochs: 5
+  batch_size: 4
+  eval_batch_size: 8
+  gradient_accumulation_steps: 4
+  
+  # Learning rate and optimization
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-8
+  
+  # Learning rate scheduling
+  lr_scheduler_type: "linear"
+  warmup_ratio: 0.1
+  warmup_steps: null  # Will use warmup_ratio if null
+  
+  # Gradient clipping
+  max_grad_norm: 1.0
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false
+  fp16_opt_level: "O1"
+  
+  # Memory optimization
+  gradient_checkpointing: true
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+  
+  # Advanced optimization
+  use_cpu_offload: false
+  use_deepspeed: false
+
+# Evaluation configuration
+evaluation:
+  # Evaluation frequency
+  eval_steps: 500
+  eval_strategy: "steps"  # "steps" or "epoch"
+  
+  # Early stopping
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  
+  # Metrics to track
+  metrics:
+    - "perplexity"
+    - "loss"
+    - "kl_divergence"
+    - "cross_entropy"
+  
+  # Generate samples during evaluation
+  generate_samples: true
+  num_samples_to_generate: 5
+  max_new_tokens: 100
+
+# Checkpointing and saving
+checkpointing:
+  output_dir: "./checkpoints"
+  save_strategy: "steps"  # "steps", "epoch", or "no"
+  save_steps: 1000
+  save_total_limit: 3
+  
+  # Best model saving
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+  
+  # Resume from checkpoint
+  resume_from_checkpoint: null
+  # resume_from_checkpoint: "./checkpoints/checkpoint-1000"
+
+# Logging configuration
+logging:
+  # Console logging
+  logging_dir: "./logs"
+  logging_strategy: "steps"
+  logging_steps: 100
+  
+  # Report metrics
+  report_to: []  # Options: ["wandb", "tensorboard", "mlflow"]
+  
+  # Weights & Biases configuration
+  wandb:
+    project: "llama_distillation"
+    entity: null
+    run_name: null  # Will auto-generate if null
+    tags: ["distillation", "llama", "1b"]
+    notes: "Knowledge distillation of LLaMA to 1B parameters"
+  
+  # TensorBoard configuration
+  tensorboard:
+    log_dir: "./logs/tensorboard"
+  
+  # Console output
+  disable_tqdm: false
+  log_level: "info"
+
+# Hardware configuration
+hardware:
+  # Device settings
+  device: "auto"  # "auto", "cuda", "cpu", "mps"
+  
+  # Multi-GPU settings
+  use_multiprocessing: false
+  dataloader_num_workers: 4
+  
+  # Memory management
+  max_memory_mb: null  # Auto-detect if null
+  
+  # CPU settings for Mac
+  use_mps: true  # Use Apple's Metal Performance Shaders if available
+  
+# Experiment configuration
+experiment:
+  # Experiment tracking
+  experiment_name: "distilled_llama_1b"
+  run_id: null  # Will auto-generate if null
+  
+  # Reproducibility
+  seed: 42
+  deterministic: true
+  
+  # Debugging
+  debug: false
+  max_steps: null  # Limit training steps for debugging
+  
+  # Validation
+  sanity_check: true  # Run a few training steps to verify setup
+
+# Advanced distillation techniques
+advanced:
+  # On-policy distillation
+  use_on_policy: false
+  on_policy_ratio: 0.1
+  
+  # Progressive distillation
+  use_progressive: false
+  progressive_layers: [6, 12, 18, 24]
+  
+  # Attention distillation
+  distill_attention: false
+  attention_loss_weight: 0.1
+  
+  # Hidden state distillation
+  distill_hidden_states: false
+  hidden_loss_weight: 0.1
+  
+  # Contrastive distillation
+  use_contrastive: false
+  contrastive_temperature: 0.1
+  
+  # Data selection strategies
+  use_data_selection: false
+  selection_strategy: "uncertainty"  # "uncertainty", "gradient", "loss"
+  selection_ratio: 0.8
