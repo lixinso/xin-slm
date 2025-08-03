@@ -5,14 +5,14 @@ teacher:
   model_name: "meta-llama/Llama-2-7b-chat-hf"
   # Alternative teacher models:
   # model_name: "meta-llama/Llama-2-13b-chat-hf"
-  # model_name: "deepseek-ai/deepseek-llm-7b-chat"
-  # model_name: "microsoft/DialoGPT-medium"
+  # model_name: "codellama/CodeLlama-7b-Instruct-hf"  # For code-focused distillation
+  # model_name: "mistralai/Mistral-7B-Instruct-v0.2"  # High-performance alternative
   
-  # Teacher model loading options
+  # Teacher model loading options (optimized for Mac Mini 16GB)
   torch_dtype: "float16"
   device_map: "auto"
   load_in_4bit: false
-  load_in_8bit: false
+  load_in_8bit: true   # Enable 8-bit quantization to reduce memory to ~7GB
   trust_remote_code: false
 
 # Student model configuration (references model_config.yaml)
@@ -29,19 +29,19 @@ student:
 
 # Dataset configuration
 data:
-  # Training datasets
+  # Training datasets (optimized sizes for reasonable training time)
   train_datasets:
     - name: "alpaca"
       weight: 0.7  # Relative weight in mixture
-      num_samples: 20000
+      num_samples: 10000  # Reduced for faster training
     - name: "dolly"
       weight: 0.3
-      num_samples: 10000
+      num_samples: 5000   # Reduced for faster training
   
   # Validation dataset
   val_dataset:
     name: "alpaca"
-    num_samples: 2000
+    num_samples: 1000    # Reduced for faster evaluation
   
   # Data preprocessing
   max_length: 512
@@ -67,11 +67,11 @@ loss:
 
 # Training configuration
 training:
-  # Basic training parameters
-  num_epochs: 5
-  batch_size: 4
-  eval_batch_size: 8
-  gradient_accumulation_steps: 4
+  # Basic training parameters (optimized for Mac Mini)
+  num_epochs: 3  # Reduced for faster iteration
+  batch_size: 2  # Smaller batch size for memory efficiency
+  eval_batch_size: 4
+  gradient_accumulation_steps: 8  # Increased to maintain effective batch size
   
   # Learning rate and optimization
   learning_rate: 1e-4
