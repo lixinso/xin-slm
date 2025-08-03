@@ -28,7 +28,12 @@ from transformers import (
 )
 from datasets import load_dataset
 from typing import Dict, List, Optional, Tuple, Union
-import wandb
+try:
+    import wandb
+    WANDB_AVAILABLE = True
+except ImportError:
+    WANDB_AVAILABLE = False
+
 from tqdm import tqdm
 import numpy as np
 
@@ -207,7 +212,7 @@ class DistillationTrainer:
         teacher_model: nn.Module,
         tokenizer,
         config: Dict,
-        device: str = 'cuda'
+        device: str = 'cpu'
     ):
         self.student_model = student_model.to(device)
         self.teacher_model = teacher_model.to(device)
@@ -245,8 +250,8 @@ class DistillationTrainer:
         )
         self.logger = logging.getLogger(__name__)
         
-        # Initialize wandb if configured
-        if self.config.get('use_wandb', False):
+        # Initialize wandb if configured and available
+        if self.config.get('use_wandb', False) and WANDB_AVAILABLE:
             wandb.init(
                 project=self.config.get('wandb_project', 'distillation'),
                 config=self.config,
@@ -441,7 +446,7 @@ class DistillationTrainer:
                 })
                 
                 # Log to wandb
-                if self.config.get('use_wandb', False) and step % self.config.get('log_steps', 100) == 0:
+                if self.config.get('use_wandb', False) and WANDB_AVAILABLE and step % self.config.get('log_steps', 100) == 0:
                     wandb.log({
                         'train_loss': loss_dict['total_loss'].item(),
                         'train_ce_loss': loss_dict['ce_loss'].item(),
@@ -465,7 +470,7 @@ class DistillationTrainer:
             
             self.logger.info(f"Epoch {epoch + 1} metrics: {epoch_metrics}")
             
-            if self.config.get('use_wandb', False):
+            if self.config.get('use_wandb', False) and WANDB_AVAILABLE:
                 wandb.log(epoch_metrics)
             
             # Save checkpoint

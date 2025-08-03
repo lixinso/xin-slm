@@ -66,9 +66,12 @@ def load_teacher_model(config: dict, logger):
     # Load model
     model_kwargs = {
         'torch_dtype': getattr(torch, teacher_config.get('torch_dtype', 'float16')),
-        'device_map': teacher_config.get('device_map', 'auto'),
         'trust_remote_code': teacher_config.get('trust_remote_code', False)
     }
+    
+    # Add device_map only if specified
+    if teacher_config.get('device_map'):
+        model_kwargs['device_map'] = teacher_config['device_map']
     
     # Add quantization if specified
     if teacher_config.get('load_in_4bit', False):
@@ -248,6 +251,14 @@ def main():
         # Initialize trainer
         logger.info("Initializing distillation trainer")
         
+        # Detect best device (use CPU for now due to MPS compatibility issues)
+        if torch.cuda.is_available():
+            device = 'cuda'
+        else:
+            device = 'cpu'  # Use CPU for better compatibility
+        
+        logger.info(f"Using device: {device}")
+        
         training_config = {
             **config['training'],
             **config['loss'],
@@ -258,11 +269,19 @@ def main():
             'precompute_teacher': False,  # Compute on-the-fly to save memory
         }
         
+        # Ensure numeric types for optimizer
+        training_config['learning_rate'] = float(training_config['learning_rate'])
+        training_config['weight_decay'] = float(training_config['weight_decay'])
+        training_config['alpha'] = float(training_config['alpha'])
+        training_config['beta'] = float(training_config['beta'])
+        training_config['temperature'] = float(training_config['temperature'])
+        
         trainer = DistillationTrainer(
             student_model=student_model,
             teacher_model=teacher_model,
             tokenizer=tokenizer,
-            config=training_config
+            config=training_config,
+            device=device
         )
         
         # Prepare datasets
