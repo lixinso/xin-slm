@@ -2,17 +2,17 @@
 
 # Teacher model configuration
 teacher:
-  model_name: "meta-llama/Llama-2-7b-chat-hf"
+  model_name: "microsoft/DialoGPT-medium"             # Open model for testing
   # Alternative teacher models:
-  # model_name: "meta-llama/Llama-2-13b-chat-hf"
-  # model_name: "codellama/CodeLlama-7b-Instruct-hf"  # For code-focused distillation
-  # model_name: "mistralai/Mistral-7B-Instruct-v0.2"  # High-performance alternative
+  # model_name: "meta-llama/Llama-2-7b-chat-hf"      # Requires HF authentication  
+  # model_name: "mistralai/Mistral-7B-Instruct-v0.2" # Requires HF authentication
+  # model_name: "HuggingFaceH4/zephyr-7b-beta"       # Another option
   
   # Teacher model loading options (optimized for Mac Mini 16GB)
   torch_dtype: "float16"
-  device_map: "auto"
+  device_map: null     # Disabled - causing issues with accelerate
   load_in_4bit: false
-  load_in_8bit: true   # Enable 8-bit quantization to reduce memory to ~7GB
+  load_in_8bit: false  # Disabled - bitsandbytes not available on Mac
   trust_remote_code: false
 
 # Student model configuration (references model_config.yaml)
