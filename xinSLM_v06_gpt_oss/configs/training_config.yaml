@@ -1,0 +1,269 @@
+# Training Configuration for GPT-OSS MoE Model on Mac Mini
+# Optimized for 16GB RAM constraint with knowledge distillation support
+
+training:
+  # Model configuration
+  model_name: "gpt-oss-moe-mac"
+  model_variant: "standard"  # ultra_light, light, standard, performance
+  
+  # Data configuration
+  dataset_name: "wikitext-2"
+  tokenizer_name: "gpt2"
+  max_seq_length: 1024      # Reduced for memory efficiency
+  
+  # Batch configuration - very important for 16GB constraint
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 32  # Effective batch size = 32
+  dataloader_num_workers: 2
+  
+  # Training loop
+  num_train_epochs: 3
+  max_steps: -1  # Set to positive number to override epochs
+  
+  # Optimizer configuration
+  optimizer: "adamw"
+  learning_rate: 3e-4
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate schedule
+  lr_scheduler_type: "cosine"
+  warmup_steps: 1000
+  warmup_ratio: 0.1
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false  # Better compatibility with Mac
+  fp16_opt_level: "O1"
+  
+  # Memory optimization
+  gradient_checkpointing: true
+  dataloader_pin_memory: false  # Can cause issues on Mac
+  remove_unused_columns: true
+  
+  # MoE specific training
+  moe_aux_loss_coef: 0.02
+  moe_z_loss_coef: 0.001
+  router_aux_loss_coef: 0.02
+  
+  # Logging and saving
+  logging_steps: 50
+  save_steps: 1000
+  eval_steps: 500
+  save_total_limit: 3
+  evaluation_strategy: "steps"
+  
+  # Output directories
+  output_dir: "./checkpoints"
+  logging_dir: "./logs"
+  
+  # Early stopping
+  early_stopping_patience: 5
+  early_stopping_threshold: 0.01
+
+# Knowledge distillation (optional)
+distillation:
+  enable_distillation: false
+  teacher_model: "microsoft/DialoGPT-medium"  # Or any compatible model
+  distillation_alpha: 0.7    # Weight for distillation loss
+  distillation_temperature: 4.0
+  
+  # Teacher model loading
+  teacher_cache_dir: "./teacher_cache"
+  teacher_revision: "main"
+  
+  # Distillation strategy
+  distill_attention: true
+  distill_hidden_states: true
+  layer_mapping: "uniform"  # How to map student layers to teacher layers
+
+# Data preprocessing
+data:
+  # Dataset paths
+  train_data_path: null  # Will use HuggingFace dataset if null
+  validation_data_path: null
+  test_data_path: null
+  
+  # Tokenization
+  tokenizer_path: "gpt2"
+  add_special_tokens: true
+  padding_side: "right"
+  truncation: true
+  
+  # Data filtering
+  min_seq_length: 32
+  max_seq_length: 1024
+  filter_empty_examples: true
+  
+  # Data augmentation (optional)
+  enable_data_augmentation: false
+  augmentation_probability: 0.1
+
+# Mac Mini specific optimizations
+mac_optimizations:
+  # Device configuration
+  device: "mps"  # Metal Performance Shaders
+  cpu_fallback: true  # Fall back to CPU for unsupported ops
+  
+  # Memory management
+  empty_cache_interval: 100  # Empty MPS cache every N steps
+  max_memory_allocation: "12GB"  # Leave 4GB for system
+  
+  # Threading
+  num_workers: 2
+  persistent_workers: true
+  prefetch_factor: 2
+  
+  # Apple-specific optimizations
+  use_metal_performance_shaders: true
+  optimize_for_inference: false  # During training
+
+# Checkpointing and resuming
+checkpointing:
+  # Resume training
+  resume_from_checkpoint: null  # Path to checkpoint or "latest"
+  
+  # Checkpoint configuration
+  save_optimizer_states: true
+  save_scheduler_states: true
+  save_random_states: true
+  
+  # Model saving
+  save_best_model: true
+  save_last_model: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+# Evaluation configuration
+evaluation:
+  # Evaluation datasets
+  eval_datasets: ["wikitext-2"]
+  
+  # Evaluation metrics
+  metrics: ["perplexity", "loss"]
+  
+  # Evaluation frequency
+  eval_during_training: true
+  eval_at_start: true
+  eval_accumulation_steps: null
+  
+  # Generation evaluation (expensive, use sparingly)
+  eval_generation: false
+  generation_max_length: 128
+  generation_num_samples: 10
+
+# Monitoring and logging
+monitoring:
+  # Weights & Biases
+  use_wandb: false
+  wandb_project: "xinslm-v06-gpt-oss"
+  wandb_entity: null
+  wandb_run_name: null
+  
+  # TensorBoard
+  use_tensorboard: true
+  tensorboard_log_dir: "./logs/tensorboard"
+  
+  # Console logging
+  log_level: "INFO"
+  log_predictions: false
+  log_model_architecture: true
+  
+  # Progress bars
+  disable_tqdm: false
+  tqdm_update_interval: 1
+
+# Performance profiling
+profiling:
+  enable_profiling: false
+  profile_memory: true
+  profile_compute: true
+  profile_schedule: "torch.profiler.schedule(wait=1, warmup=1, active=3)"
+  
+  # Profile output
+  profile_output_dir: "./profiles"
+  export_chrome_trace: true
+  export_stacks: false
+
+# Debugging and development
+debugging:
+  # Debug modes
+  debug_mode: false
+  detect_anomaly: false  # PyTorch anomaly detection
+  
+  # Validation
+  validate_every_n_steps: null
+  run_validation_at_start: true
+  
+  # Memory debugging
+  log_memory_usage: false
+  memory_profiling_interval: 100
+  
+  # Model debugging
+  log_gradient_norms: false
+  log_parameter_stats: false
+  check_finite_gradients: true
+
+# Hyperparameter search (optional)
+hyperparameter_search:
+  enable_search: false
+  search_backend: "optuna"  # optuna, ray, wandb
+  
+  # Search space
+  search_params:
+    learning_rate: [1e-5, 1e-3]
+    weight_decay: [0.001, 0.1]
+    warmup_steps: [500, 2000]
+    moe_aux_loss_coef: [0.001, 0.1]
+  
+  # Search configuration
+  n_trials: 20
+  direction: "minimize"
+  metric: "eval_loss"
+
+# Model compilation (PyTorch 2.0+)
+compilation:
+  enable_compilation: false  # Experimental on Mac
+  compile_mode: "default"    # default, reduce-overhead, max-autotune
+  compile_dynamic: false
+  
+  # Backend selection
+  backend: "aot_eager"  # Most compatible with Mac
+
+# Testing and validation
+testing:
+  # Unit tests
+  run_unit_tests: false
+  test_forward_pass: true
+  test_gradient_computation: true
+  test_checkpointing: true
+  
+  # Integration tests
+  test_full_training_step: true
+  test_evaluation_step: true
+  test_generation: false  # Expensive
+  
+  # Smoke tests
+  smoke_test_steps: 10
+  smoke_test_data_size: 100
+
+# Resource monitoring
+resource_monitoring:
+  # System monitoring
+  monitor_cpu: true
+  monitor_memory: true
+  monitor_gpu: true  # MPS usage
+  monitor_disk: true
+  
+  # Thresholds and alerts
+  memory_threshold: 0.9  # Alert at 90% usage
+  temperature_threshold: 85  # Alert at 85°C (Mac specific)
+  
+  # Monitoring interval
+  monitoring_interval: 60  # seconds
+  save_monitoring_data: true
+  monitoring_output_file: "./logs/resource_usage.json"

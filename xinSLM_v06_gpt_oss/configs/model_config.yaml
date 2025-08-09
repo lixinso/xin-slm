@@ -1,0 +1,269 @@
+# GPT-OSS MoE Model Configuration for Mac Mini (16GB)
+# Optimized for memory efficiency and performance on Apple Silicon
+
+model:
+  # Core architecture - optimized for 16GB constraint
+  vocab_size: 50257  # GPT-2/GPT-3 tokenizer
+  hidden_size: 768   # Reduced from 1024 for memory efficiency
+  intermediate_size: 2048  # ~2.7x hidden_size for SwiGLU
+  num_hidden_layers: 20    # Balanced depth for performance
+  num_attention_heads: 12
+  num_key_value_heads: 4   # GQA: 4 kv heads, 12 query heads (3:1 ratio)
+  max_position_embeddings: 2048
+  
+  # MoE configuration - GPT-OSS style
+  num_experts: 32          # Reduced from 128 for Mac Mini
+  num_experts_per_tok: 2   # Top-2 routing (vs top-4 in original)
+  expert_capacity_factor: 1.0
+  router_aux_loss_coef: 0.02
+  router_z_loss_coef: 0.001
+  
+  # Normalization and activation
+  rms_norm_eps: 1e-6
+  use_cache: true
+  
+  # Token configuration
+  pad_token_id: 50256
+  bos_token_id: 50256
+  eos_token_id: 50256
+  
+  # Weight sharing and optimization
+  tie_word_embeddings: true  # Share input/output embeddings
+  
+  # RoPE configuration
+  rope_theta: 10000.0
+  
+  # Initialization
+  initializer_range: 0.02
+  
+  # Reasoning effort configuration
+  reasoning_effort: "medium"  # low, medium, high
+
+# Model variants for different use cases
+model_variants:
+  # Ultra-light model for testing (~200M active parameters)
+  ultra_light:
+    hidden_size: 512
+    intermediate_size: 1536
+    num_hidden_layers: 12
+    num_attention_heads: 8
+    num_key_value_heads: 2
+    num_experts: 16
+    num_experts_per_tok: 1
+    reasoning_effort: "low"
+  
+  # Light model (~400M active parameters)
+  light:
+    hidden_size: 640
+    intermediate_size: 1792
+    num_hidden_layers: 16
+    num_attention_heads: 10
+    num_key_value_heads: 2
+    num_experts: 24
+    num_experts_per_tok: 2
+    reasoning_effort: "low"
+  
+  # Standard model (~600M active parameters) - DEFAULT
+  standard:
+    hidden_size: 768
+    intermediate_size: 2048
+    num_hidden_layers: 20
+    num_attention_heads: 12
+    num_key_value_heads: 4
+    num_experts: 32
+    num_experts_per_tok: 2
+    reasoning_effort: "medium"
+  
+  # Performance model (~800M active parameters)
+  performance:
+    hidden_size: 896
+    intermediate_size: 2400
+    num_hidden_layers: 22
+    num_attention_heads: 14
+    num_key_value_heads: 4
+    num_experts: 48
+    num_experts_per_tok: 3
+    reasoning_effort: "high"
+
+# Mac Mini optimizations
+mac_optimizations:
+  # Use Metal Performance Shaders for Apple Silicon
+  use_metal_performance_shaders: true
+  
+  # Memory management
+  gradient_checkpointing: true
+  memory_efficient_attention: true
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false  # Use fp16 for better Mac compatibility
+  
+  # Cache management
+  max_cache_size: 2048  # Limit KV cache size
+  use_sliding_window: true
+  sliding_window_size: 1024
+
+# Quantization configuration - MXFP4 style
+quantization:
+  # Enable quantization for deployment
+  enable_quantization: true
+  bits: 4
+  group_size: 32
+  
+  # Quantization strategy
+  quantize_moe_weights: true    # Primary target for quantization
+  quantize_attention: false     # Keep attention weights in fp16
+  quantize_embeddings: false    # Keep embeddings in fp16
+  
+  # Calibration settings
+  calibration_samples: 512
+  calibration_sequence_length: 256
+  
+  # Export formats
+  save_gguf: true      # For llama.cpp
+  save_coreml: true    # For Apple Core ML
+  save_onnx: false     # Skip ONNX for space
+
+# Training configuration
+training:
+  # Batch size and sequence length
+  micro_batch_size: 1      # Very small for 16GB constraint
+  gradient_accumulation_steps: 32  # Effective batch size = 32
+  max_sequence_length: 1024     # Reduced for memory
+  
+  # Learning rate schedule
+  learning_rate: 3e-4
+  warmup_steps: 1000
+  lr_scheduler_type: "cosine"
+  
+  # Optimization
+  optimizer: "adamw"
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  
+  # Regularization
+  dropout: 0.0
+  attention_dropout: 0.0
+  
+  # MoE specific training
+  moe_loss_weight: 0.02
+  enable_expert_parallelism: false  # Not needed for single Mac Mini
+
+# Inference configuration
+inference:
+  # Generation parameters
+  max_new_tokens: 512
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 50
+  repetition_penalty: 1.1
+  
+  # Memory optimization
+  use_kv_cache: true
+  kv_cache_max_length: 2048
+  beam_search: false  # Use greedy/sampling for memory efficiency
+  
+  # Batch processing
+  max_batch_size: 1   # Single sequence for 16GB
+  sequence_parallel: false
+
+# Hardware-specific settings
+hardware:
+  # Mac Mini M2/M3 settings
+  target_device: "mps"  # Metal Performance Shaders
+  cpu_offload: true     # Offload some operations to CPU
+  mixed_precision: true
+  
+  # Memory management
+  memory_limit_gb: 12   # Reserve 4GB for system
+  swap_threshold: 0.8   # Trigger CPU offload at 80% memory
+  
+  # Threading
+  num_threads: 8        # Optimal for M2/M3
+  intra_op_parallelism: 4
+  inter_op_parallelism: 2
+
+# Evaluation and benchmarking
+evaluation:
+  # Datasets for evaluation
+  datasets:
+    - "wikitext-2"
+    - "lambada"
+    - "hellaswag"
+    - "winogrande"
+  
+  # Metrics to track
+  metrics:
+    - "perplexity"
+    - "accuracy"
+    - "bleu"
+    - "rouge"
+  
+  # Performance benchmarking
+  benchmark_settings:
+    sequence_lengths: [128, 256, 512, 1024]
+    batch_sizes: [1]
+    measure_memory: true
+    measure_latency: true
+    measure_throughput: true
+
+# Deployment settings
+deployment:
+  # Model serving
+  serve_format: "gguf"     # Most efficient for Mac
+  max_concurrent_requests: 1
+  request_timeout: 30
+  
+  # API configuration
+  api_host: "localhost"
+  api_port: 8000
+  enable_streaming: true
+  
+  # Monitoring
+  enable_metrics: true
+  log_level: "INFO"
+  
+  # Resource limits
+  max_memory_gb: 12
+  max_cpu_percent: 80
+
+# Logging and debugging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Training logs
+  log_interval: 100
+  save_interval: 1000
+  eval_interval: 5000
+  
+  # Model checkpointing
+  save_total_limit: 3
+  save_best_model: true
+  
+  # Wandb integration (optional)
+  use_wandb: false
+  wandb_project: "xinslm-v06-gpt-oss"
+  wandb_entity: null
+
+# Experimental features
+experimental:
+  # Advanced MoE techniques
+  use_switch_transformer: false
+  use_expert_choice: false
+  use_megablocks: false  # Not compatible with quantization
+  
+  # Attention optimizations
+  use_flash_attention: false  # Not available on Mac
+  use_xformers: false        # Limited Mac support
+  
+  # Memory techniques
+  use_deepspeed: false       # Not needed for single device
+  use_activation_checkpointing: true
+  
+  # Quantization research
+  use_qlora: false
+  use_gptq: false
+  use_bitsandbytes: false    # Limited Mac support

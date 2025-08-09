@@ -1,0 +1,275 @@
+# MXFP4-Style Quantization Configuration for GPT-OSS MoE
+# Optimized for Mac Mini deployment with memory efficiency
+
+quantization:
+  # Global quantization settings
+  enable_quantization: true
+  quantization_scheme: "mxfp4_style"  # MXFP4-inspired 4-bit quantization
+  
+  # Target precision
+  default_bits: 4
+  weight_bits: 4
+  activation_bits: 16  # Keep activations in fp16 for stability
+  
+  # Quantization scope - prioritize MoE weights (90% of parameters)
+  quantize_moe_experts: true     # Primary target - biggest memory savings
+  quantize_attention: false      # Keep attention weights in fp16 for quality
+  quantize_embeddings: false     # Keep embeddings in fp16
+  quantize_layer_norms: false    # Keep normalization in fp16
+  quantize_output_projection: false  # Keep final projection in fp16
+
+# MoE-specific quantization (follows GPT-OSS approach)
+moe_quantization:
+  # Expert weight quantization
+  expert_weight_bits: 4
+  expert_grouping_strategy: "per_expert"  # Quantize each expert independently
+  
+  # Router quantization
+  quantize_router: false  # Keep router weights in higher precision
+  router_bits: 16
+  
+  # Expert selection and routing
+  preserve_routing_precision: true
+  use_fp16_routing: true
+
+# Quantization method configuration
+method_config:
+  # Group-wise quantization
+  group_size: 32        # Quantization group size (similar to GPTQ)
+  use_groupwise: true   # Enable group-wise quantization
+  
+  # Calibration dataset
+  calibration_dataset: "wikitext-2"
+  calibration_samples: 512
+  calibration_sequence_length: 256
+  calibration_batch_size: 1
+  
+  # Quantization algorithm
+  algorithm: "rtn"      # Round-To-Nearest (simple and effective)
+  use_gptq: false       # GPTQ not needed for our approach
+  use_awq: false        # AWQ not needed
+  
+  # Symmetric vs asymmetric quantization
+  symmetric: true       # Symmetric quantization for simplicity
+  use_zero_point: false # No zero point for symmetric quantization
+
+# Platform-specific optimizations
+mac_optimizations:
+  # Metal Performance Shaders integration
+  use_mps_kernels: true
+  optimize_for_apple_silicon: true
+  
+  # Memory layout optimization
+  optimize_memory_layout: true
+  use_contiguous_storage: true
+  
+  # CPU fallback for unsupported operations
+  enable_cpu_fallback: true
+  cpu_fallback_ops: ["quantized_matmul", "dequantize"]
+
+# Quantized storage formats
+storage:
+  # Primary storage format
+  primary_format: "packed_int4"
+  
+  # Export formats for different inference engines
+  export_formats:
+    # For llama.cpp (most efficient on Mac)
+    gguf:
+      enable: true
+      variant: "Q4_0"  # 4-bit quantization
+      metadata_only: false
+    
+    # For Core ML (Apple's framework)
+    coreml:
+      enable: true
+      precision: "float16"  # Core ML will handle internal quantization
+      compute_units: "cpuAndNeuralEngine"
+    
+    # For ONNX Runtime (if needed)
+    onnx:
+      enable: false
+      quantization_mode: "dynamic"
+      precision: "int4"
+    
+    # Raw PyTorch format
+    pytorch:
+      enable: true
+      state_dict_format: "safetensors"
+      include_metadata: true
+
+# Quality preservation strategies
+quality_preservation:
+  # Sensitive layer protection
+  preserve_first_last_layers: true   # Keep input/output layers in fp16
+  preserve_attention_layers: true    # Keep attention in fp16
+  preserve_normalization: true       # Keep layer norms in fp16
+  
+  # Mixed precision strategy
+  use_mixed_precision: true
+  fp16_attention: true
+  fp16_activations: true
+  
+  # Quality validation
+  validate_quality: true
+  perplexity_threshold: 1.2  # Alert if perplexity increases by 20%
+  accuracy_threshold: 0.95   # Alert if accuracy drops below 95% of original
+
+# Memory optimization
+memory_optimization:
+  # Quantized weight caching
+  cache_quantized_weights: true
+  max_cache_size: "2GB"
+  
+  # Dynamic quantization during inference
+  dynamic_quantization: true
+  quantize_on_demand: true
+  
+  # Memory mapping for large models
+  use_memory_mapping: true
+  map_quantized_weights: true
+  
+  # Garbage collection
+  aggressive_gc: true
+  gc_interval: 100  # Clean up every 100 operations
+
+# Inference optimization
+inference_optimization:
+  # Quantized kernel selection
+  use_optimized_kernels: true
+  kernel_backend: "metal"  # Use Metal kernels on Mac
+  
+  # Batch processing
+  quantized_batch_processing: true
+  max_batch_size: 1  # Limited by 16GB constraint
+  
+  # KV cache quantization
+  quantize_kv_cache: false  # Keep KV cache in fp16 for quality
+  
+  # Pipeline optimization
+  enable_pipeline_parallelism: false  # Not needed for single device
+
+# Calibration and tuning
+calibration:
+  # Dataset selection
+  dataset_name: "wikitext-2"
+  dataset_split: "validation"
+  max_samples: 512
+  
+  # Sampling strategy
+  sampling_strategy: "random"
+  seed: 42
+  
+  # Calibration process
+  calibration_steps: 100
+  batch_size: 1
+  sequence_length: 256
+  
+  # Post-calibration optimization
+  optimize_scales: true
+  optimize_zero_points: false  # Not used in symmetric quantization
+  
+  # Validation after calibration
+  validate_after_calibration: true
+  validation_samples: 100
+
+# Debugging and profiling
+debugging:
+  # Quantization debugging
+  log_quantization_stats: true
+  save_quantization_ranges: true
+  
+  # Performance profiling
+  profile_quantization: false
+  profile_memory_usage: true
+  
+  # Visualization
+  visualize_weight_distributions: false
+  save_histograms: false
+  
+  # Comparison with original model
+  compare_with_original: true
+  comparison_samples: 50
+
+# Advanced features
+advanced:
+  # Outlier handling
+  outlier_detection: true
+  outlier_threshold: 3.0  # Standard deviations
+  outlier_handling: "clip"  # clip, ignore, separate_scale
+  
+  # Adaptive quantization
+  adaptive_grouping: false
+  group_size_adaptation: false
+  
+  # Knowledge distillation for quantization
+  use_kd_for_quantization: false
+  kd_temperature: 4.0
+  kd_alpha: 0.5
+  
+  # Evolutionary quantization (experimental)
+  evolutionary_quantization: false
+  population_size: 10
+  generations: 20
+
+# Export and deployment
+deployment:
+  # Model compression
+  compress_quantized_model: true
+  compression_algorithm: "gzip"
+  
+  # Metadata preservation
+  preserve_model_metadata: true
+  include_quantization_info: true
+  
+  # Version tracking
+  quantization_version: "1.0"
+  compatibility_info: "mac_mini_16gb_optimized"
+  
+  # Deployment validation
+  validate_deployment: true
+  test_inference_speed: true
+  test_memory_usage: true
+  
+  # Documentation
+  generate_quantization_report: true
+  include_performance_benchmarks: true
+
+# Platform-specific settings
+platform_configs:
+  # Mac Mini M2/M3 specific
+  apple_silicon:
+    preferred_data_type: "float16"
+    use_neural_engine: false  # Not typically used for LLMs
+    memory_pool_size: "12GB"
+    
+  # Fallback CPU configuration
+  cpu_fallback:
+    use_mkl: false  # MKL not available on Mac
+    use_accelerate: true  # Apple's Accelerate framework
+    num_threads: 8
+    
+  # Memory constraints
+  memory_constraints:
+    max_model_size: "8GB"    # Reserve 8GB for other components
+    max_cache_size: "2GB"
+    emergency_threshold: "14GB"  # Start aggressive cleanup
+
+# Quality assurance
+quality_assurance:
+  # Automated testing
+  run_quality_tests: true
+  test_datasets: ["wikitext-2", "lambada"]
+  
+  # Regression testing
+  baseline_model_path: null  # Path to original model for comparison
+  acceptable_degradation: 0.05  # 5% maximum quality loss
+  
+  # Continuous monitoring
+  monitor_quality_drift: true
+  quality_check_interval: 1000  # Check every N inferences
+  
+  # Alerts and notifications
+  enable_quality_alerts: true
+  alert_on_degradation: true
+  alert_threshold: 0.1  # 10% quality loss triggers alert
