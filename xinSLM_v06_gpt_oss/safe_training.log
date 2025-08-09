@@ -1,0 +1,239 @@
+2025-08-09 14:04:36,975 - SAFE_TRAIN - INFO - Memory-safe trainer initialized
+2025-08-09 14:04:36,975 - SAFE_TRAIN - INFO - Checking system readiness...
+2025-08-09 14:04:36,975 - SAFE_TRAIN - INFO - Sufficient memory: 6.7GB available
+2025-08-09 14:04:36,975 - SAFE_TRAIN - INFO - Memory check: 6.7GB available ✓
+2025-08-09 14:04:36,975 - SAFE_TRAIN - INFO - Disk check: 48.3GB free ✓
+2025-08-09 14:04:36,975 - SAFE_TRAIN - INFO - Configuration files found ✓
+2025-08-09 14:04:37,980 - SAFE_TRAIN - INFO - System readiness check completed ✓
+2025-08-09 14:04:37,980 - SAFE_TRAIN - INFO - Performing pre-training cleanup...
+2025-08-09 14:04:38,485 - SAFE_TRAIN - INFO - MPS cache cleared ✓
+2025-08-09 14:04:38,485 - SAFE_TRAIN - INFO - Pre-training memory: 59.1% used
+2025-08-09 14:04:38,485 - SAFE_TRAIN - INFO - Available memory: 6.5GB
+2025-08-09 14:04:38,485 - SAFE_TRAIN - INFO - Starting training: /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Volumes/MacMiniExt/Users/xinsongli/data/github/xin-slm/xinSLM_v06_gpt_oss/scripts/train_gpt_oss_moe.py --config configs/memory_safe_training_config.yaml --model-config configs/memory_optimized_model_config.yaml
+2025-08-09 14:04:38,488 - SAFE_TRAIN - INFO - Training process started (PID: 9588)
+2025-08-09 14:04:41,158 - SAFE_TRAIN - ERROR - Training failed with return code: 2
+2025-08-09 14:04:41,158 - SAFE_TRAIN - INFO - ============================================================
+2025-08-09 14:04:41,158 - SAFE_TRAIN - INFO - POST-TRAINING REPORT
+2025-08-09 14:04:41,158 - SAFE_TRAIN - INFO - ============================================================
+2025-08-09 14:04:41,158 - SAFE_TRAIN - INFO - Final memory usage: 59.0%
+2025-08-09 14:04:41,158 - SAFE_TRAIN - INFO - Available memory: 6.6GB
+2025-08-09 14:04:41,158 - SAFE_TRAIN - INFO - Training duration: 0h 0m
+2025-08-09 14:04:41,158 - SAFE_TRAIN - INFO - ============================================================
+2025-08-09 14:07:10,236 - SAFE_TRAIN - INFO - Memory-safe trainer initialized
+2025-08-09 14:07:10,236 - SAFE_TRAIN - INFO - Checking system readiness...
+2025-08-09 14:07:10,236 - SAFE_TRAIN - INFO - Sufficient memory: 6.4GB available
+2025-08-09 14:07:10,236 - SAFE_TRAIN - INFO - Memory check: 6.4GB available ✓
+2025-08-09 14:07:10,236 - SAFE_TRAIN - INFO - Disk check: 48.3GB free ✓
+2025-08-09 14:07:10,236 - SAFE_TRAIN - INFO - Configuration files found ✓
+2025-08-09 14:07:11,241 - SAFE_TRAIN - INFO - System readiness check completed ✓
+2025-08-09 14:07:11,242 - SAFE_TRAIN - INFO - Performing pre-training cleanup...
+2025-08-09 14:07:11,747 - SAFE_TRAIN - INFO - MPS cache cleared ✓
+2025-08-09 14:07:11,747 - SAFE_TRAIN - INFO - Pre-training memory: 60.1% used
+2025-08-09 14:07:11,747 - SAFE_TRAIN - INFO - Available memory: 6.4GB
+2025-08-09 14:07:11,747 - SAFE_TRAIN - INFO - Starting training: /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Volumes/MacMiniExt/Users/xinsongli/data/github/xin-slm/xinSLM_v06_gpt_oss/scripts/train_gpt_oss_moe.py --config configs/ultra_safe_training_config.yaml
+2025-08-09 14:07:11,750 - SAFE_TRAIN - INFO - Training process started (PID: 9887)
+2025-08-09 14:07:17,852 - SAFE_TRAIN - WARNING - Training: 2025-08-09 14:07:17,852 - datasets.fingerprint - WARNING - Parameter 'function'=<function MacMiniTrainer.setup_data.<locals>.tokenize_function at 0x1295931f0> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+2025-08-09 14:09:27,943 - SAFE_TRAIN - INFO - Training: Epoch 0:   2%|▏         | 159/8959 [01:59<1:41:26,  1.45it/s, loss=11.0549, moe_loss=0.0000]2025-08-09 14:09:27,921 - __main__ - INFO - Step 5: Loss=11.0552, MoE_Loss=0.0000, LR=2.50e-05, Mem=7.8/16.0GB (76.0%)
+2025-08-09 14:11:34,758 - SAFE_TRAIN - INFO - Training: Epoch 0:   4%|▎         | 319/8959 [04:06<1:43:14,  1.39it/s, loss=10.9642, moe_loss=0.0000]2025-08-09 14:11:34,758 - __main__ - INFO - Step 10: Loss=10.9637, MoE_Loss=0.0000, LR=5.00e-05, Mem=7.6/16.0GB (76.3%)
+2025-08-09 14:13:19,618 - SAFE_TRAIN - INFO - Training: Epoch 0:   5%|▌         | 479/8959 [05:51<1:25:05,  1.66it/s, loss=10.8212, moe_loss=0.0000]2025-08-09 14:13:19,597 - __main__ - INFO - Step 15: Loss=10.8203, MoE_Loss=0.0000, LR=4.91e-05, Mem=7.6/16.0GB (77.0%)
+2025-08-09 14:14:45,814 - SAFE_TRAIN - INFO - Training: Epoch 0:   7%|▋         | 639/8959 [07:17<1:01:01,  2.27it/s, loss=10.6943, moe_loss=0.0000]2025-08-09 14:14:45,814 - __main__ - INFO - Step 20: Loss=10.6937, MoE_Loss=0.0000, LR=4.81e-05, Mem=7.2/16.0GB (75.5%)
+2025-08-09 14:16:10,343 - SAFE_TRAIN - INFO - Training: Epoch 0:   9%|▉         | 799/8959 [08:42<50:22,  2.70it/s, loss=10.5963, moe_loss=0.0000]2025-08-09 14:16:10,342 - __main__ - INFO - Step 25: Loss=10.5956, MoE_Loss=0.0000, LR=4.72e-05, Mem=7.3/16.0GB (76.4%)
+2025-08-09 14:17:24,450 - SAFE_TRAIN - INFO - Training: Epoch 0:  11%|█         | 959/8959 [09:56<49:04,  2.72it/s, loss=10.5111, moe_loss=0.0000]2025-08-09 14:17:24,449 - __main__ - INFO - Step 30: Loss=10.5107, MoE_Loss=0.0000, LR=4.63e-05, Mem=7.7/16.0GB (77.4%)
+2025-08-09 14:18:42,469 - SAFE_TRAIN - INFO - Training: Epoch 0:  12%|█▏        | 1119/8959 [11:14<49:57,  2.62it/s, loss=10.4390, moe_loss=0.0000]2025-08-09 14:18:42,469 - __main__ - INFO - Step 35: Loss=10.4387, MoE_Loss=0.0000, LR=4.54e-05, Mem=7.7/16.0GB (77.3%)
+2025-08-09 14:20:00,255 - SAFE_TRAIN - INFO - Training: Epoch 0:  14%|█▍        | 1279/8959 [12:32<45:58,  2.78it/s, loss=10.3722, moe_loss=0.0000]2025-08-09 14:20:00,254 - __main__ - INFO - Step 40: Loss=10.3717, MoE_Loss=0.0000, LR=4.44e-05, Mem=7.7/16.0GB (77.5%)
+2025-08-09 14:21:15,136 - SAFE_TRAIN - INFO - Training: Epoch 0:  16%|█▌        | 1439/8959 [13:47<48:40,  2.57it/s, loss=10.3100, moe_loss=0.0000]2025-08-09 14:21:15,135 - __main__ - INFO - Step 45: Loss=10.3096, MoE_Loss=0.0000, LR=4.35e-05, Mem=7.7/16.0GB (77.5%)
+2025-08-09 14:22:30,154 - SAFE_TRAIN - INFO - Training: Epoch 0:  18%|█▊        | 1599/8959 [15:02<51:51,  2.37it/s, loss=10.2540, moe_loss=0.0000]2025-08-09 14:22:30,152 - __main__ - INFO - Step 50: Loss=10.2537, MoE_Loss=0.0000, LR=4.26e-05, Mem=7.6/16.0GB (78.0%)
+2025-08-09 14:23:40,931 - SAFE_TRAIN - INFO - Training: Epoch 0:  20%|█▉        | 1759/8959 [16:13<42:39,  2.81it/s, loss=10.1995, moe_loss=0.0000]2025-08-09 14:23:40,929 - __main__ - INFO - Step 55: Loss=10.1991, MoE_Loss=0.0000, LR=4.16e-05, Mem=7.3/16.0GB (76.7%)
+2025-08-09 14:24:53,783 - SAFE_TRAIN - INFO - Training: Epoch 0:  21%|██▏       | 1919/8959 [17:25<42:49,  2.74it/s, loss=10.1461, moe_loss=0.0000]2025-08-09 14:24:53,783 - __main__ - INFO - Step 60: Loss=10.1458, MoE_Loss=0.0000, LR=4.07e-05, Mem=7.5/16.0GB (77.0%)
+2025-08-09 14:26:07,922 - SAFE_TRAIN - INFO - Training: Epoch 0:  23%|██▎       | 2079/8959 [18:40<39:34,  2.90it/s, loss=10.0946, moe_loss=0.0000]2025-08-09 14:26:07,922 - __main__ - INFO - Step 65: Loss=10.0943, MoE_Loss=0.0000, LR=3.98e-05, Mem=7.5/16.0GB (77.1%)
+2025-08-09 14:27:25,137 - SAFE_TRAIN - INFO - Training: Epoch 0:  25%|██▍       | 2239/8959 [19:57<42:41,  2.62it/s, loss=10.0434, moe_loss=0.0000]2025-08-09 14:27:25,136 - __main__ - INFO - Step 70: Loss=10.0431, MoE_Loss=0.0000, LR=3.88e-05, Mem=7.6/16.0GB (77.4%)
+2025-08-09 14:28:43,987 - SAFE_TRAIN - INFO - Training: Epoch 0:  27%|██▋       | 2399/8959 [21:15<48:05,  2.27it/s, loss=9.9932, moe_loss=0.0000]2025-08-09 14:28:43,979 - __main__ - INFO - Step 75: Loss=9.9930, MoE_Loss=0.0000, LR=3.79e-05, Mem=7.6/16.0GB (77.8%)
+2025-08-09 14:30:08,374 - SAFE_TRAIN - INFO - Training: Epoch 0:  29%|██▊       | 2559/8959 [22:40<49:47,  2.14it/s, loss=9.9432, moe_loss=0.0000]2025-08-09 14:30:08,373 - __main__ - INFO - Step 80: Loss=9.9429, MoE_Loss=0.0000, LR=3.70e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:31:42,344 - SAFE_TRAIN - INFO - Training: Epoch 0:  30%|███       | 2719/8959 [24:14<53:20,  1.95it/s, loss=9.8951, moe_loss=0.0000]2025-08-09 14:31:42,336 - __main__ - INFO - Step 85: Loss=9.8948, MoE_Loss=0.0000, LR=3.61e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:33:21,346 - SAFE_TRAIN - INFO - Training: Epoch 0:  32%|███▏      | 2879/8959 [25:53<59:12,  1.71it/s, loss=9.8470, moe_loss=0.0000]2025-08-09 14:33:21,337 - __main__ - INFO - Step 90: Loss=9.8467, MoE_Loss=0.0000, LR=3.51e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:34:58,547 - SAFE_TRAIN - INFO - Training: Epoch 0:  34%|███▍      | 3039/8959 [27:30<53:55,  1.83it/s, loss=9.7985, moe_loss=0.0000]2025-08-09 14:34:58,547 - __main__ - INFO - Step 95: Loss=9.7982, MoE_Loss=0.0000, LR=3.42e-05, Mem=7.7/16.0GB (77.8%)
+2025-08-09 14:36:39,130 - SAFE_TRAIN - INFO - Training: Epoch 0:  36%|███▌      | 3199/8959 [29:11<43:55,  2.19it/s, loss=9.7501, moe_loss=0.0000]2025-08-09 14:36:39,121 - __main__ - INFO - Step 100: Loss=9.7498, MoE_Loss=0.0000, LR=3.33e-05, Mem=7.7/16.0GB (77.9%)
+2025-08-09 14:38:22,017 - SAFE_TRAIN - INFO - Training: Epoch 0:  37%|███▋      | 3359/8959 [30:54<57:18,  1.63it/s, loss=9.7043, moe_loss=0.0000]2025-08-09 14:38:22,009 - __main__ - INFO - Step 105: Loss=9.7041, MoE_Loss=0.0000, LR=3.23e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:40:02,566 - SAFE_TRAIN - INFO - Training: Epoch 0:  39%|███▉      | 3519/8959 [32:34<40:14,  2.25it/s, loss=9.6575, moe_loss=0.0000]2025-08-09 14:40:02,558 - __main__ - INFO - Step 110: Loss=9.6572, MoE_Loss=0.0000, LR=3.14e-05, Mem=7.6/16.0GB (77.7%)
+2025-08-09 14:41:43,449 - SAFE_TRAIN - INFO - Training: Epoch 0:  41%|████      | 3679/8959 [34:15<43:21,  2.03it/s, loss=9.6128, moe_loss=0.0000]2025-08-09 14:41:43,449 - __main__ - INFO - Step 115: Loss=9.6125, MoE_Loss=0.0000, LR=3.05e-05, Mem=7.7/16.0GB (77.9%)
+2025-08-09 14:43:24,593 - SAFE_TRAIN - INFO - Training: Epoch 0:  43%|████▎     | 3839/8959 [35:56<49:57,  1.71it/s, loss=9.5684, moe_loss=0.0000]2025-08-09 14:43:24,585 - __main__ - INFO - Step 120: Loss=9.5681, MoE_Loss=0.0000, LR=2.96e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:45:08,890 - SAFE_TRAIN - INFO - Training: Epoch 0:  45%|████▍     | 3999/8959 [37:40<41:20,  2.00it/s, loss=9.5265, moe_loss=0.0000]2025-08-09 14:45:08,881 - __main__ - INFO - Step 125: Loss=9.5262, MoE_Loss=0.0000, LR=2.86e-05, Mem=7.6/16.0GB (78.2%)
+2025-08-09 14:46:45,840 - SAFE_TRAIN - INFO - Training: Epoch 0:  46%|████▋     | 4159/8959 [39:17<38:13,  2.09it/s, loss=9.4855, moe_loss=0.0000]2025-08-09 14:46:45,832 - __main__ - INFO - Step 130: Loss=9.4853, MoE_Loss=0.0000, LR=2.77e-05, Mem=7.6/16.0GB (78.2%)
+2025-08-09 14:48:28,203 - SAFE_TRAIN - INFO - Training: Epoch 0:  48%|████▊     | 4319/8959 [41:00<44:16,  1.75it/s, loss=9.4454, moe_loss=0.0000]2025-08-09 14:48:28,195 - __main__ - INFO - Step 135: Loss=9.4452, MoE_Loss=0.0000, LR=2.68e-05, Mem=7.6/16.0GB (78.2%)
+2025-08-09 14:50:09,305 - SAFE_TRAIN - INFO - Training: Epoch 0:  50%|████▉     | 4479/8959 [42:41<34:26,  2.17it/s, loss=9.4072, moe_loss=0.0000]2025-08-09 14:50:09,297 - __main__ - INFO - Step 140: Loss=9.4070, MoE_Loss=0.0000, LR=2.58e-05, Mem=7.6/16.0GB (78.4%)
+2025-08-09 14:51:48,463 - SAFE_TRAIN - INFO - Training: Epoch 0:  52%|█████▏    | 4639/8959 [44:20<38:33,  1.87it/s, loss=9.3688, moe_loss=0.0000]2025-08-09 14:51:48,463 - __main__ - INFO - Step 145: Loss=9.3685, MoE_Loss=0.0000, LR=2.49e-05, Mem=7.6/16.0GB (78.5%)
+2025-08-09 14:53:24,290 - SAFE_TRAIN - INFO - Training: Epoch 0:  54%|█████▎    | 4799/8959 [45:56<37:54,  1.83it/s, loss=9.3325, moe_loss=0.0000]2025-08-09 14:53:24,281 - __main__ - INFO - Step 150: Loss=9.3323, MoE_Loss=0.0000, LR=2.40e-05, Mem=7.6/16.0GB (78.5%)
+2025-08-09 14:55:05,193 - SAFE_TRAIN - INFO - Training: Epoch 0:  55%|█████▌    | 4959/8959 [47:36<29:53,  2.23it/s, loss=9.2971, moe_loss=0.0000]2025-08-09 14:55:05,184 - __main__ - INFO - Step 155: Loss=9.2969, MoE_Loss=0.0000, LR=2.30e-05, Mem=7.0/16.0GB (77.2%)
+2025-08-09 14:56:52,436 - SAFE_TRAIN - INFO - Training: Epoch 0:  57%|█████▋    | 5119/8959 [49:24<36:41,  1.74it/s, loss=9.2633, moe_loss=0.0000]2025-08-09 14:56:52,436 - __main__ - INFO - Step 160: Loss=9.2631, MoE_Loss=0.0000, LR=2.21e-05, Mem=7.1/16.0GB (77.4%)
+2025-08-09 14:58:36,242 - SAFE_TRAIN - INFO - Training: Epoch 0:  59%|█████▉    | 5279/8959 [51:08<31:58,  1.92it/s, loss=9.2314, moe_loss=0.0000]2025-08-09 14:58:36,242 - __main__ - INFO - Step 165: Loss=9.2312, MoE_Loss=0.0000, LR=2.12e-05, Mem=7.3/16.0GB (77.8%)
+2025-08-09 15:00:20,509 - SAFE_TRAIN - INFO - Training: Epoch 0:  61%|██████    | 5439/8959 [52:52<34:33,  1.70it/s, loss=9.2001, moe_loss=0.0000]2025-08-09 15:00:20,509 - __main__ - INFO - Step 170: Loss=9.1999, MoE_Loss=0.0000, LR=2.03e-05, Mem=7.3/16.0GB (78.1%)
+2025-08-09 15:02:02,558 - SAFE_TRAIN - INFO - Training: Epoch 0:  62%|██████▏   | 5599/8959 [54:34<33:38,  1.66it/s, loss=9.1694, moe_loss=0.0000]2025-08-09 15:02:02,557 - __main__ - INFO - Step 175: Loss=9.1692, MoE_Loss=0.0000, LR=1.93e-05, Mem=7.3/16.0GB (78.1%)
+2025-08-09 15:03:47,074 - SAFE_TRAIN - INFO - Training: Epoch 0:  64%|██████▍   | 5759/8959 [56:18<30:27,  1.75it/s, loss=9.1398, moe_loss=0.0000]2025-08-09 15:03:47,073 - __main__ - INFO - Step 180: Loss=9.1397, MoE_Loss=0.0000, LR=1.84e-05, Mem=7.4/16.0GB (78.7%)
+2025-08-09 15:05:28,844 - SAFE_TRAIN - INFO - Training: Epoch 0:  66%|██████▌   | 5919/8959 [58:00<29:18,  1.73it/s, loss=9.1115, moe_loss=0.0000]2025-08-09 15:05:28,835 - __main__ - INFO - Step 185: Loss=9.1113, MoE_Loss=0.0000, LR=1.75e-05, Mem=7.6/16.0GB (78.5%)
+2025-08-09 15:07:06,043 - SAFE_TRAIN - INFO - Training: Epoch 0:  68%|██████▊   | 6079/8959 [59:38<19:53,  2.41it/s, loss=9.0826, moe_loss=0.0000]2025-08-09 15:07:06,035 - __main__ - INFO - Step 190: Loss=9.0824, MoE_Loss=0.0000, LR=1.65e-05, Mem=7.2/16.0GB (78.4%)
+2025-08-09 15:08:40,885 - SAFE_TRAIN - INFO - Training: Epoch 0:  70%|██████▉   | 6239/8959 [1:01:12<21:42,  2.09it/s, loss=9.0558, moe_loss=0.0000]2025-08-09 15:08:40,884 - __main__ - INFO - Step 195: Loss=9.0557, MoE_Loss=0.0000, LR=1.56e-05, Mem=7.3/16.0GB (78.6%)
+2025-08-09 15:10:19,381 - SAFE_TRAIN - INFO - Training: Epoch 0:  71%|███████▏  | 6399/8959 [1:02:51<21:58,  1.94it/s, loss=9.0307, moe_loss=0.0000]2025-08-09 15:10:19,380 - __main__ - INFO - Step 200: Loss=9.0305, MoE_Loss=0.0000, LR=1.47e-05, Mem=7.4/16.0GB (79.0%)
+2025-08-09 15:12:01,095 - SAFE_TRAIN - INFO - Training: Epoch 0:  73%|███████▎  | 6559/8959 [1:04:32<22:50,  1.75it/s, loss=9.0051, moe_loss=0.0000]2025-08-09 15:12:01,094 - __main__ - INFO - Step 205: Loss=9.0049, MoE_Loss=0.0000, LR=1.38e-05, Mem=7.5/16.0GB (79.2%)
+2025-08-09 15:13:43,045 - SAFE_TRAIN - INFO - Training: Epoch 0:  75%|███████▍  | 6719/8959 [1:06:14<22:01,  1.70it/s, loss=8.9806, moe_loss=0.0000]2025-08-09 15:13:43,045 - __main__ - INFO - Step 210: Loss=8.9804, MoE_Loss=0.0000, LR=1.28e-05, Mem=7.5/16.0GB (79.1%)
+2025-08-09 15:15:24,255 - SAFE_TRAIN - INFO - Training: Epoch 0:  77%|███████▋  | 6879/8959 [1:07:56<19:10,  1.81it/s, loss=8.9563, moe_loss=0.0000]2025-08-09 15:15:24,247 - __main__ - INFO - Step 215: Loss=8.9562, MoE_Loss=0.0000, LR=1.19e-05, Mem=7.5/16.0GB (79.0%)
+2025-08-09 15:17:07,142 - SAFE_TRAIN - INFO - Training: Epoch 0:  79%|███████▊  | 7039/8959 [1:09:39<17:38,  1.81it/s, loss=8.9346, moe_loss=0.0000]2025-08-09 15:17:07,134 - __main__ - INFO - Step 220: Loss=8.9345, MoE_Loss=0.0000, LR=1.10e-05, Mem=7.5/16.0GB (79.0%)
+2025-08-09 15:17:28,792 - SAFE_TRAIN - WARNING - Training: Epoch 0:  79%|███████▉  | 7070/8959 [1:10:00<17:26,  1.80it/s, loss=8.9305, moe_loss=0.0000]2025-08-09 15:17:28,791 - __main__ - WARNING - Memory usage high (83.4%), forcing cleanup
+2025-08-09 15:17:29,923 - SAFE_TRAIN - WARNING - High memory usage: 80.8%
+2025-08-09 15:17:34,216 - SAFE_TRAIN - WARNING - Training: Epoch 0:  79%|███████▉  | 7080/8959 [1:10:06<14:15,  2.20it/s, loss=8.9291, moe_loss=0.0000]2025-08-09 15:17:34,216 - __main__ - WARNING - Memory usage high (80.5%), forcing cleanup
+2025-08-09 15:17:40,280 - SAFE_TRAIN - WARNING - Training: Epoch 0:  79%|███████▉  | 7090/8959 [1:10:12<16:05,  1.94it/s, loss=8.9277, moe_loss=0.0000]2025-08-09 15:17:40,279 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:17:45,846 - SAFE_TRAIN - WARNING - Training: Epoch 0:  79%|███████▉  | 7100/8959 [1:10:17<14:54,  2.08it/s, loss=8.9263, moe_loss=0.0000]2025-08-09 15:17:45,845 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:17:51,466 - SAFE_TRAIN - WARNING - Training: Epoch 0:  79%|███████▉  | 7110/8959 [1:10:23<14:26,  2.13it/s, loss=8.9249, moe_loss=0.0000]2025-08-09 15:17:51,465 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:18:00,944 - SAFE_TRAIN - WARNING - High memory usage: 80.3%
+2025-08-09 15:18:31,966 - SAFE_TRAIN - WARNING - High memory usage: 80.1%
+2025-08-09 15:18:45,820 - SAFE_TRAIN - INFO - Training: Epoch 0:  80%|████████  | 7199/8959 [1:11:17<15:49,  1.85it/s, loss=8.9128, moe_loss=0.0000]2025-08-09 15:18:45,819 - __main__ - INFO - Step 225: Loss=8.9127, MoE_Loss=0.0000, LR=1.00e-05, Mem=7.6/16.0GB (79.7%)
+2025-08-09 15:20:30,732 - SAFE_TRAIN - INFO - Training: Epoch 0:  82%|████████▏ | 7359/8959 [1:13:02<14:51,  1.80it/s, loss=8.8912, moe_loss=0.0000]2025-08-09 15:20:30,724 - __main__ - INFO - Step 230: Loss=8.8910, MoE_Loss=0.0000, LR=9.11e-06, Mem=7.7/16.0GB (79.8%)
+2025-08-09 15:22:16,417 - SAFE_TRAIN - INFO - Training: Epoch 0:  84%|████████▍ | 7519/8959 [1:14:48<14:22,  1.67it/s, loss=8.8696, moe_loss=0.0000]2025-08-09 15:22:16,408 - __main__ - INFO - Step 235: Loss=8.8694, MoE_Loss=0.0000, LR=8.18e-06, Mem=7.7/16.0GB (79.8%)
+2025-08-09 15:22:40,112 - SAFE_TRAIN - WARNING - High memory usage: 80.1%
+2025-08-09 15:24:02,183 - SAFE_TRAIN - INFO - Training: Epoch 0:  86%|████████▌ | 7679/8959 [1:16:33<13:19,  1.60it/s, loss=8.8500, moe_loss=0.0000]2025-08-09 15:24:02,170 - __main__ - INFO - Step 240: Loss=8.8498, MoE_Loss=0.0000, LR=7.25e-06, Mem=7.7/16.0GB (80.2%)
+2025-08-09 15:24:03,901 - SAFE_TRAIN - WARNING - Training: Epoch 0:  86%|████████▌ | 7680/8959 [1:16:35<20:11,  1.06it/s, loss=8.8498, moe_loss=0.0000]2025-08-09 15:24:03,901 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:24:10,717 - SAFE_TRAIN - WARNING - Training: Epoch 0:  86%|████████▌ | 7690/8959 [1:16:42<13:58,  1.51it/s, loss=8.8488, moe_loss=0.0000]2025-08-09 15:24:10,717 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:24:13,173 - SAFE_TRAIN - WARNING - High memory usage: 80.5%
+2025-08-09 15:24:17,649 - SAFE_TRAIN - WARNING - Training: Epoch 0:  86%|████████▌ | 7700/8959 [1:16:49<12:58,  1.62it/s, loss=8.8476, moe_loss=0.0000]2025-08-09 15:24:17,648 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:24:24,009 - SAFE_TRAIN - WARNING - Training: Epoch 0:  86%|████████▌ | 7710/8959 [1:16:56<11:54,  1.75it/s, loss=8.8465, moe_loss=0.0000]2025-08-09 15:24:24,008 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:24:37,425 - SAFE_TRAIN - WARNING - Training: Epoch 0:  86%|████████▋ | 7730/8959 [1:17:09<10:35,  1.93it/s, loss=8.8440, moe_loss=0.0000]2025-08-09 15:24:37,424 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:24:44,194 - SAFE_TRAIN - WARNING - High memory usage: 80.2%
+2025-08-09 15:24:44,336 - SAFE_TRAIN - WARNING - Training: Epoch 0:  86%|████████▋ | 7740/8959 [1:17:16<12:17,  1.65it/s, loss=8.8429, moe_loss=0.0000]2025-08-09 15:24:44,336 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:05,212 - SAFE_TRAIN - WARNING - Training: Epoch 0:  87%|████████▋ | 7770/8959 [1:17:37<11:56,  1.66it/s, loss=8.8396, moe_loss=0.0000]2025-08-09 15:25:05,212 - __main__ - WARNING - Memory usage high (80.7%), forcing cleanup
+2025-08-09 15:25:10,878 - SAFE_TRAIN - WARNING - Training: Epoch 0:  87%|████████▋ | 7780/8959 [1:17:42<09:02,  2.17it/s, loss=8.8384, moe_loss=0.0000]2025-08-09 15:25:10,877 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:25:15,213 - SAFE_TRAIN - WARNING - High memory usage: 80.6%
+2025-08-09 15:25:17,320 - SAFE_TRAIN - WARNING - Training: Epoch 0:  87%|████████▋ | 7790/8959 [1:17:49<10:12,  1.91it/s, loss=8.8372, moe_loss=0.0000]2025-08-09 15:25:17,319 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:25:23,467 - SAFE_TRAIN - WARNING - Training: Epoch 0:  87%|████████▋ | 7800/8959 [1:17:55<11:01,  1.75it/s, loss=8.8360, moe_loss=0.0000]2025-08-09 15:25:23,467 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:25:29,857 - SAFE_TRAIN - WARNING - Training: Epoch 0:  87%|████████▋ | 7810/8959 [1:18:01<09:59,  1.92it/s, loss=8.8347, moe_loss=0.0000]2025-08-09 15:25:29,856 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:25:36,106 - SAFE_TRAIN - WARNING - Training: Epoch 0:  87%|████████▋ | 7820/8959 [1:18:08<10:14,  1.85it/s, loss=8.8334, moe_loss=0.0000]2025-08-09 15:25:36,106 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:42,144 - SAFE_TRAIN - WARNING - Training: Epoch 0:  87%|████████▋ | 7830/8959 [1:18:14<09:42,  1.94it/s, loss=8.8322, moe_loss=0.0000]2025-08-09 15:25:42,144 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:46,233 - SAFE_TRAIN - WARNING - High memory usage: 80.4%
+2025-08-09 15:25:47,962 - SAFE_TRAIN - INFO - Training: Epoch 0:  87%|████████▋ | 7839/8959 [1:18:19<09:58,  1.87it/s, loss=8.8312, moe_loss=0.0000]2025-08-09 15:25:47,961 - __main__ - INFO - Step 245: Loss=8.8311, MoE_Loss=0.0000, LR=6.32e-06, Mem=7.5/16.0GB (80.2%)
+2025-08-09 15:25:49,641 - SAFE_TRAIN - WARNING - Training: Epoch 0:  88%|████████▊ | 7840/8959 [1:18:21<16:22,  1.14it/s, loss=8.8311, moe_loss=0.0000]2025-08-09 15:25:49,641 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:56,038 - SAFE_TRAIN - WARNING - Training: Epoch 0:  88%|████████▊ | 7850/8959 [1:18:28<10:29,  1.76it/s, loss=8.8299, moe_loss=0.0000]2025-08-09 15:25:56,037 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:26:17,252 - SAFE_TRAIN - WARNING - High memory usage: 80.6%
+2025-08-09 15:26:22,728 - SAFE_TRAIN - WARNING - Training: Epoch 0:  88%|████████▊ | 7890/8959 [1:18:54<10:13,  1.74it/s, loss=8.8249, moe_loss=0.0000]2025-08-09 15:26:22,727 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:29,097 - SAFE_TRAIN - WARNING - Training: Epoch 0:  88%|████████▊ | 7900/8959 [1:19:01<09:12,  1.92it/s, loss=8.8238, moe_loss=0.0000]2025-08-09 15:26:29,097 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:35,343 - SAFE_TRAIN - WARNING - Training: Epoch 0:  88%|████████▊ | 7910/8959 [1:19:07<09:53,  1.77it/s, loss=8.8227, moe_loss=0.0000]2025-08-09 15:26:35,343 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:41,677 - SAFE_TRAIN - WARNING - Training: Epoch 0:  88%|████████▊ | 7920/8959 [1:19:13<09:04,  1.91it/s, loss=8.8214, moe_loss=0.0000]2025-08-09 15:26:41,677 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:48,285 - SAFE_TRAIN - WARNING - High memory usage: 80.3%
+2025-08-09 15:26:48,556 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▊ | 7930/8959 [1:19:20<10:13,  1.68it/s, loss=8.8203, moe_loss=0.0000]2025-08-09 15:26:48,555 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:26:54,957 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▊ | 7940/8959 [1:19:26<09:10,  1.85it/s, loss=8.8191, moe_loss=0.0000]2025-08-09 15:26:54,956 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:01,964 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▊ | 7950/8959 [1:19:33<10:25,  1.61it/s, loss=8.8179, moe_loss=0.0000]2025-08-09 15:27:01,963 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:08,096 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▉ | 7960/8959 [1:19:39<07:54,  2.11it/s, loss=8.8168, moe_loss=0.0000]2025-08-09 15:27:08,095 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:27:14,091 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▉ | 7970/8959 [1:19:46<07:54,  2.08it/s, loss=8.8157, moe_loss=0.0000]2025-08-09 15:27:14,090 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:19,299 - SAFE_TRAIN - WARNING - High memory usage: 80.5%
+2025-08-09 15:27:21,090 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▉ | 7980/8959 [1:19:52<10:09,  1.61it/s, loss=8.8144, moe_loss=0.0000]2025-08-09 15:27:21,089 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:27,951 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▉ | 7990/8959 [1:19:59<09:27,  1.71it/s, loss=8.8133, moe_loss=0.0000]2025-08-09 15:27:27,950 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:27:33,930 - SAFE_TRAIN - INFO - Training: Epoch 0:  89%|████████▉ | 7999/8959 [1:20:05<09:36,  1.67it/s, loss=8.8124, moe_loss=0.0000]2025-08-09 15:27:33,930 - __main__ - INFO - Step 250: Loss=8.8122, MoE_Loss=0.0000, LR=5.39e-06, Mem=7.5/16.0GB (80.3%)
+2025-08-09 15:27:35,662 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▉ | 8000/8959 [1:20:07<14:54,  1.07it/s, loss=8.8122, moe_loss=0.0000]2025-08-09 15:27:35,662 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:27:42,846 - SAFE_TRAIN - WARNING - Training: Epoch 0:  89%|████████▉ | 8010/8959 [1:20:14<09:49,  1.61it/s, loss=8.8110, moe_loss=0.0000]2025-08-09 15:27:42,845 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:49,405 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|████████▉ | 8020/8959 [1:20:21<08:50,  1.77it/s, loss=8.8099, moe_loss=0.0000]2025-08-09 15:27:49,405 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:50,314 - SAFE_TRAIN - WARNING - High memory usage: 80.3%
+2025-08-09 15:27:55,840 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|████████▉ | 8030/8959 [1:20:27<09:26,  1.64it/s, loss=8.8088, moe_loss=0.0000]2025-08-09 15:27:55,839 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:02,267 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|████████▉ | 8040/8959 [1:20:34<08:37,  1.78it/s, loss=8.8077, moe_loss=0.0000]2025-08-09 15:28:02,267 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:08,309 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|████████▉ | 8050/8959 [1:20:40<08:17,  1.83it/s, loss=8.8065, moe_loss=0.0000]2025-08-09 15:28:08,308 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:28:15,116 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|████████▉ | 8060/8959 [1:20:46<09:16,  1.62it/s, loss=8.8054, moe_loss=0.0000]2025-08-09 15:28:15,116 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:21,334 - SAFE_TRAIN - WARNING - High memory usage: 80.2%
+2025-08-09 15:28:21,436 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|█████████ | 8070/8959 [1:20:53<08:17,  1.79it/s, loss=8.8042, moe_loss=0.0000]2025-08-09 15:28:21,435 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:28,564 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|█████████ | 8080/8959 [1:21:00<09:02,  1.62it/s, loss=8.8029, moe_loss=0.0000]2025-08-09 15:28:28,563 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:35,338 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|█████████ | 8090/8959 [1:21:07<09:05,  1.59it/s, loss=8.8017, moe_loss=0.0000]2025-08-09 15:28:35,338 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:28:41,495 - SAFE_TRAIN - WARNING - Training: Epoch 0:  90%|█████████ | 8100/8959 [1:21:13<07:22,  1.94it/s, loss=8.8006, moe_loss=0.0000]2025-08-09 15:28:41,494 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:28:48,474 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████ | 8110/8959 [1:21:20<08:22,  1.69it/s, loss=8.7993, moe_loss=0.0000]2025-08-09 15:28:48,473 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:52,345 - SAFE_TRAIN - WARNING - High memory usage: 81.2%
+2025-08-09 15:28:54,650 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████ | 8120/8959 [1:21:26<07:32,  1.85it/s, loss=8.7981, moe_loss=0.0000]2025-08-09 15:28:54,650 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:00,598 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████ | 8130/8959 [1:21:32<06:32,  2.11it/s, loss=8.7969, moe_loss=0.0000]2025-08-09 15:29:00,598 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:29:07,001 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████ | 8140/8959 [1:21:38<07:41,  1.77it/s, loss=8.7958, moe_loss=0.0000]2025-08-09 15:29:07,001 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:13,646 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████ | 8150/8959 [1:21:45<07:02,  1.92it/s, loss=8.7948, moe_loss=0.0000]2025-08-09 15:29:13,644 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:19,584 - SAFE_TRAIN - INFO - Training: Epoch 0:  91%|█████████ | 8159/8959 [1:21:51<07:26,  1.79it/s, loss=8.7938, moe_loss=0.0000]2025-08-09 15:29:19,583 - __main__ - INFO - Step 255: Loss=8.7938, MoE_Loss=0.0000, LR=4.46e-06, Mem=7.6/16.0GB (81.0%)
+2025-08-09 15:29:21,239 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████ | 8160/8959 [1:21:53<12:01,  1.11it/s, loss=8.7938, moe_loss=0.0000]2025-08-09 15:29:21,239 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:29:23,376 - SAFE_TRAIN - WARNING - High memory usage: 81.0%
+2025-08-09 15:29:27,521 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████ | 8170/8959 [1:21:59<07:21,  1.79it/s, loss=8.7925, moe_loss=0.0000]2025-08-09 15:29:27,521 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:34,129 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████▏| 8180/8959 [1:22:06<07:42,  1.68it/s, loss=8.7914, moe_loss=0.0000]2025-08-09 15:29:34,128 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:40,536 - SAFE_TRAIN - WARNING - Training: Epoch 0:  91%|█████████▏| 8190/8959 [1:22:12<07:36,  1.69it/s, loss=8.7902, moe_loss=0.0000]2025-08-09 15:29:40,535 - __main__ - WARNING - Memory usage high (81.0%), forcing cleanup
+2025-08-09 15:29:46,572 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8200/8959 [1:22:18<06:50,  1.85it/s, loss=8.7890, moe_loss=0.0000]2025-08-09 15:29:46,571 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:53,320 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8210/8959 [1:22:25<07:27,  1.67it/s, loss=8.7879, moe_loss=0.0000]2025-08-09 15:29:53,319 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:29:54,396 - SAFE_TRAIN - WARNING - High memory usage: 81.0%
+2025-08-09 15:29:59,684 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8220/8959 [1:22:31<06:41,  1.84it/s, loss=8.7868, moe_loss=0.0000]2025-08-09 15:29:59,681 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:30:05,300 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8230/8959 [1:22:37<05:50,  2.08it/s, loss=8.7858, moe_loss=0.0000]2025-08-09 15:30:05,299 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:11,394 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8240/8959 [1:22:43<05:59,  2.00it/s, loss=8.7848, moe_loss=0.0000]2025-08-09 15:30:11,393 - __main__ - WARNING - Memory usage high (80.7%), forcing cleanup
+2025-08-09 15:30:17,549 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8250/8959 [1:22:49<06:15,  1.89it/s, loss=8.7836, moe_loss=0.0000]2025-08-09 15:30:17,548 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:23,278 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8260/8959 [1:22:55<05:12,  2.24it/s, loss=8.7825, moe_loss=0.0000]2025-08-09 15:30:23,277 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:30:25,417 - SAFE_TRAIN - WARNING - High memory usage: 81.0%
+2025-08-09 15:30:29,420 - SAFE_TRAIN - WARNING - Training: 2025-08-09 15:30:29,419 - __main__ - WARNING - Memory usage high (80.7%), forcing cleanup
+2025-08-09 15:30:36,006 - SAFE_TRAIN - WARNING - Training: Epoch 0:  92%|█████████▏| 8280/8959 [1:23:07<06:05,  1.86it/s, loss=8.7803, moe_loss=0.0000]2025-08-09 15:30:36,006 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:42,303 - SAFE_TRAIN - WARNING - Training: Epoch 0:  93%|█████████▎| 8290/8959 [1:23:14<05:37,  1.98it/s, loss=8.7792, moe_loss=0.0000]2025-08-09 15:30:42,302 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:47,951 - SAFE_TRAIN - WARNING - Training: Epoch 0:  93%|█████████▎| 8300/8959 [1:23:19<04:42,  2.33it/s, loss=8.7781, moe_loss=0.0000]2025-08-09 15:30:47,950 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:30:54,450 - SAFE_TRAIN - WARNING - Training: Epoch 0:  93%|█████████▎| 8310/8959 [1:23:26<06:14,  1.73it/s, loss=8.7771, moe_loss=0.0000]2025-08-09 15:30:54,450 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:30:56,437 - SAFE_TRAIN - WARNING - High memory usage: 85.6%
+2025-08-09 15:31:00,106 - SAFE_TRAIN - WARNING - Training: Epoch 0:  93%|█████████▎| 8319/8959 [1:23:32<05:20,  2.00it/s, loss=8.7761, moe_loss=0.0000]2025-08-09 15:31:00,098 - __main__ - WARNING - High memory usage: 85.5%
+2025-08-09 15:31:00,147 - SAFE_TRAIN - INFO - Training: 2025-08-09 15:31:00,146 - __main__ - INFO - Step 260: Loss=8.7760, MoE_Loss=0.0000, LR=3.53e-06, Mem=7.8/16.0GB (85.5%)
+2025-08-09 15:32:38,465 - SAFE_TRAIN - WARNING - Training: Epoch 0:  95%|█████████▍| 8470/8959 [1:25:10<04:47,  1.70it/s, loss=8.7598, moe_loss=0.0000]2025-08-09 15:32:38,463 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:32:44,114 - SAFE_TRAIN - INFO - Training: Epoch 0:  95%|█████████▍| 8479/8959 [1:25:16<04:32,  1.76it/s, loss=8.7589, moe_loss=0.0000]2025-08-09 15:32:44,113 - __main__ - INFO - Step 265: Loss=8.7588, MoE_Loss=0.0000, LR=2.60e-06, Mem=7.6/16.0GB (80.2%)
+2025-08-09 15:32:51,850 - SAFE_TRAIN - WARNING - Training: Epoch 0:  95%|█████████▍| 8490/8959 [1:25:23<04:16,  1.83it/s, loss=8.7578, moe_loss=0.0000]2025-08-09 15:32:51,850 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:32:58,173 - SAFE_TRAIN - WARNING - Training: Epoch 0:  95%|█████████▍| 8500/8959 [1:25:30<03:53,  1.96it/s, loss=8.7566, moe_loss=0.0000]2025-08-09 15:32:58,172 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:00,513 - SAFE_TRAIN - WARNING - High memory usage: 80.3%
+2025-08-09 15:33:04,415 - SAFE_TRAIN - WARNING - Training: Epoch 0:  95%|█████████▍| 8510/8959 [1:25:36<04:14,  1.77it/s, loss=8.7555, moe_loss=0.0000]2025-08-09 15:33:04,414 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:10,558 - SAFE_TRAIN - WARNING - Training: Epoch 0:  95%|█████████▌| 8520/8959 [1:25:42<03:56,  1.85it/s, loss=8.7545, moe_loss=0.0000]2025-08-09 15:33:10,557 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:31,533 - SAFE_TRAIN - WARNING - High memory usage: 80.2%
+2025-08-09 15:33:36,667 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▌| 8560/8959 [1:26:08<03:40,  1.81it/s, loss=8.7505, moe_loss=0.0000]2025-08-09 15:33:36,666 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:42,960 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▌| 8570/8959 [1:26:14<03:33,  1.82it/s, loss=8.7495, moe_loss=0.0000]2025-08-09 15:33:42,959 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:48,641 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▌| 8580/8959 [1:26:20<03:06,  2.03it/s, loss=8.7486, moe_loss=0.0000]2025-08-09 15:33:48,640 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:33:54,931 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▌| 8590/8959 [1:26:26<03:24,  1.81it/s, loss=8.7475, moe_loss=0.0000]2025-08-09 15:33:54,929 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:01,581 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▌| 8600/8959 [1:26:33<03:35,  1.67it/s, loss=8.7464, moe_loss=0.0000]2025-08-09 15:34:01,581 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:34:02,546 - SAFE_TRAIN - WARNING - High memory usage: 80.4%
+2025-08-09 15:34:07,322 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▌| 8610/8959 [1:26:39<02:37,  2.22it/s, loss=8.7454, moe_loss=0.0000]2025-08-09 15:34:07,322 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:12,851 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▌| 8620/8959 [1:26:44<02:41,  2.10it/s, loss=8.7444, moe_loss=0.0000]2025-08-09 15:34:12,851 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:34:18,785 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▋| 8630/8959 [1:26:50<02:38,  2.07it/s, loss=8.7434, moe_loss=0.0000]2025-08-09 15:34:18,784 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:24,403 - SAFE_TRAIN - INFO - Training: Epoch 0:  96%|█████████▋| 8639/8959 [1:26:56<02:47,  1.91it/s, loss=8.7426, moe_loss=0.0000]2025-08-09 15:34:24,394 - __main__ - INFO - Step 270: Loss=8.7425, MoE_Loss=0.0000, LR=1.67e-06, Mem=7.7/16.0GB (80.5%)
+2025-08-09 15:34:26,069 - SAFE_TRAIN - WARNING - Training: Epoch 0:  96%|█████████▋| 8640/8959 [1:26:57<04:38,  1.14it/s, loss=8.7425, moe_loss=0.0000]2025-08-09 15:34:26,069 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:34:31,898 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8650/8959 [1:27:03<02:27,  2.09it/s, loss=8.7415, moe_loss=0.0000]2025-08-09 15:34:31,898 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:33,566 - SAFE_TRAIN - WARNING - High memory usage: 80.7%
+2025-08-09 15:34:37,315 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8660/8959 [1:27:09<02:10,  2.28it/s, loss=8.7406, moe_loss=0.0000]2025-08-09 15:34:37,307 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:42,901 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8670/8959 [1:27:14<02:02,  2.35it/s, loss=8.7396, moe_loss=0.0000]2025-08-09 15:34:42,901 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:48,219 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8680/8959 [1:27:20<02:03,  2.27it/s, loss=8.7385, moe_loss=0.0000]2025-08-09 15:34:48,210 - __main__ - WARNING - Memory usage high (80.5%), forcing cleanup
+2025-08-09 15:34:53,877 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8690/8959 [1:27:25<02:05,  2.14it/s, loss=8.7375, moe_loss=0.0000]2025-08-09 15:34:53,876 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:59,403 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8700/8959 [1:27:31<01:57,  2.21it/s, loss=8.7365, moe_loss=0.0000]2025-08-09 15:34:59,390 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:35:04,594 - SAFE_TRAIN - WARNING - High memory usage: 80.6%
+2025-08-09 15:35:05,353 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8710/8959 [1:27:37<02:10,  1.91it/s, loss=8.7353, moe_loss=0.0000]2025-08-09 15:35:05,352 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:35:12,020 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8720/8959 [1:27:44<02:23,  1.66it/s, loss=8.7345, moe_loss=0.0000]2025-08-09 15:35:12,020 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:35:18,455 - SAFE_TRAIN - WARNING - Training: Epoch 0:  97%|█████████▋| 8730/8959 [1:27:50<02:07,  1.80it/s, loss=8.7335, moe_loss=0.0000]2025-08-09 15:35:18,454 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:35:30,668 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8750/8959 [1:28:02<01:40,  2.08it/s, loss=8.7314, moe_loss=0.0000]2025-08-09 15:35:30,667 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:35:35,644 - SAFE_TRAIN - WARNING - High memory usage: 80.4%
+2025-08-09 15:35:36,711 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8760/8959 [1:28:08<01:37,  2.03it/s, loss=8.7305, moe_loss=0.0000]2025-08-09 15:35:36,710 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:35:42,679 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8770/8959 [1:28:14<01:27,  2.15it/s, loss=8.7297, moe_loss=0.0000]2025-08-09 15:35:42,678 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:35:49,245 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8780/8959 [1:28:21<01:45,  1.70it/s, loss=8.7285, moe_loss=0.0000]2025-08-09 15:35:49,244 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:35:55,483 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8790/8959 [1:28:27<01:28,  1.90it/s, loss=8.7275, moe_loss=0.0000]2025-08-09 15:35:55,482 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:36:01,732 - SAFE_TRAIN - INFO - Training: Epoch 0:  98%|█████████▊| 8799/8959 [1:28:33<01:37,  1.64it/s, loss=8.7268, moe_loss=0.0000]2025-08-09 15:36:01,732 - __main__ - INFO - Step 275: Loss=8.7267, MoE_Loss=0.0000, LR=7.43e-07, Mem=7.6/16.0GB (80.4%)
+2025-08-09 15:36:03,374 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8800/8959 [1:28:35<02:30,  1.06it/s, loss=8.7267, moe_loss=0.0000]2025-08-09 15:36:03,373 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:06,669 - SAFE_TRAIN - WARNING - High memory usage: 80.4%
+2025-08-09 15:36:09,012 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8810/8959 [1:28:41<01:12,  2.05it/s, loss=8.7258, moe_loss=0.0000]2025-08-09 15:36:09,012 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:36:15,463 - SAFE_TRAIN - WARNING - Training: Epoch 0:  98%|█████████▊| 8820/8959 [1:28:47<01:18,  1.78it/s, loss=8.7248, moe_loss=0.0000]2025-08-09 15:36:15,462 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:36:21,773 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▊| 8830/8959 [1:28:53<01:11,  1.79it/s, loss=8.7239, moe_loss=0.0000]2025-08-09 15:36:21,772 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:27,442 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▊| 8840/8959 [1:28:59<00:57,  2.06it/s, loss=8.7230, moe_loss=0.0000]2025-08-09 15:36:27,442 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:36:34,134 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▉| 8850/8959 [1:29:06<01:02,  1.75it/s, loss=8.7220, moe_loss=0.0000]2025-08-09 15:36:34,134 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:36:37,691 - SAFE_TRAIN - WARNING - High memory usage: 80.4%
+2025-08-09 15:36:39,770 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▉| 8860/8959 [1:29:11<00:48,  2.05it/s, loss=8.7211, moe_loss=0.0000]2025-08-09 15:36:39,769 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:45,915 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▉| 8870/8959 [1:29:17<00:45,  1.95it/s, loss=8.7202, moe_loss=0.0000]2025-08-09 15:36:45,915 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:52,494 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▉| 8880/8959 [1:29:24<00:47,  1.67it/s, loss=8.7194, moe_loss=0.0000]2025-08-09 15:36:52,486 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:58,748 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▉| 8890/8959 [1:29:30<00:36,  1.87it/s, loss=8.7183, moe_loss=0.0000]2025-08-09 15:36:58,747 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:04,821 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▉| 8900/8959 [1:29:36<00:27,  2.11it/s, loss=8.7173, moe_loss=0.0000]2025-08-09 15:37:04,819 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:37:08,712 - SAFE_TRAIN - WARNING - High memory usage: 80.4%
+2025-08-09 15:37:11,131 - SAFE_TRAIN - WARNING - Training: Epoch 0:  99%|█████████▉| 8910/8959 [1:29:43<00:25,  1.93it/s, loss=8.7163, moe_loss=0.0000]2025-08-09 15:37:11,130 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:17,439 - SAFE_TRAIN - WARNING - Training: Epoch 0: 100%|█████████▉| 8920/8959 [1:29:49<00:22,  1.70it/s, loss=8.7154, moe_loss=0.0000]2025-08-09 15:37:17,439 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:23,109 - SAFE_TRAIN - WARNING - Training: Epoch 0: 100%|█████████▉| 8930/8959 [1:29:55<00:13,  2.15it/s, loss=8.7144, moe_loss=0.0000]2025-08-09 15:37:23,108 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:28,561 - SAFE_TRAIN - WARNING - Training: Epoch 0: 100%|█████████▉| 8940/8959 [1:30:00<00:08,  2.18it/s, loss=8.7134, moe_loss=0.0000]2025-08-09 15:37:28,553 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:37:39,733 - SAFE_TRAIN - WARNING - High memory usage: 85.1%
+2025-08-09 15:38:10,766 - SAFE_TRAIN - WARNING - High memory usage: 81.5%
+2025-08-09 15:38:41,798 - SAFE_TRAIN - WARNING - High memory usage: 81.3%
+2025-08-09 15:39:12,827 - SAFE_TRAIN - WARNING - High memory usage: 81.3%
+2025-08-09 15:39:43,860 - SAFE_TRAIN - WARNING - High memory usage: 80.7%
+2025-08-09 15:40:14,892 - SAFE_TRAIN - WARNING - High memory usage: 80.5%
+2025-08-09 15:40:45,925 - SAFE_TRAIN - WARNING - High memory usage: 80.1%
+2025-08-09 15:41:11,232 - SAFE_TRAIN - INFO - Training completed successfully ✓
+2025-08-09 15:41:11,240 - SAFE_TRAIN - INFO - ============================================================
+2025-08-09 15:41:11,240 - SAFE_TRAIN - INFO - POST-TRAINING REPORT
+2025-08-09 15:41:11,240 - SAFE_TRAIN - INFO - ============================================================
+2025-08-09 15:41:11,240 - SAFE_TRAIN - INFO - Final memory usage: 47.6%
+2025-08-09 15:41:11,240 - SAFE_TRAIN - INFO - Available memory: 8.4GB
+2025-08-09 15:41:11,244 - SAFE_TRAIN - INFO - Training duration: 1h 33m
+2025-08-09 15:41:11,244 - SAFE_TRAIN - INFO - ============================================================

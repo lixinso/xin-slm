@@ -1,74 +1,185 @@
-2025-08-08 21:56:05,066 - __main__ - INFO - Using Metal Performance Shaders (MPS)
-2025-08-08 21:56:05,066 - __main__ - INFO - Starting training...
-2025-08-08 21:56:07,390 - __main__ - INFO - Tokenizer loaded: gpt2
-2025-08-08 21:56:07,390 - __main__ - INFO - Setting up datasets...
-2025-08-08 21:56:18,599 - __main__ - INFO - Training samples: 8959
-2025-08-08 21:56:18,599 - __main__ - INFO - Evaluation samples: 937
-2025-08-08 21:56:18,599 - __main__ - INFO - Setting up GPT-OSS MoE model...
-2025-08-08 21:56:19,490 - __main__ - INFO - Model created with 19,823,104 active parameters
-2025-08-08 21:56:19,490 - __main__ - INFO - Total parameters: 63,863,296
-2025-08-08 21:56:19,490 - __main__ - INFO - Estimated active memory: 75.6 MB
-2025-08-08 21:56:19,572 - __main__ - ERROR - Training failed with error: 'GPTOSSForCausalLM' object has no attribute 'gradient_checkpointing_enable'
-2025-08-08 21:57:57,611 - __main__ - INFO - Using Metal Performance Shaders (MPS)
-2025-08-08 21:57:57,611 - __main__ - INFO - Starting training...
-2025-08-08 21:57:58,284 - __main__ - INFO - Tokenizer loaded: gpt2
-2025-08-08 21:57:58,284 - __main__ - INFO - Setting up datasets...
-2025-08-08 21:58:09,245 - __main__ - INFO - Training samples: 8959
-2025-08-08 21:58:09,245 - __main__ - INFO - Evaluation samples: 937
-2025-08-08 21:58:09,246 - __main__ - INFO - Setting up GPT-OSS MoE model...
-2025-08-08 21:58:10,136 - __main__ - INFO - Model created with 19,823,104 active parameters
-2025-08-08 21:58:10,136 - __main__ - INFO - Total parameters: 63,863,296
-2025-08-08 21:58:10,136 - __main__ - INFO - Estimated active memory: 75.6 MB
-2025-08-08 21:58:10,301 - __main__ - INFO - Gradient checkpointing not available for this model
-2025-08-08 21:58:10,303 - __main__ - ERROR - Training failed with error: '<=' not supported between instances of 'float' and 'str'
-2025-08-08 22:01:53,492 - __main__ - INFO - Using Metal Performance Shaders (MPS)
-2025-08-08 22:01:53,493 - __main__ - INFO - Starting training...
-2025-08-08 22:01:54,042 - __main__ - INFO - Tokenizer loaded: gpt2
-2025-08-08 22:01:54,042 - __main__ - INFO - Setting up datasets...
-2025-08-08 22:02:04,642 - __main__ - INFO - Training samples: 8959
-2025-08-08 22:02:04,642 - __main__ - INFO - Evaluation samples: 937
-2025-08-08 22:02:04,643 - __main__ - INFO - Setting up GPT-OSS MoE model...
-2025-08-08 22:02:05,531 - __main__ - INFO - Model created with 19,823,104 active parameters
-2025-08-08 22:02:05,531 - __main__ - INFO - Total parameters: 63,863,296
-2025-08-08 22:02:05,531 - __main__ - INFO - Estimated active memory: 75.6 MB
-2025-08-08 22:02:05,682 - __main__ - INFO - Gradient checkpointing not available for this model
-2025-08-08 22:02:05,684 - __main__ - INFO - Optimizer created with LR: 1e-4
-2025-08-08 22:02:05,684 - __main__ - INFO - Total training steps: 2239
-2025-08-08 22:02:05,684 - __main__ - INFO - Starting epoch 1/1
-2025-08-08 22:02:08,280 - __main__ - ERROR - Training failed with error: 'tuple' object has no attribute 'items'
-2025-08-08 22:11:38,344 - __main__ - INFO - Using Metal Performance Shaders (MPS)
-2025-08-08 22:11:38,344 - __main__ - INFO - Starting training...
-2025-08-08 22:11:39,586 - __main__ - INFO - Tokenizer loaded: gpt2
-2025-08-08 22:11:39,586 - __main__ - INFO - Setting up datasets...
-2025-08-08 22:11:51,646 - __main__ - INFO - Training samples: 8959
-2025-08-08 22:11:51,653 - __main__ - INFO - Evaluation samples: 937
-2025-08-08 22:11:51,653 - __main__ - INFO - Setting up GPT-OSS MoE model...
-2025-08-08 22:11:52,616 - __main__ - INFO - Model created with 19,823,104 active parameters
-2025-08-08 22:11:52,617 - __main__ - INFO - Total parameters: 63,863,296
-2025-08-08 22:11:52,617 - __main__ - INFO - Estimated active memory: 75.6 MB
-2025-08-08 22:11:52,784 - __main__ - INFO - Gradient checkpointing not available for this model
-2025-08-08 22:11:52,785 - __main__ - INFO - Optimizer created with LR: 1e-4
-2025-08-08 22:11:52,785 - __main__ - INFO - Total training steps: 2239
-2025-08-08 22:11:52,785 - __main__ - INFO - Starting epoch 1/1
-2025-08-08 22:12:12,878 - __main__ - INFO - Step 10: Loss=10.9063, MoE_Loss=0.0000, LR=1.00e-04
-2025-08-08 22:12:27,500 - __main__ - INFO - Step 20: Loss=10.7199, MoE_Loss=0.0000, LR=9.96e-05
-2025-08-08 22:12:40,369 - __main__ - INFO - Step 30: Loss=10.5541, MoE_Loss=0.0000, LR=9.91e-05
-2025-08-08 22:12:51,486 - __main__ - INFO - Step 40: Loss=10.4034, MoE_Loss=0.0000, LR=9.87e-05
-2025-08-08 22:13:03,306 - __main__ - INFO - Step 50: Loss=10.2564, MoE_Loss=0.0000, LR=9.82e-05
-2025-08-08 22:13:15,254 - __main__ - INFO - Step 60: Loss=10.1212, MoE_Loss=0.0000, LR=9.78e-05
-2025-08-08 22:13:26,939 - __main__ - INFO - Step 70: Loss=9.9873, MoE_Loss=0.0000, LR=9.73e-05
-2025-08-08 22:13:38,674 - __main__ - INFO - Step 80: Loss=9.8605, MoE_Loss=0.0000, LR=9.69e-05
-2025-08-08 22:13:50,417 - __main__ - INFO - Step 90: Loss=9.7355, MoE_Loss=0.0000, LR=9.64e-05
-2025-08-08 22:14:02,464 - __main__ - INFO - Step 100: Loss=9.6197, MoE_Loss=0.0000, LR=9.60e-05
-2025-08-08 22:14:14,248 - __main__ - INFO - Step 110: Loss=9.5105, MoE_Loss=0.0000, LR=9.55e-05
-2025-08-08 22:14:26,212 - __main__ - INFO - Step 120: Loss=9.4031, MoE_Loss=0.0000, LR=9.51e-05
-2025-08-08 22:14:38,483 - __main__ - INFO - Step 130: Loss=9.2947, MoE_Loss=0.0000, LR=9.46e-05
-2025-08-08 22:14:50,753 - __main__ - INFO - Step 140: Loss=9.1965, MoE_Loss=0.0000, LR=9.42e-05
-2025-08-08 22:15:03,095 - __main__ - INFO - Step 150: Loss=9.1023, MoE_Loss=0.0000, LR=9.37e-05
-2025-08-08 22:15:15,531 - __main__ - INFO - Step 160: Loss=9.0156, MoE_Loss=0.0000, LR=9.33e-05
-2025-08-08 22:15:28,117 - __main__ - INFO - Step 170: Loss=8.9301, MoE_Loss=0.0000, LR=9.28e-05
-2025-08-08 22:15:40,997 - __main__ - INFO - Step 180: Loss=8.8517, MoE_Loss=0.0000, LR=9.24e-05
-2025-08-08 22:15:54,211 - __main__ - INFO - Step 190: Loss=8.7774, MoE_Loss=0.0000, LR=9.19e-05
-2025-08-08 22:16:07,837 - __main__ - INFO - Step 200: Loss=8.7037, MoE_Loss=0.0000, LR=9.15e-05
-2025-08-08 22:16:21,365 - __main__ - INFO - Step 210: Loss=8.6433, MoE_Loss=0.0000, LR=9.10e-05
-2025-08-08 22:16:34,786 - __main__ - INFO - Step 220: Loss=8.5845, MoE_Loss=0.0000, LR=9.06e-05
+2025-08-09 14:07:13,786 - __main__ - INFO - Using Metal Performance Shaders (MPS)
+2025-08-09 14:07:13,786 - __main__ - INFO - Resource monitoring enabled
+2025-08-09 14:07:13,786 - __main__ - INFO - Starting training...
+2025-08-09 14:07:13,786 - __main__ - INFO - Resource monitoring started
+2025-08-09 14:07:14,605 - __main__ - INFO - Tokenizer loaded: gpt2
+2025-08-09 14:07:14,605 - __main__ - INFO - Setting up datasets...
+2025-08-09 14:07:17,852 - datasets.fingerprint - WARNING - Parameter 'function'=<function MacMiniTrainer.setup_data.<locals>.tokenize_function at 0x1295931f0> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+2025-08-09 14:07:25,007 - __main__ - INFO - Training samples: 8959
+2025-08-09 14:07:25,007 - __main__ - INFO - Evaluation samples: 937
+2025-08-09 14:07:25,008 - __main__ - INFO - Setting up GPT-OSS MoE model...
+2025-08-09 14:07:26,406 - __main__ - INFO - Model created with 40,944,384 active parameters
+2025-08-09 14:07:26,406 - __main__ - INFO - Total parameters: 97,567,488
+2025-08-09 14:07:26,406 - __main__ - INFO - Estimated active memory: 156.2 MB
+2025-08-09 14:07:26,518 - __main__ - INFO - Gradient checkpointing not available for this model
+2025-08-09 14:07:26,519 - __main__ - INFO - Optimizer created with LR: 5e-5
+2025-08-09 14:07:26,519 - __main__ - INFO - Total training steps: 279
+2025-08-09 14:07:26,519 - __main__ - INFO - Starting epoch 1/1
+2025-08-09 14:09:27,921 - __main__ - INFO - Step 5: Loss=11.0552, MoE_Loss=0.0000, LR=2.50e-05, Mem=7.8/16.0GB (76.0%)
+2025-08-09 14:11:34,758 - __main__ - INFO - Step 10: Loss=10.9637, MoE_Loss=0.0000, LR=5.00e-05, Mem=7.6/16.0GB (76.3%)
+2025-08-09 14:13:19,597 - __main__ - INFO - Step 15: Loss=10.8203, MoE_Loss=0.0000, LR=4.91e-05, Mem=7.6/16.0GB (77.0%)
+2025-08-09 14:14:45,814 - __main__ - INFO - Step 20: Loss=10.6937, MoE_Loss=0.0000, LR=4.81e-05, Mem=7.2/16.0GB (75.5%)
+2025-08-09 14:16:10,342 - __main__ - INFO - Step 25: Loss=10.5956, MoE_Loss=0.0000, LR=4.72e-05, Mem=7.3/16.0GB (76.4%)
+2025-08-09 14:17:24,449 - __main__ - INFO - Step 30: Loss=10.5107, MoE_Loss=0.0000, LR=4.63e-05, Mem=7.7/16.0GB (77.4%)
+2025-08-09 14:18:42,469 - __main__ - INFO - Step 35: Loss=10.4387, MoE_Loss=0.0000, LR=4.54e-05, Mem=7.7/16.0GB (77.3%)
+2025-08-09 14:20:00,254 - __main__ - INFO - Step 40: Loss=10.3717, MoE_Loss=0.0000, LR=4.44e-05, Mem=7.7/16.0GB (77.5%)
+2025-08-09 14:21:15,135 - __main__ - INFO - Step 45: Loss=10.3096, MoE_Loss=0.0000, LR=4.35e-05, Mem=7.7/16.0GB (77.5%)
+2025-08-09 14:22:30,152 - __main__ - INFO - Step 50: Loss=10.2537, MoE_Loss=0.0000, LR=4.26e-05, Mem=7.6/16.0GB (78.0%)
+2025-08-09 14:23:40,929 - __main__ - INFO - Step 55: Loss=10.1991, MoE_Loss=0.0000, LR=4.16e-05, Mem=7.3/16.0GB (76.7%)
+2025-08-09 14:24:53,783 - __main__ - INFO - Step 60: Loss=10.1458, MoE_Loss=0.0000, LR=4.07e-05, Mem=7.5/16.0GB (77.0%)
+2025-08-09 14:26:07,922 - __main__ - INFO - Step 65: Loss=10.0943, MoE_Loss=0.0000, LR=3.98e-05, Mem=7.5/16.0GB (77.1%)
+2025-08-09 14:27:25,136 - __main__ - INFO - Step 70: Loss=10.0431, MoE_Loss=0.0000, LR=3.88e-05, Mem=7.6/16.0GB (77.4%)
+2025-08-09 14:28:43,979 - __main__ - INFO - Step 75: Loss=9.9930, MoE_Loss=0.0000, LR=3.79e-05, Mem=7.6/16.0GB (77.8%)
+2025-08-09 14:30:08,373 - __main__ - INFO - Step 80: Loss=9.9429, MoE_Loss=0.0000, LR=3.70e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:31:42,336 - __main__ - INFO - Step 85: Loss=9.8948, MoE_Loss=0.0000, LR=3.61e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:33:21,337 - __main__ - INFO - Step 90: Loss=9.8467, MoE_Loss=0.0000, LR=3.51e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:34:58,547 - __main__ - INFO - Step 95: Loss=9.7982, MoE_Loss=0.0000, LR=3.42e-05, Mem=7.7/16.0GB (77.8%)
+2025-08-09 14:36:39,121 - __main__ - INFO - Step 100: Loss=9.7498, MoE_Loss=0.0000, LR=3.33e-05, Mem=7.7/16.0GB (77.9%)
+2025-08-09 14:38:22,009 - __main__ - INFO - Step 105: Loss=9.7041, MoE_Loss=0.0000, LR=3.23e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:40:02,558 - __main__ - INFO - Step 110: Loss=9.6572, MoE_Loss=0.0000, LR=3.14e-05, Mem=7.6/16.0GB (77.7%)
+2025-08-09 14:41:43,449 - __main__ - INFO - Step 115: Loss=9.6125, MoE_Loss=0.0000, LR=3.05e-05, Mem=7.7/16.0GB (77.9%)
+2025-08-09 14:43:24,585 - __main__ - INFO - Step 120: Loss=9.5681, MoE_Loss=0.0000, LR=2.96e-05, Mem=7.7/16.0GB (78.0%)
+2025-08-09 14:45:08,881 - __main__ - INFO - Step 125: Loss=9.5262, MoE_Loss=0.0000, LR=2.86e-05, Mem=7.6/16.0GB (78.2%)
+2025-08-09 14:46:45,832 - __main__ - INFO - Step 130: Loss=9.4853, MoE_Loss=0.0000, LR=2.77e-05, Mem=7.6/16.0GB (78.2%)
+2025-08-09 14:48:28,195 - __main__ - INFO - Step 135: Loss=9.4452, MoE_Loss=0.0000, LR=2.68e-05, Mem=7.6/16.0GB (78.2%)
+2025-08-09 14:50:09,297 - __main__ - INFO - Step 140: Loss=9.4070, MoE_Loss=0.0000, LR=2.58e-05, Mem=7.6/16.0GB (78.4%)
+2025-08-09 14:51:48,463 - __main__ - INFO - Step 145: Loss=9.3685, MoE_Loss=0.0000, LR=2.49e-05, Mem=7.6/16.0GB (78.5%)
+2025-08-09 14:53:24,281 - __main__ - INFO - Step 150: Loss=9.3323, MoE_Loss=0.0000, LR=2.40e-05, Mem=7.6/16.0GB (78.5%)
+2025-08-09 14:55:05,184 - __main__ - INFO - Step 155: Loss=9.2969, MoE_Loss=0.0000, LR=2.30e-05, Mem=7.0/16.0GB (77.2%)
+2025-08-09 14:56:52,436 - __main__ - INFO - Step 160: Loss=9.2631, MoE_Loss=0.0000, LR=2.21e-05, Mem=7.1/16.0GB (77.4%)
+2025-08-09 14:58:36,242 - __main__ - INFO - Step 165: Loss=9.2312, MoE_Loss=0.0000, LR=2.12e-05, Mem=7.3/16.0GB (77.8%)
+2025-08-09 15:00:20,509 - __main__ - INFO - Step 170: Loss=9.1999, MoE_Loss=0.0000, LR=2.03e-05, Mem=7.3/16.0GB (78.1%)
+2025-08-09 15:02:02,557 - __main__ - INFO - Step 175: Loss=9.1692, MoE_Loss=0.0000, LR=1.93e-05, Mem=7.3/16.0GB (78.1%)
+2025-08-09 15:03:47,073 - __main__ - INFO - Step 180: Loss=9.1397, MoE_Loss=0.0000, LR=1.84e-05, Mem=7.4/16.0GB (78.7%)
+2025-08-09 15:05:28,835 - __main__ - INFO - Step 185: Loss=9.1113, MoE_Loss=0.0000, LR=1.75e-05, Mem=7.6/16.0GB (78.5%)
+2025-08-09 15:07:06,035 - __main__ - INFO - Step 190: Loss=9.0824, MoE_Loss=0.0000, LR=1.65e-05, Mem=7.2/16.0GB (78.4%)
+2025-08-09 15:08:40,884 - __main__ - INFO - Step 195: Loss=9.0557, MoE_Loss=0.0000, LR=1.56e-05, Mem=7.3/16.0GB (78.6%)
+2025-08-09 15:10:19,380 - __main__ - INFO - Step 200: Loss=9.0305, MoE_Loss=0.0000, LR=1.47e-05, Mem=7.4/16.0GB (79.0%)
+2025-08-09 15:12:01,094 - __main__ - INFO - Step 205: Loss=9.0049, MoE_Loss=0.0000, LR=1.38e-05, Mem=7.5/16.0GB (79.2%)
+2025-08-09 15:13:43,045 - __main__ - INFO - Step 210: Loss=8.9804, MoE_Loss=0.0000, LR=1.28e-05, Mem=7.5/16.0GB (79.1%)
+2025-08-09 15:15:24,247 - __main__ - INFO - Step 215: Loss=8.9562, MoE_Loss=0.0000, LR=1.19e-05, Mem=7.5/16.0GB (79.0%)
+2025-08-09 15:17:07,134 - __main__ - INFO - Step 220: Loss=8.9345, MoE_Loss=0.0000, LR=1.10e-05, Mem=7.5/16.0GB (79.0%)
+2025-08-09 15:17:28,791 - __main__ - WARNING - Memory usage high (83.4%), forcing cleanup
+2025-08-09 15:17:34,216 - __main__ - WARNING - Memory usage high (80.5%), forcing cleanup
+2025-08-09 15:17:40,279 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:17:45,845 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:17:51,465 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:18:45,819 - __main__ - INFO - Step 225: Loss=8.9127, MoE_Loss=0.0000, LR=1.00e-05, Mem=7.6/16.0GB (79.7%)
+2025-08-09 15:20:30,724 - __main__ - INFO - Step 230: Loss=8.8910, MoE_Loss=0.0000, LR=9.11e-06, Mem=7.7/16.0GB (79.8%)
+2025-08-09 15:22:16,408 - __main__ - INFO - Step 235: Loss=8.8694, MoE_Loss=0.0000, LR=8.18e-06, Mem=7.7/16.0GB (79.8%)
+2025-08-09 15:24:02,170 - __main__ - INFO - Step 240: Loss=8.8498, MoE_Loss=0.0000, LR=7.25e-06, Mem=7.7/16.0GB (80.2%)
+2025-08-09 15:24:03,901 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:24:10,717 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:24:17,648 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:24:24,008 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:24:37,424 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:24:44,336 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:05,212 - __main__ - WARNING - Memory usage high (80.7%), forcing cleanup
+2025-08-09 15:25:10,877 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:25:17,319 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:25:23,467 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:25:29,856 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:25:36,106 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:42,144 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:47,961 - __main__ - INFO - Step 245: Loss=8.8311, MoE_Loss=0.0000, LR=6.32e-06, Mem=7.5/16.0GB (80.2%)
+2025-08-09 15:25:49,641 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:25:56,037 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:26:22,727 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:29,097 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:35,343 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:41,677 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:26:48,555 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:26:54,956 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:01,963 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:08,095 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:27:14,090 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:21,089 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:27,950 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:27:33,930 - __main__ - INFO - Step 250: Loss=8.8122, MoE_Loss=0.0000, LR=5.39e-06, Mem=7.5/16.0GB (80.3%)
+2025-08-09 15:27:35,662 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:27:42,845 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:49,405 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:27:55,839 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:02,267 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:08,308 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:28:15,116 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:21,435 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:28,563 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:35,338 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:28:41,494 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:28:48,473 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:28:54,650 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:00,598 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:29:07,001 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:13,644 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:19,583 - __main__ - INFO - Step 255: Loss=8.7938, MoE_Loss=0.0000, LR=4.46e-06, Mem=7.6/16.0GB (81.0%)
+2025-08-09 15:29:21,239 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:29:27,521 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:34,128 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:40,535 - __main__ - WARNING - Memory usage high (81.0%), forcing cleanup
+2025-08-09 15:29:46,571 - __main__ - WARNING - Memory usage high (80.9%), forcing cleanup
+2025-08-09 15:29:53,319 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:29:59,681 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:30:05,299 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:11,393 - __main__ - WARNING - Memory usage high (80.7%), forcing cleanup
+2025-08-09 15:30:17,548 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:23,277 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:30:29,419 - __main__ - WARNING - Memory usage high (80.7%), forcing cleanup
+2025-08-09 15:30:36,006 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:42,302 - __main__ - WARNING - Memory usage high (80.8%), forcing cleanup
+2025-08-09 15:30:47,950 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:30:54,450 - __main__ - WARNING - Memory usage high (80.6%), forcing cleanup
+2025-08-09 15:31:00,098 - __main__ - WARNING - High memory usage: 85.5%
+2025-08-09 15:31:00,146 - __main__ - INFO - Step 260: Loss=8.7760, MoE_Loss=0.0000, LR=3.53e-06, Mem=7.8/16.0GB (85.5%)
+2025-08-09 15:32:38,463 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:32:44,113 - __main__ - INFO - Step 265: Loss=8.7588, MoE_Loss=0.0000, LR=2.60e-06, Mem=7.6/16.0GB (80.2%)
+2025-08-09 15:32:51,850 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:32:58,172 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:04,414 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:10,557 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:36,666 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:42,959 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:33:48,640 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:33:54,929 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:01,581 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:34:07,322 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:12,851 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:34:18,784 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:24,394 - __main__ - INFO - Step 270: Loss=8.7425, MoE_Loss=0.0000, LR=1.67e-06, Mem=7.7/16.0GB (80.5%)
+2025-08-09 15:34:26,069 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:34:31,898 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:37,307 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:42,901 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:48,210 - __main__ - WARNING - Memory usage high (80.5%), forcing cleanup
+2025-08-09 15:34:53,876 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:34:59,390 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:35:05,352 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:35:12,020 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:35:18,454 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:35:30,667 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:35:36,710 - __main__ - WARNING - Memory usage high (80.1%), forcing cleanup
+2025-08-09 15:35:42,678 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:35:49,244 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:35:55,482 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:36:01,732 - __main__ - INFO - Step 275: Loss=8.7267, MoE_Loss=0.0000, LR=7.43e-07, Mem=7.6/16.0GB (80.4%)
+2025-08-09 15:36:03,373 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:09,012 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:36:15,462 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:36:21,772 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:27,442 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:36:34,134 - __main__ - WARNING - Memory usage high (80.4%), forcing cleanup
+2025-08-09 15:36:39,769 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:45,915 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:52,486 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:36:58,747 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:04,819 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:37:11,130 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:17,439 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:23,108 - __main__ - WARNING - Memory usage high (80.3%), forcing cleanup
+2025-08-09 15:37:28,553 - __main__ - WARNING - Memory usage high (80.2%), forcing cleanup
+2025-08-09 15:41:02,400 - __main__ - INFO - Epoch 1 - Train Loss: 8.7117, Eval Loss: 7.8633, Perplexity: 2600.20, Memory: 80.1%
+2025-08-09 15:41:05,482 - __main__ - INFO - New best model saved with eval_loss: 7.8633
+2025-08-09 15:41:05,483 - __main__ - INFO - Checkpoint saved: checkpoints_ultra_safe/checkpoint-279.pt
+2025-08-09 15:41:05,483 - __main__ - INFO - Training completed!
+2025-08-09 15:41:05,483 - __main__ - INFO - Best eval loss: 7.8633
+2025-08-09 15:41:10,494 - __main__ - INFO - Resource monitoring stopped
