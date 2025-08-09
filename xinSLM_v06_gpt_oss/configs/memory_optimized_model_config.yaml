@@ -1,0 +1,268 @@
+# Memory-Optimized GPT-OSS MoE Model Configuration for Mac Mini (16GB)
+# Specifically designed to prevent OOM failures
+
+model:
+  # Core architecture - heavily optimized for 16GB constraint
+  vocab_size: 50257  # GPT-2/GPT-3 tokenizer
+  hidden_size: 640   # Reduced from 768 for better memory efficiency
+  intermediate_size: 1792  # ~2.8x hidden_size for SwiGLU
+  num_hidden_layers: 16    # Reduced layers for memory
+  num_attention_heads: 10
+  num_key_value_heads: 2   # GQA: 2 kv heads, 10 query heads (5:1 ratio)
+  max_position_embeddings: 1024  # Reduced for memory
+  
+  # MoE configuration - Conservative settings
+  num_experts: 8           # Dramatically reduced from 32
+  num_experts_per_tok: 1   # Single expert routing for memory efficiency
+  expert_capacity_factor: 1.0
+  router_aux_loss_coef: 0.01
+  router_z_loss_coef: 0.0005
+  
+  # Normalization and activation
+  rms_norm_eps: 1e-6
+  use_cache: true
+  
+  # Token configuration
+  pad_token_id: 50256
+  bos_token_id: 50256
+  eos_token_id: 50256
+  
+  # Weight sharing for memory efficiency
+  tie_word_embeddings: true  # Share input/output embeddings
+  
+  # RoPE configuration
+  rope_theta: 10000.0
+  
+  # Initialization
+  initializer_range: 0.02
+  
+  # Reasoning effort configuration
+  reasoning_effort: "low"  # Conservative for memory
+
+# Memory-safe model variants
+model_variants:
+  # Micro model for initial testing (~50M active parameters)
+  micro:
+    hidden_size: 384
+    intermediate_size: 1024
+    num_hidden_layers: 8
+    num_attention_heads: 6
+    num_key_value_heads: 1
+    num_experts: 4
+    num_experts_per_tok: 1
+    reasoning_effort: "low"
+  
+  # Light model (~150M active parameters) - RECOMMENDED FOR 16GB
+  light:
+    hidden_size: 512
+    intermediate_size: 1408
+    num_hidden_layers: 12
+    num_attention_heads: 8
+    num_key_value_heads: 2
+    num_experts: 6
+    num_experts_per_tok: 1
+    reasoning_effort: "low"
+  
+  # Standard model (~250M active parameters) - SAFER DEFAULT
+  standard:
+    hidden_size: 640
+    intermediate_size: 1792
+    num_hidden_layers: 16
+    num_attention_heads: 10
+    num_key_value_heads: 2
+    num_experts: 8
+    num_experts_per_tok: 1
+    reasoning_effort: "medium"
+
+# Enhanced Mac Mini optimizations
+mac_optimizations:
+  # Use Metal Performance Shaders for Apple Silicon
+  use_metal_performance_shaders: true
+  
+  # Aggressive memory management
+  gradient_checkpointing: true
+  memory_efficient_attention: true
+  cpu_offload_threshold: 0.7  # Offload to CPU at 70% memory usage
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false  # Use fp16 for better Mac compatibility
+  
+  # Cache management - very conservative
+  max_cache_size: 512   # Heavily limited KV cache
+  use_sliding_window: true
+  sliding_window_size: 256
+  clear_cache_interval: 25  # Clear cache every 25 steps
+
+# Conservative quantization for memory savings
+quantization:
+  # Enable aggressive quantization for memory
+  enable_quantization: true
+  bits: 4
+  group_size: 32
+  
+  # Quantize more components for memory savings
+  quantize_moe_weights: true
+  quantize_attention: true     # Also quantize attention for memory
+  quantize_embeddings: false   # Keep embeddings in fp16 for quality
+  
+  # Calibration settings
+  calibration_samples: 256     # Reduced for faster setup
+  calibration_sequence_length: 128
+  
+  # Export formats
+  save_gguf: true
+  save_coreml: true
+  save_onnx: false
+
+# Memory-constrained training configuration
+training:
+  # Very conservative batch settings
+  micro_batch_size: 1           # Must be 1 for 16GB
+  gradient_accumulation_steps: 64  # Higher accumulation for effective batch size
+  max_sequence_length: 512      # Reduced sequence length
+  
+  # Learning rate schedule
+  learning_rate: 2e-4          # Slightly lower for stability
+  warmup_steps: 500
+  lr_scheduler_type: "cosine"
+  
+  # Memory-efficient optimizer
+  optimizer: "adamw"
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  
+  # No dropout for efficiency
+  dropout: 0.0
+  attention_dropout: 0.0
+  
+  # MoE training with lower loss weight
+  moe_loss_weight: 0.01
+  enable_expert_parallelism: false
+
+# Conservative inference settings
+inference:
+  # Generation parameters
+  max_new_tokens: 256          # Reduced for memory
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 40
+  repetition_penalty: 1.1
+  
+  # Memory optimization
+  use_kv_cache: true
+  kv_cache_max_length: 512     # Very limited cache
+  beam_search: false
+  
+  # Single sequence processing
+  max_batch_size: 1
+  sequence_parallel: false
+
+# Strict hardware limits
+hardware:
+  # Mac Mini settings with strict limits
+  target_device: "mps"
+  cpu_offload: true
+  mixed_precision: true
+  
+  # Conservative memory management
+  memory_limit_gb: 10          # Reserve 6GB for system + safety margin
+  swap_threshold: 0.6          # Trigger CPU offload early
+  emergency_threshold: 0.8     # Emergency cleanup threshold
+  
+  # Threading optimized for memory over speed
+  num_threads: 4               # Fewer threads to reduce memory overhead
+  intra_op_parallelism: 2
+  inter_op_parallelism: 1
+
+# Memory monitoring and safety
+memory_management:
+  # Enable comprehensive monitoring
+  monitor_memory: true
+  monitoring_interval: 10      # Check every 10 steps
+  memory_threshold_warning: 0.7
+  memory_threshold_error: 0.85
+  
+  # Automatic memory management
+  auto_garbage_collect: true
+  gc_interval: 50              # Garbage collect every 50 steps
+  empty_cache_interval: 25     # Clear GPU cache frequently
+  
+  # Emergency protocols
+  enable_oom_protection: true
+  oom_retry_attempts: 2
+  reduce_batch_on_oom: true
+  fallback_to_cpu: true
+
+# Simplified evaluation for memory conservation
+evaluation:
+  # Minimal evaluation datasets
+  datasets:
+    - "wikitext-2"
+  
+  # Essential metrics only
+  metrics:
+    - "perplexity"
+    - "loss"
+  
+  # Lightweight benchmarking
+  benchmark_settings:
+    sequence_lengths: [128, 256, 512]
+    batch_sizes: [1]
+    measure_memory: true
+    measure_latency: false
+    measure_throughput: false
+
+# Deployment with memory safety
+deployment:
+  # Conservative serving
+  serve_format: "gguf"
+  max_concurrent_requests: 1
+  request_timeout: 45          # Longer timeout for safety
+  
+  # API configuration
+  api_host: "localhost"
+  api_port: 8000
+  enable_streaming: true
+  
+  # Resource limits
+  max_memory_gb: 10           # Conservative limit
+  max_cpu_percent: 70
+
+# Enhanced logging for memory debugging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Frequent logging for memory issues
+  log_interval: 50             # More frequent logging
+  save_interval: 500
+  eval_interval: 2000
+  
+  # Memory-specific logging
+  log_memory_usage: true
+  log_gpu_memory: true
+  log_memory_peaks: true
+  
+  # Model checkpointing
+  save_total_limit: 2          # Fewer checkpoints to save disk space
+  save_best_model: true
+  
+  # Disable wandb to save memory
+  use_wandb: false
+
+# Disable experimental features that use extra memory
+experimental:
+  # All memory-intensive features disabled
+  use_switch_transformer: false
+  use_expert_choice: false
+  use_megablocks: false
+  use_flash_attention: false
+  use_xformers: false
+  use_deepspeed: false
+  use_activation_checkpointing: true  # This one saves memory
+  use_qlora: false
+  use_gptq: false
+  use_bitsandbytes: false

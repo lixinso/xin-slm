@@ -42,6 +42,17 @@ sys.path.append(str(project_root))
 from models.gpt_oss_moe import GPTOSSForCausalLM, GPTOSSMoEConfig, create_gpt_oss_moe
 from models.quantization import ModelQuantizer, QuantizationConfig
 
+# Import resource monitoring
+import sys
+import os
+sys.path.append(str(Path(__file__).parent.parent.parent / "xinSLM_v05_distillation" / "scripts"))
+try:
+    from resource_monitor import MacResourceMonitor, start_resource_monitoring, stop_resource_monitoring, get_current_stats
+    RESOURCE_MONITORING_AVAILABLE = True
+except ImportError:
+    RESOURCE_MONITORING_AVAILABLE = False
+    print("Warning: Resource monitoring not available")
+
 
 class MacMiniTrainer:
     """Training class optimized for Mac Mini constraints"""
@@ -67,6 +78,12 @@ class MacMiniTrainer:
         
         # Memory monitoring
         self.memory_stats = []
+        self.resource_monitor = None
+        if RESOURCE_MONITORING_AVAILABLE:
+            self.resource_monitor = MacResourceMonitor(log_interval=30)
+            self.logger.info("Resource monitoring enabled")
+        else:
+            self.logger.warning("Resource monitoring not available")
         
     def _load_config(self, config_path: str) -> Dict[str, Any]:
         """Load training configuration"""
@@ -349,23 +366,68 @@ class MacMiniTrainer:
                 # Logging
                 if self.global_step % self.config['training'].get('logging_steps', 50) == 0:
                     current_lr = self.scheduler.get_last_lr()[0]
+                    
+                    # Get memory stats
+                    memory_info = ""
+                    if self.resource_monitor:
+                        try:
+                            stats = self.resource_monitor.get_system_stats()
+                            if stats:
+                                memory_info = f", Mem={stats['memory_used_gb']:.1f}/{stats['memory_total_gb']:.1f}GB ({stats['memory_percent']:.1f}%)"
+                                
+                                # Check for memory pressure
+                                if stats['memory_percent'] > 85:
+                                    self.logger.warning(f"High memory usage: {stats['memory_percent']:.1f}%")
+                                    torch.mps.empty_cache() if self.device.type == "mps" else torch.cuda.empty_cache()
+                                
+                        except Exception as e:
+                            self.logger.warning(f"Memory monitoring error: {e}")
+                    
                     self.logger.info(
                         f"Step {self.global_step}: Loss={total_loss/num_batches:.4f}, "
-                        f"MoE_Loss={total_moe_loss/num_batches:.4f}, LR={current_lr:.2e}"
+                        f"MoE_Loss={total_moe_loss/num_batches:.4f}, LR={current_lr:.2e}{memory_info}"
                     )
                     
                     # Log to wandb
                     if self.config.get('monitoring', {}).get('use_wandb', False):
-                        wandb.log({
+                        log_data = {
                             'train_loss': total_loss / num_batches,
                             'train_moe_loss': total_moe_loss / num_batches,
                             'learning_rate': current_lr,
                             'global_step': self.global_step
-                        })
+                        }
+                        
+                        # Add memory stats to wandb
+                        if self.resource_monitor:
+                            try:
+                                stats = self.resource_monitor.get_system_stats()
+                                if stats:
+                                    log_data.update({
+                                        'memory_percent': stats['memory_percent'],
+                                        'memory_used_gb': stats['memory_used_gb'],
+                                        'process_memory_mb': stats['process_memory_mb']
+                                    })
+                            except:
+                                pass
+                        
+                        wandb.log(log_data)
             
-            # Memory cleanup for MPS
-            if self.device.type == "mps" and step % 100 == 0:
+            # Memory cleanup for MPS - more aggressive
+            cleanup_interval = self.config.get('mac_optimizations', {}).get('empty_cache_interval', 25)
+            if self.device.type == "mps" and step % cleanup_interval == 0:
                 torch.mps.empty_cache()
+                
+                # Additional memory monitoring and cleanup
+                if self.resource_monitor and step % (cleanup_interval * 2) == 0:
+                    try:
+                        stats = self.resource_monitor.get_system_stats()
+                        if stats and stats['memory_percent'] > 80:
+                            self.logger.warning(f"Memory usage high ({stats['memory_percent']:.1f}%), forcing cleanup")
+                            import gc
+                            gc.collect()
+                            torch.mps.empty_cache()
+                    except Exception as e:
+                        self.logger.debug(f"Memory cleanup error: {e}")
             
             # Update progress bar
             progress_bar.set_postfix({
@@ -450,51 +512,75 @@ class MacMiniTrainer:
         """Main training loop"""
         self.logger.info("Starting training...")
         
-        # Setup all components
-        self.setup_tokenizer()
-        self.setup_data()
-        self.setup_model()
-        self.setup_optimizer()
+        # Start resource monitoring
+        if self.resource_monitor:
+            self.resource_monitor.start_monitoring()
+            self.logger.info("Resource monitoring started")
         
-        # Training loop
-        num_epochs = self.config['training'].get('num_train_epochs', 3)
-        eval_steps = self.config['training'].get('eval_steps', 500)
-        save_steps = self.config['training'].get('save_steps', 1000)
-        
-        for epoch in range(num_epochs):
-            self.epoch = epoch
-            self.logger.info(f"Starting epoch {epoch + 1}/{num_epochs}")
+        try:
+            # Setup all components
+            self.setup_tokenizer()
+            self.setup_data()
+            self.setup_model()
+            self.setup_optimizer()
             
-            # Train epoch
-            train_metrics = self.train_epoch()
+            # Training loop
+            num_epochs = self.config['training'].get('num_train_epochs', 3)
+            eval_steps = self.config['training'].get('eval_steps', 500)
+            save_steps = self.config['training'].get('save_steps', 1000)
             
-            # Evaluate
-            eval_metrics = self.evaluate()
+            for epoch in range(num_epochs):
+                self.epoch = epoch
+                self.logger.info(f"Starting epoch {epoch + 1}/{num_epochs}")
+                
+                # Train epoch
+                train_metrics = self.train_epoch()
+                
+                # Evaluate
+                eval_metrics = self.evaluate()
+                
+                # Combine metrics
+                all_metrics = {**train_metrics, **eval_metrics}
+                
+                # Log metrics with memory info
+                memory_info = ""
+                if self.resource_monitor:
+                    try:
+                        stats = self.resource_monitor.get_system_stats()
+                        if stats:
+                            memory_info = f", Memory: {stats['memory_percent']:.1f}%"
+                    except:
+                        pass
+                
+                self.logger.info(
+                    f"Epoch {epoch + 1} - "
+                    f"Train Loss: {train_metrics['train_loss']:.4f}, "
+                    f"Eval Loss: {eval_metrics['eval_loss']:.4f}, "
+                    f"Perplexity: {eval_metrics['perplexity']:.2f}{memory_info}"
+                )
+                
+                # Log to wandb
+                if self.config.get('monitoring', {}).get('use_wandb', False):
+                    wandb.log({**all_metrics, 'epoch': epoch})
+                
+                # Save checkpoint
+                is_best = eval_metrics['eval_loss'] < self.best_eval_loss
+                if is_best:
+                    self.best_eval_loss = eval_metrics['eval_loss']
+                
+                self.save_checkpoint(all_metrics, is_best)
             
-            # Combine metrics
-            all_metrics = {**train_metrics, **eval_metrics}
+            self.logger.info("Training completed!")
+            self.logger.info(f"Best eval loss: {self.best_eval_loss:.4f}")
             
-            # Log metrics
-            self.logger.info(
-                f"Epoch {epoch + 1} - "
-                f"Train Loss: {train_metrics['train_loss']:.4f}, "
-                f"Eval Loss: {eval_metrics['eval_loss']:.4f}, "
-                f"Perplexity: {eval_metrics['perplexity']:.2f}"
-            )
-            
-            # Log to wandb
-            if self.config.get('monitoring', {}).get('use_wandb', False):
-                wandb.log({**all_metrics, 'epoch': epoch})
-            
-            # Save checkpoint
-            is_best = eval_metrics['eval_loss'] < self.best_eval_loss
-            if is_best:
-                self.best_eval_loss = eval_metrics['eval_loss']
-            
-            self.save_checkpoint(all_metrics, is_best)
-        
-        self.logger.info("Training completed!")
-        self.logger.info(f"Best eval loss: {self.best_eval_loss:.4f}")
+        except Exception as e:
+            self.logger.error(f"Training failed with error: {e}")
+            raise
+        finally:
+            # Stop resource monitoring
+            if self.resource_monitor:
+                self.resource_monitor.stop_monitoring()
+                self.logger.info("Resource monitoring stopped")
 
 
 def main():

@@ -1,0 +1,172 @@
+# Ultra-Safe Training Configuration for GPT-OSS MoE Model on Mac Mini
+# Designed for systems with limited available memory (4-5GB available)
+
+training:
+  # Model configuration - use ultra-light variant
+  model_name: "gpt-oss-moe-ultra-safe"
+  model_variant: "micro"  # Use micro model (~50M active params)
+  model_config_path: "configs/memory_optimized_model_config.yaml"
+  
+  # Data configuration
+  dataset_name: "wikitext-2"
+  tokenizer_name: "gpt2"
+  max_seq_length: 256  # Very short sequences
+  
+  # Batch configuration - ultra-conservative
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 32  # Lower accumulation for faster feedback
+  dataloader_num_workers: 0
+  
+  # Training loop - very short for testing
+  num_train_epochs: 1
+  max_steps: 100      # Very short test run
+  
+  # Optimizer configuration
+  optimizer: "adamw"
+  learning_rate: 5e-5  # Very conservative
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  max_grad_norm: 0.25  # Very low clipping
+  
+  # Learning rate schedule
+  lr_scheduler_type: "constant"  # No scheduling
+  warmup_steps: 10
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false
+  
+  # Aggressive memory optimization
+  gradient_checkpointing: true
+  dataloader_pin_memory: false
+  remove_unused_columns: true
+  dataloader_drop_last: true
+  
+  # MoE specific training - minimal coefficients
+  moe_aux_loss_coef: 0.001
+  moe_z_loss_coef: 0.0001
+  router_aux_loss_coef: 0.001
+  
+  # Frequent logging for monitoring
+  logging_steps: 5
+  save_steps: 50
+  eval_steps: 25
+  save_total_limit: 1  # Keep only one checkpoint
+  evaluation_strategy: "steps"
+  
+  # Output directories
+  output_dir: "./checkpoints_ultra_safe"
+  logging_dir: "./logs_ultra_safe"
+
+# Ultra-light model variants
+model_variants:
+  # Micro model for very limited memory (~50M active parameters) 
+  micro:
+    hidden_size: 384
+    intermediate_size: 1024
+    num_hidden_layers: 8
+    num_attention_heads: 6
+    num_key_value_heads: 1
+    num_experts: 4
+    num_experts_per_tok: 1
+    reasoning_effort: "low"
+  
+  # Nano model for extreme cases (~20M active parameters)
+  nano:
+    hidden_size: 256
+    intermediate_size: 768
+    num_hidden_layers: 6
+    num_attention_heads: 4
+    num_key_value_heads: 1
+    num_experts: 2
+    num_experts_per_tok: 1
+    reasoning_effort: "low"
+
+# Quantization - disabled for safety
+quantization:
+  enable_quantization: false
+
+# Mac Mini optimizations - very conservative
+mac_optimizations:
+  device: "mps"
+  cpu_fallback: true
+  num_workers: 0
+  empty_cache_interval: 5  # Very frequent
+  use_metal_performance_shaders: true
+  max_memory_allocation: "3GB"  # Very conservative
+  memory_growth_limit: "2GB"
+
+# Data configuration - minimal
+data:
+  tokenizer_path: "gpt2"
+  add_special_tokens: true
+  padding_side: "right"
+  truncation: true
+  min_seq_length: 8
+  max_seq_length: 256
+  filter_empty_examples: true
+  filter_long_sequences: true
+  streaming: true
+  buffer_size: 100  # Very small buffer
+
+# Monitoring - minimal to save memory
+monitoring:
+  use_wandb: false
+  use_tensorboard: false
+  log_level: "INFO"
+  log_memory_usage: true
+  memory_logging_interval: 5
+  disable_tqdm: true  # Disable progress bars to save memory
+
+# Ultra-conservative resource monitoring
+resource_monitoring:
+  monitor_memory: true
+  monitor_gpu: true
+  memory_threshold: 0.7   # Lower threshold
+  critical_threshold: 0.8 # Lower critical
+  monitoring_interval: 5
+  auto_reduce_batch_on_threshold: true
+  auto_gc_on_threshold: true
+  auto_cache_clear_on_threshold: true
+
+# Minimal checkpointing
+checkpointing:
+  resume_from_checkpoint: null
+  save_optimizer_states: false  # Don't save optimizer
+  save_scheduler_states: false  # Don't save scheduler
+  save_random_states: false    # Don't save random states
+  save_best_model: false       # Don't save best model
+  save_last_model: true        # Only save last
+
+# Minimal evaluation
+evaluation:
+  eval_datasets: ["wikitext-2"]
+  metrics: ["loss"]  # Only loss
+  eval_during_training: true
+  eval_at_start: false
+
+# Debug settings
+debugging:
+  debug_mode: false
+  log_memory_usage: true
+  memory_profiling_interval: 25
+  check_finite_gradients: false  # Disable to save cycles
+
+# Hardware - ultra-conservative
+hardware:
+  target_device: "mps"
+  cpu_threads: 2  # Very few threads
+  memory_limit_gb: 3  # Very low limit
+
+# Safety protocols - very aggressive
+safety:
+  enable_oom_detection: true
+  oom_retry_attempts: 0  # Don't retry
+  fallback_model_variant: "nano"
+  max_consecutive_failures: 1
+  monitor_system_resources: true
+  system_memory_threshold: 0.8  # Lower threshold
+  auto_pause_on_system_pressure: true

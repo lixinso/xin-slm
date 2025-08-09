@@ -1,0 +1,292 @@
+# Memory-Safe Training Configuration for GPT-OSS MoE Model on Mac Mini
+# Designed to prevent OOM failures and system reboots
+
+training:
+  # Model configuration - use memory-optimized variant
+  model_name: "gpt-oss-moe-memory-safe"
+  model_variant: "light"  # Use light model (150M active params)
+  model_config_path: "configs/memory_optimized_model_config.yaml"
+  
+  # Data configuration
+  dataset_name: "wikitext-2"
+  tokenizer_name: "gpt2"
+  max_seq_length: 512  # Reduced from 1024 for memory
+  
+  # Batch configuration - ultra-conservative for 16GB Mac Mini
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 64  # Higher accumulation, effective batch = 64
+  dataloader_num_workers: 0  # Single-threaded for memory safety
+  
+  # Training loop - conservative for testing
+  num_train_epochs: 1  # Start with single epoch
+  max_steps: 1000      # Limit steps for initial testing
+  
+  # Optimizer configuration - memory efficient
+  optimizer: "adamw"
+  learning_rate: 1e-4  # Lower LR for stability
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  max_grad_norm: 0.5   # Lower gradient clipping
+  
+  # Learning rate schedule
+  lr_scheduler_type: "linear"  # Simpler scheduler
+  warmup_steps: 100           # Fewer warmup steps
+  warmup_ratio: 0.05
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false
+  
+  # Aggressive memory optimization
+  gradient_checkpointing: true
+  dataloader_pin_memory: false
+  remove_unused_columns: true
+  dataloader_drop_last: true
+  
+  # MoE specific training - reduced coefficients
+  moe_aux_loss_coef: 0.005   # Reduced from 0.02
+  moe_z_loss_coef: 0.0005    # Reduced from 0.001
+  router_aux_loss_coef: 0.005
+  
+  # Logging and saving - less frequent to save I/O
+  logging_steps: 25          # More frequent for monitoring
+  save_steps: 500           # Less frequent saves
+  eval_steps: 250           # More frequent eval for safety
+  save_total_limit: 2       # Keep fewer checkpoints
+  evaluation_strategy: "steps"
+  
+  # Output directories
+  output_dir: "./checkpoints_memory_safe"
+  logging_dir: "./logs_memory_safe"
+  
+  # Early stopping for safety
+  early_stopping_patience: 2
+  early_stopping_threshold: 0.02
+
+# Memory-optimized model variants
+model_variants:
+  # Micro model for initial testing (~50M active parameters)
+  micro:
+    hidden_size: 384
+    intermediate_size: 1024
+    num_hidden_layers: 8
+    num_attention_heads: 6
+    num_key_value_heads: 1
+    num_experts: 4
+    num_experts_per_tok: 1
+    reasoning_effort: "low"
+  
+  # Light model (~150M active parameters) - RECOMMENDED
+  light:
+    hidden_size: 512
+    intermediate_size: 1408
+    num_hidden_layers: 12
+    num_attention_heads: 8
+    num_key_value_heads: 2
+    num_experts: 6
+    num_experts_per_tok: 1
+    reasoning_effort: "low"
+  
+  # Standard model (~250M active parameters) - MAX SAFE SIZE
+  standard:
+    hidden_size: 640
+    intermediate_size: 1792
+    num_hidden_layers: 16
+    num_attention_heads: 10
+    num_key_value_heads: 2
+    num_experts: 8
+    num_experts_per_tok: 1
+    reasoning_effort: "medium"
+
+# Quantization - disabled during training for stability
+quantization:
+  enable_quantization: false  # Only enable after training
+
+# Mac Mini optimizations with safety margins
+mac_optimizations:
+  device: "mps"
+  cpu_fallback: true
+  num_workers: 0
+  empty_cache_interval: 10    # Very frequent cache clearing
+  use_metal_performance_shaders: true
+  
+  # Conservative memory management
+  max_memory_allocation: "8GB"  # Very conservative, leave 8GB for system
+  memory_growth_limit: "6GB"   # Limit growth to 6GB
+  enable_memory_monitoring: true
+
+# Data configuration - optimized for memory
+data:
+  tokenizer_path: "gpt2"
+  add_special_tokens: true
+  padding_side: "right"
+  truncation: true
+  min_seq_length: 16          # Shorter minimum
+  max_seq_length: 512         # Reduced maximum
+  
+  # Data filtering and quality
+  filter_empty_examples: true
+  filter_long_sequences: true  # Remove sequences > max_length
+  
+  # Memory-efficient data loading
+  streaming: true             # Use streaming datasets
+  buffer_size: 1000          # Small buffer
+
+# Monitoring with memory focus
+monitoring:
+  use_wandb: false           # Disable to save memory
+  use_tensorboard: false     # Disable to save memory
+  log_level: "INFO"
+  
+  # Memory-focused logging
+  log_memory_usage: true
+  log_gpu_memory: true
+  memory_logging_interval: 10
+  
+  # Progress tracking
+  disable_tqdm: false
+  tqdm_update_interval: 5
+  
+  # Model logging
+  log_model_architecture: false  # Disable to save memory
+  log_predictions: false
+
+# Comprehensive resource monitoring
+resource_monitoring:
+  monitor_memory: true
+  monitor_gpu: true
+  memory_threshold: 0.75      # Alert at 75% usage
+  critical_threshold: 0.85    # Critical at 85%
+  monitoring_interval: 10     # Check every 10 steps
+  
+  # Automatic actions
+  auto_reduce_batch_on_threshold: true
+  auto_gc_on_threshold: true
+  auto_cache_clear_on_threshold: true
+  
+  # Performance tracking
+  track_tokens_per_second: true
+  track_loss_progression: true
+  save_monitoring_data: true
+  monitoring_output_file: "memory_monitoring.json"
+
+# Safe checkpointing
+checkpointing:
+  resume_from_checkpoint: null
+  save_optimizer_states: false    # Disable to save memory
+  save_scheduler_states: false    # Disable to save memory
+  save_random_states: true
+  
+  # Model saving
+  save_best_model: true
+  save_last_model: false          # Only save best to save space
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+# Conservative evaluation
+evaluation:
+  eval_datasets: ["wikitext-2"]
+  metrics: ["perplexity", "loss"]  # Minimal metrics
+  eval_during_training: true
+  eval_at_start: false
+  
+  # Generation evaluation disabled to save memory
+  eval_generation: false
+
+# Debugging and validation
+debugging:
+  debug_mode: false
+  validate_every_n_steps: 100
+  run_validation_at_start: false
+  
+  # Memory debugging
+  log_memory_usage: true
+  memory_profiling_interval: 50
+  enable_memory_profiler: true
+  
+  # Gradient debugging
+  check_finite_gradients: true
+  log_gradient_norms: false     # Disable to reduce logging overhead
+
+# Performance optimization focused on memory
+performance:
+  # Model optimizations
+  compile_model: false
+  use_flash_attention: false
+  
+  # Training optimizations
+  pin_memory: false
+  non_blocking: false
+  
+  # Dataloader optimizations
+  persistent_workers: false
+  prefetch_factor: 1            # Reduce prefetching
+
+# Hardware specific settings with safety margins
+hardware:
+  # Mac Mini settings
+  target_device: "mps"
+  cpu_threads: 4               # Fewer threads to reduce memory
+  memory_limit_gb: 8           # Very conservative limit
+  
+  # Temperature monitoring
+  temperature_threshold: 75    # Lower threshold
+  throttle_on_overheat: true
+  
+  # Power management
+  power_management: true
+  low_power_mode: false
+
+# Safety protocols
+safety:
+  # Memory safety
+  enable_oom_detection: true
+  oom_retry_attempts: 1
+  auto_reduce_model_on_oom: true
+  fallback_model_variant: "ultra_light"
+  
+  # Training safety
+  max_consecutive_failures: 3
+  failure_recovery_strategy: "reduce_complexity"
+  
+  # System safety
+  monitor_system_resources: true
+  system_memory_threshold: 0.9
+  auto_pause_on_system_pressure: true
+  
+  # Checkpoint safety
+  checkpoint_validation: true
+  backup_critical_checkpoints: false  # Disable to save space
+
+# Recovery protocols
+recovery:
+  # Automatic recovery from failures
+  enable_auto_recovery: true
+  recovery_strategies:
+    - "reduce_batch_size"
+    - "reduce_sequence_length" 
+    - "switch_to_lighter_model"
+    - "enable_cpu_offload"
+  
+  # Manual recovery options
+  manual_intervention_required: false
+  recovery_checkpoint_interval: 100
+
+# Logging configuration
+logging_config:
+  # File logging
+  log_to_file: true
+  log_file: "memory_safe_training.log"
+  max_log_size_mb: 100
+  log_rotation: true
+  
+  # Console logging
+  console_log_level: "INFO"
+  memory_log_format: "%(asctime)s - MEMORY - %(message)s"
+  
+  # Structured logging
+  json_logging: false          # Disable to save memory
+  include_memory_in_logs: true
