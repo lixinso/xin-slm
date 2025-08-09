@@ -1,0 +1,74 @@
+2025-08-08 21:56:05,066 - __main__ - INFO - Using Metal Performance Shaders (MPS)
+2025-08-08 21:56:05,066 - __main__ - INFO - Starting training...
+2025-08-08 21:56:07,390 - __main__ - INFO - Tokenizer loaded: gpt2
+2025-08-08 21:56:07,390 - __main__ - INFO - Setting up datasets...
+2025-08-08 21:56:18,599 - __main__ - INFO - Training samples: 8959
+2025-08-08 21:56:18,599 - __main__ - INFO - Evaluation samples: 937
+2025-08-08 21:56:18,599 - __main__ - INFO - Setting up GPT-OSS MoE model...
+2025-08-08 21:56:19,490 - __main__ - INFO - Model created with 19,823,104 active parameters
+2025-08-08 21:56:19,490 - __main__ - INFO - Total parameters: 63,863,296
+2025-08-08 21:56:19,490 - __main__ - INFO - Estimated active memory: 75.6 MB
+2025-08-08 21:56:19,572 - __main__ - ERROR - Training failed with error: 'GPTOSSForCausalLM' object has no attribute 'gradient_checkpointing_enable'
+2025-08-08 21:57:57,611 - __main__ - INFO - Using Metal Performance Shaders (MPS)
+2025-08-08 21:57:57,611 - __main__ - INFO - Starting training...
+2025-08-08 21:57:58,284 - __main__ - INFO - Tokenizer loaded: gpt2
+2025-08-08 21:57:58,284 - __main__ - INFO - Setting up datasets...
+2025-08-08 21:58:09,245 - __main__ - INFO - Training samples: 8959
+2025-08-08 21:58:09,245 - __main__ - INFO - Evaluation samples: 937
+2025-08-08 21:58:09,246 - __main__ - INFO - Setting up GPT-OSS MoE model...
+2025-08-08 21:58:10,136 - __main__ - INFO - Model created with 19,823,104 active parameters
+2025-08-08 21:58:10,136 - __main__ - INFO - Total parameters: 63,863,296
+2025-08-08 21:58:10,136 - __main__ - INFO - Estimated active memory: 75.6 MB
+2025-08-08 21:58:10,301 - __main__ - INFO - Gradient checkpointing not available for this model
+2025-08-08 21:58:10,303 - __main__ - ERROR - Training failed with error: '<=' not supported between instances of 'float' and 'str'
+2025-08-08 22:01:53,492 - __main__ - INFO - Using Metal Performance Shaders (MPS)
+2025-08-08 22:01:53,493 - __main__ - INFO - Starting training...
+2025-08-08 22:01:54,042 - __main__ - INFO - Tokenizer loaded: gpt2
+2025-08-08 22:01:54,042 - __main__ - INFO - Setting up datasets...
+2025-08-08 22:02:04,642 - __main__ - INFO - Training samples: 8959
+2025-08-08 22:02:04,642 - __main__ - INFO - Evaluation samples: 937
+2025-08-08 22:02:04,643 - __main__ - INFO - Setting up GPT-OSS MoE model...
+2025-08-08 22:02:05,531 - __main__ - INFO - Model created with 19,823,104 active parameters
+2025-08-08 22:02:05,531 - __main__ - INFO - Total parameters: 63,863,296
+2025-08-08 22:02:05,531 - __main__ - INFO - Estimated active memory: 75.6 MB
+2025-08-08 22:02:05,682 - __main__ - INFO - Gradient checkpointing not available for this model
+2025-08-08 22:02:05,684 - __main__ - INFO - Optimizer created with LR: 1e-4
+2025-08-08 22:02:05,684 - __main__ - INFO - Total training steps: 2239
+2025-08-08 22:02:05,684 - __main__ - INFO - Starting epoch 1/1
+2025-08-08 22:02:08,280 - __main__ - ERROR - Training failed with error: 'tuple' object has no attribute 'items'
+2025-08-08 22:11:38,344 - __main__ - INFO - Using Metal Performance Shaders (MPS)
+2025-08-08 22:11:38,344 - __main__ - INFO - Starting training...
+2025-08-08 22:11:39,586 - __main__ - INFO - Tokenizer loaded: gpt2
+2025-08-08 22:11:39,586 - __main__ - INFO - Setting up datasets...
+2025-08-08 22:11:51,646 - __main__ - INFO - Training samples: 8959
+2025-08-08 22:11:51,653 - __main__ - INFO - Evaluation samples: 937
+2025-08-08 22:11:51,653 - __main__ - INFO - Setting up GPT-OSS MoE model...
+2025-08-08 22:11:52,616 - __main__ - INFO - Model created with 19,823,104 active parameters
+2025-08-08 22:11:52,617 - __main__ - INFO - Total parameters: 63,863,296
+2025-08-08 22:11:52,617 - __main__ - INFO - Estimated active memory: 75.6 MB
+2025-08-08 22:11:52,784 - __main__ - INFO - Gradient checkpointing not available for this model
+2025-08-08 22:11:52,785 - __main__ - INFO - Optimizer created with LR: 1e-4
+2025-08-08 22:11:52,785 - __main__ - INFO - Total training steps: 2239
+2025-08-08 22:11:52,785 - __main__ - INFO - Starting epoch 1/1
+2025-08-08 22:12:12,878 - __main__ - INFO - Step 10: Loss=10.9063, MoE_Loss=0.0000, LR=1.00e-04
+2025-08-08 22:12:27,500 - __main__ - INFO - Step 20: Loss=10.7199, MoE_Loss=0.0000, LR=9.96e-05
+2025-08-08 22:12:40,369 - __main__ - INFO - Step 30: Loss=10.5541, MoE_Loss=0.0000, LR=9.91e-05
+2025-08-08 22:12:51,486 - __main__ - INFO - Step 40: Loss=10.4034, MoE_Loss=0.0000, LR=9.87e-05
+2025-08-08 22:13:03,306 - __main__ - INFO - Step 50: Loss=10.2564, MoE_Loss=0.0000, LR=9.82e-05
+2025-08-08 22:13:15,254 - __main__ - INFO - Step 60: Loss=10.1212, MoE_Loss=0.0000, LR=9.78e-05
+2025-08-08 22:13:26,939 - __main__ - INFO - Step 70: Loss=9.9873, MoE_Loss=0.0000, LR=9.73e-05
+2025-08-08 22:13:38,674 - __main__ - INFO - Step 80: Loss=9.8605, MoE_Loss=0.0000, LR=9.69e-05
+2025-08-08 22:13:50,417 - __main__ - INFO - Step 90: Loss=9.7355, MoE_Loss=0.0000, LR=9.64e-05
+2025-08-08 22:14:02,464 - __main__ - INFO - Step 100: Loss=9.6197, MoE_Loss=0.0000, LR=9.60e-05
+2025-08-08 22:14:14,248 - __main__ - INFO - Step 110: Loss=9.5105, MoE_Loss=0.0000, LR=9.55e-05
+2025-08-08 22:14:26,212 - __main__ - INFO - Step 120: Loss=9.4031, MoE_Loss=0.0000, LR=9.51e-05
+2025-08-08 22:14:38,483 - __main__ - INFO - Step 130: Loss=9.2947, MoE_Loss=0.0000, LR=9.46e-05
+2025-08-08 22:14:50,753 - __main__ - INFO - Step 140: Loss=9.1965, MoE_Loss=0.0000, LR=9.42e-05
+2025-08-08 22:15:03,095 - __main__ - INFO - Step 150: Loss=9.1023, MoE_Loss=0.0000, LR=9.37e-05
+2025-08-08 22:15:15,531 - __main__ - INFO - Step 160: Loss=9.0156, MoE_Loss=0.0000, LR=9.33e-05
+2025-08-08 22:15:28,117 - __main__ - INFO - Step 170: Loss=8.9301, MoE_Loss=0.0000, LR=9.28e-05
+2025-08-08 22:15:40,997 - __main__ - INFO - Step 180: Loss=8.8517, MoE_Loss=0.0000, LR=9.24e-05
+2025-08-08 22:15:54,211 - __main__ - INFO - Step 190: Loss=8.7774, MoE_Loss=0.0000, LR=9.19e-05
+2025-08-08 22:16:07,837 - __main__ - INFO - Step 200: Loss=8.7037, MoE_Loss=0.0000, LR=9.15e-05
+2025-08-08 22:16:21,365 - __main__ - INFO - Step 210: Loss=8.6433, MoE_Loss=0.0000, LR=9.10e-05
+2025-08-08 22:16:34,786 - __main__ - INFO - Step 220: Loss=8.5845, MoE_Loss=0.0000, LR=9.06e-05

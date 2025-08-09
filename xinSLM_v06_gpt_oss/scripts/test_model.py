@@ -48,7 +48,10 @@ class TestGPTOSSComponents(unittest.TestCase):
             num_key_value_heads=2,
             num_experts=8,
             num_experts_per_tok=2,
-            max_position_embeddings=512
+            max_position_embeddings=512,
+            pad_token_id=999,  # Within vocab range
+            bos_token_id=999,
+            eos_token_id=999
         )
         
     def test_rms_norm(self):
@@ -197,7 +200,10 @@ class TestQuantization(unittest.TestCase):
             num_attention_heads=4,
             num_key_value_heads=2,
             num_experts=4,
-            num_experts_per_tok=2
+            num_experts_per_tok=2,
+            pad_token_id=999,
+            bos_token_id=999,
+            eos_token_id=999
         )
         
         model = GPTOSSForCausalLM(config).to(self.device)
@@ -236,7 +242,10 @@ class TestModelFunctionality(unittest.TestCase):
             max_seq_len=512,
             num_experts=8,
             num_experts_per_tok=2,
-            use_quantization=False  # Test without quantization first
+            use_quantization=False,  # Test without quantization first
+            pad_token_id=999,
+            bos_token_id=999,
+            eos_token_id=999
         ).to(self.device)
         
     def test_forward_pass(self):
@@ -371,7 +380,10 @@ class TestMacMiniCompatibility(unittest.TestCase):
             max_seq_len=512,
             num_experts=8,
             num_experts_per_tok=2,
-            use_quantization=True
+            use_quantization=True,
+            pad_token_id=999,
+            bos_token_id=999,
+            eos_token_id=999
         ).to(self.device)
         
         model.eval()
@@ -428,7 +440,10 @@ def run_smoke_tests():
             num_heads=4,
             num_kv_heads=2,
             num_experts=4,
-            num_experts_per_tok=2
+            num_experts_per_tok=2,
+            pad_token_id=999,
+            bos_token_id=999,
+            eos_token_id=999
         )
         print("✅ Model creation smoke test passed")
     except Exception as e:

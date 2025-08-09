@@ -143,8 +143,11 @@ class MacMiniTrainer:
         
         # Enable gradient checkpointing for memory efficiency
         if self.config.get('mac_optimizations', {}).get('gradient_checkpointing', True):
-            self.model.gradient_checkpointing_enable()
-            self.logger.info("Gradient checkpointing enabled")
+            if hasattr(self.model, 'gradient_checkpointing_enable'):
+                self.model.gradient_checkpointing_enable()
+                self.logger.info("Gradient checkpointing enabled")
+            else:
+                self.logger.info("Gradient checkpointing not available for this model")
         
         # Apply quantization if configured
         if self.config.get('quantization', {}).get('enable_quantization', True):
@@ -265,16 +268,16 @@ class MacMiniTrainer:
         param_groups = [
             {
                 'params': [p for n, p in self.model.named_parameters() if p.requires_grad],
-                'lr': optimizer_config.get('learning_rate', 3e-4)
+                'lr': float(optimizer_config.get('learning_rate', 3e-4))
             }
         ]
         
         self.optimizer = optim.AdamW(
             param_groups,
-            lr=optimizer_config.get('learning_rate', 3e-4),
-            betas=(optimizer_config.get('beta1', 0.9), optimizer_config.get('beta2', 0.95)),
-            weight_decay=optimizer_config.get('weight_decay', 0.01),
-            eps=optimizer_config.get('epsilon', 1e-8)
+            lr=float(optimizer_config.get('learning_rate', 3e-4)),
+            betas=(float(optimizer_config.get('beta1', 0.9)), float(optimizer_config.get('beta2', 0.95))),
+            weight_decay=float(optimizer_config.get('weight_decay', 0.01)),
+            eps=float(optimizer_config.get('epsilon', 1e-8))
         )
         
         # Setup scheduler
@@ -318,9 +321,13 @@ class MacMiniTrainer:
             moe_loss = 0
             if len(outputs) > 2:  # Check if auxiliary losses are present
                 aux_losses = outputs[-1]
-                for layer_aux_losses in aux_losses:
-                    for aux_loss_name, aux_loss_value in layer_aux_losses.items():
-                        moe_loss += aux_loss_value.item()
+                if isinstance(aux_losses, (list, tuple)):
+                    for layer_aux_losses in aux_losses:
+                        if isinstance(layer_aux_losses, dict):
+                            for aux_loss_name, aux_loss_value in layer_aux_losses.items():
+                                moe_loss += aux_loss_value.item()
+                        elif hasattr(layer_aux_losses, 'item'):
+                            moe_loss += layer_aux_losses.item()
             
             total_loss += loss.item() * gradient_accumulation_steps
             total_moe_loss += moe_loss
@@ -389,9 +396,13 @@ class MacMiniTrainer:
                 moe_loss = 0
                 if len(outputs) > 2:
                     aux_losses = outputs[-1]
-                    for layer_aux_losses in aux_losses:
-                        for aux_loss_name, aux_loss_value in layer_aux_losses.items():
-                            moe_loss += aux_loss_value.item()
+                    if isinstance(aux_losses, (list, tuple)):
+                        for layer_aux_losses in aux_losses:
+                            if isinstance(layer_aux_losses, dict):
+                                for aux_loss_name, aux_loss_value in layer_aux_losses.items():
+                                    moe_loss += aux_loss_value.item()
+                            elif hasattr(layer_aux_losses, 'item'):
+                                moe_loss += layer_aux_losses.item()
                 
                 total_loss += loss.item()
                 total_moe_loss += moe_loss

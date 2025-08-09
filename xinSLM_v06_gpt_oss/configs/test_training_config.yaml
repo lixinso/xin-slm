@@ -1,0 +1,100 @@
+# Test Training Configuration for GPT-OSS MoE Model on Mac Mini
+# Smaller model for testing purposes
+
+training:
+  # Model configuration
+  model_name: "gpt-oss-moe-test"
+  model_variant: "ultra_light"  # Use smallest model for testing
+  
+  # Data configuration
+  dataset_name: "wikitext-2"
+  tokenizer_name: "gpt2"
+  max_seq_length: 256  # Very short for testing
+  
+  # Batch configuration - very small for testing
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 4  # Small for testing
+  dataloader_num_workers: 0  # Single-threaded for stability
+  
+  # Training loop - very short for testing
+  num_train_epochs: 1
+  max_steps: 100  # Override epochs with small step count
+  
+  # Optimizer configuration
+  optimizer: "adamw"
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate schedule
+  lr_scheduler_type: "linear"
+  warmup_steps: 10
+  warmup_ratio: 0.1
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false
+  
+  # Memory optimization
+  gradient_checkpointing: true
+  dataloader_pin_memory: false
+  remove_unused_columns: true
+  
+  # MoE specific training
+  moe_aux_loss_coef: 0.02
+  moe_z_loss_coef: 0.001
+  router_aux_loss_coef: 0.02
+  
+  # Logging and saving
+  logging_steps: 10
+  save_steps: 50
+  eval_steps: 50
+  save_total_limit: 2
+  evaluation_strategy: "steps"
+  
+  # Output directories
+  output_dir: "./checkpoints_test"
+  logging_dir: "./logs_test"
+
+# Model variants - use ultra_light for testing
+model_variants:
+  ultra_light:
+    hidden_size: 256
+    intermediate_size: 768
+    num_hidden_layers: 4
+    num_attention_heads: 8
+    num_key_value_heads: 2
+    num_experts: 8
+    num_experts_per_tok: 2
+    reasoning_effort: "low"
+
+# Quantization - disable for testing
+quantization:
+  enable_quantization: false
+
+# Mac Mini optimizations
+mac_optimizations:
+  device: "mps"
+  cpu_fallback: true
+  num_workers: 0
+  empty_cache_interval: 10
+  use_metal_performance_shaders: true
+
+# Data configuration
+data:
+  tokenizer_path: "gpt2"
+  add_special_tokens: true
+  padding_side: "right"
+  truncation: true
+  min_seq_length: 10
+  max_seq_length: 256
+
+# Monitoring
+monitoring:
+  use_wandb: false
+  use_tensorboard: false
+  log_level: "INFO"

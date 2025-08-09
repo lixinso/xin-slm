@@ -14,6 +14,7 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.utils.checkpoint
 from typing import Optional, Tuple, List, Dict, Any
 from dataclasses import dataclass
 import warnings
@@ -502,9 +503,7 @@ class GPTOSSMoEModel(nn.Module):
         # Initialize weights
         self.apply(self._init_weights)
         
-        # Enable gradient checkpointing for memory efficiency
-        if config.gradient_checkpointing:
-            self.gradient_checkpointing_enable()
+        # Gradient checkpointing is handled by training script
 
     def _init_weights(self, module):
         """Initialize weights following GPT-OSS initialization"""
