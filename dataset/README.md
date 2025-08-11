@@ -14,7 +14,7 @@ This directory contains datasets and documentation for training the SLM implemen
 
 ## Recommended Datasets for SLM Training
 
-### =€ Quick Start (Testing)
+### =ï¿½ Quick Start (Testing)
 
 #### 1. WikiText-103
 - **Size**: ~500MB
@@ -30,7 +30,7 @@ This directory contains datasets and documentation for training the SLM implemen
 - **Best for**: General language modeling
 - **Tokens**: ~8B tokens
 
-### =Ú Text-Only Datasets
+### Text-Only Datasets
 
 #### 3. The Pile (Subset)
 - **Size**: Variable (recommend 1-10% subset)
@@ -45,7 +45,8 @@ This directory contains datasets and documentation for training the SLM implemen
 - **Description**: Cleaned Common Crawl data used by T5
 - **Best for**: Web-scale language modeling
 
-### < Multilingual Datasets
+### <
+ Multilingual Datasets
 
 #### 5. mC4 (Multilingual C4)
 - **Size**: Variable by language
@@ -61,7 +62,7 @@ This directory contains datasets and documentation for training the SLM implemen
 - **Languages**: 160+ languages
 - **Best for**: High-quality multilingual text
 
-### =» Code + Text Datasets
+### =ï¿½ Code + Text Datasets
 
 #### 7. The Stack
 - **Size**: ~3TB (use subset)
@@ -83,7 +84,7 @@ This directory contains datasets and documentation for training the SLM implemen
 - **Domains**: CommonCrawl, Wikipedia, books, academic papers, code
 - **Best for**: Reproducing large model training
 
-### =Ö Books and Literature
+### =ï¿½ Books and Literature
 
 #### 10. BookCorpus
 - **Size**: ~1GB

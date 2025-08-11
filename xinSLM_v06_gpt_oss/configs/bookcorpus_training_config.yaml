@@ -1,0 +1,258 @@
+# Training Configuration for GPT-OSS MoE Model with BookCorpus
+# Enhanced training with multiple high-quality datasets including BookCorpus
+
+training:
+  # Model configuration
+  model_name: "gpt-oss-moe-bookcorpus"
+  model_variant: "light"  # Use light variant for BookCorpus training
+  
+  # Multi-dataset configuration
+  use_multi_datasets: true
+  train_datasets:
+    - name: "bookcorpus"
+      max_samples: null  # Use full BookCorpus dataset
+      weight: 0.6        # 60% of training data from BookCorpus
+      
+    - name: "wikitext-103"
+      max_samples: 50000  # Limit WikiText for memory efficiency
+      weight: 0.3         # 30% from WikiText-103
+      
+    - name: "wikitext-2"
+      max_samples: null   # Use full wikitext-2 (smaller dataset)
+      weight: 0.1         # 10% from WikiText-2
+  
+  eval_datasets:
+    - name: "wikitext-2"
+      max_samples: null
+      weight: 1.0
+  
+  # Data configuration
+  tokenizer_name: "gpt2"
+  max_seq_length: 512     # Reduced for BookCorpus long sequences
+  
+  # Batch configuration - optimized for BookCorpus
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 64  # Higher for better BookCorpus learning
+  dataloader_num_workers: 2
+  
+  # Training loop - extended for BookCorpus
+  num_train_epochs: 2     # Fewer epochs due to larger dataset
+  max_steps: -1
+  
+  # Optimizer configuration - tuned for long-form text
+  optimizer: "adamw"
+  learning_rate: 2e-4     # Slightly lower LR for stability with BookCorpus
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate schedule
+  lr_scheduler_type: "cosine"
+  warmup_steps: 2000      # More warmup for larger dataset
+  warmup_ratio: 0.05
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false
+  fp16_opt_level: "O1"
+  
+  # Memory optimization - critical for BookCorpus
+  gradient_checkpointing: true
+  dataloader_pin_memory: false
+  remove_unused_columns: true
+  
+  # MoE specific training
+  moe_aux_loss_coef: 0.02
+  moe_z_loss_coef: 0.001
+  router_aux_loss_coef: 0.02
+  
+  # Logging and saving - adjusted for longer training
+  logging_steps: 25
+  save_steps: 500         # More frequent saves due to valuable training
+  eval_steps: 250         # More frequent evaluation
+  save_total_limit: 5     # Keep more checkpoints
+  evaluation_strategy: "steps"
+  
+  # Output directories
+  output_dir: "./checkpoints_bookcorpus"
+  logging_dir: "./logs_bookcorpus"
+  
+  # Early stopping
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.005
+
+# Knowledge distillation (optional - recommended for BookCorpus)
+distillation:
+  enable_distillation: false  # Can enable if you have a good teacher model
+  teacher_model: "microsoft/DialoGPT-medium"
+  distillation_alpha: 0.7
+  distillation_temperature: 4.0
+  
+  teacher_cache_dir: "./teacher_cache"
+  teacher_revision: "main"
+  
+  distill_attention: true
+  distill_hidden_states: true
+  layer_mapping: "uniform"
+
+# Data preprocessing - BookCorpus specific
+data:
+  # Dataset paths
+  train_data_path: null
+  validation_data_path: null
+  test_data_path: null
+  
+  # Tokenization
+  tokenizer_path: "gpt2"
+  add_special_tokens: true
+  padding_side: "right"
+  truncation: true
+  
+  # Data filtering - important for BookCorpus quality
+  min_seq_length: 64      # Higher minimum for book content
+  max_seq_length: 512     # Reasonable maximum for memory
+  filter_empty_examples: true
+  
+  # BookCorpus specific preprocessing
+  bookcorpus_preprocessing:
+    remove_short_texts: true
+    min_words: 50           # Minimum words per text chunk
+    clean_encoding: true    # Fix encoding issues
+    remove_headers: true    # Remove book headers/metadata
+    deduplicate: true       # Remove duplicate content
+  
+  # Data augmentation
+  enable_data_augmentation: false
+  augmentation_probability: 0.1
+
+# Mac Mini specific optimizations
+mac_optimizations:
+  # Device configuration
+  device: "mps"
+  cpu_fallback: true
+  
+  # Memory management - critical for BookCorpus
+  empty_cache_interval: 50   # More frequent cache clearing
+  max_memory_allocation: "10GB"  # Conservative for BookCorpus
+  
+  # Threading
+  num_workers: 2
+  persistent_workers: true
+  prefetch_factor: 1         # Reduced for memory efficiency
+  
+  # Apple-specific optimizations
+  use_metal_performance_shaders: true
+  optimize_for_inference: false
+
+# Checkpointing and resuming
+checkpointing:
+  resume_from_checkpoint: null
+  
+  save_optimizer_states: true
+  save_scheduler_states: true
+  save_random_states: true
+  
+  save_best_model: true
+  save_last_model: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+# Evaluation configuration
+evaluation:
+  eval_datasets: ["wikitext-2", "bookcorpus"]  # Evaluate on both
+  
+  metrics: ["perplexity", "loss"]
+  
+  eval_during_training: true
+  eval_at_start: true
+  eval_accumulation_steps: null
+  
+  # Generation evaluation - useful for BookCorpus
+  eval_generation: true
+  generation_max_length: 256  # Longer for book-style generation
+  generation_num_samples: 5
+  generation_prompts:
+    - "Once upon a time in a distant land,"
+    - "The old man walked slowly down the street,"
+    - "She opened the mysterious letter and discovered"
+
+# Monitoring and logging
+monitoring:
+  use_wandb: false
+  wandb_project: "xinslm-v06-bookcorpus"
+  wandb_entity: null
+  wandb_run_name: "bookcorpus-light-training"
+  
+  use_tensorboard: true
+  tensorboard_log_dir: "./logs_bookcorpus/tensorboard"
+  
+  log_level: "INFO"
+  log_predictions: true      # Log some BookCorpus predictions
+  log_model_architecture: true
+  
+  disable_tqdm: false
+  tqdm_update_interval: 1
+
+# Performance profiling
+profiling:
+  enable_profiling: false
+  profile_memory: true
+  profile_compute: true
+  profile_schedule: "torch.profiler.schedule(wait=1, warmup=1, active=3)"
+  
+  profile_output_dir: "./profiles_bookcorpus"
+  export_chrome_trace: true
+  export_stacks: false
+
+# Debugging and development
+debugging:
+  debug_mode: false
+  detect_anomaly: false
+  
+  validate_every_n_steps: 100  # More frequent validation
+  run_validation_at_start: true
+  
+  log_memory_usage: true      # Important for BookCorpus
+  memory_profiling_interval: 50
+  
+  log_gradient_norms: false
+  log_parameter_stats: false
+  check_finite_gradients: true
+
+# Resource monitoring - enhanced for BookCorpus training
+resource_monitoring:
+  monitor_cpu: true
+  monitor_memory: true
+  monitor_gpu: true
+  monitor_disk: true
+  
+  # Lower thresholds for BookCorpus safety
+  memory_threshold: 0.85     # Alert at 85% for BookCorpus
+  temperature_threshold: 80  # Lower temp threshold
+  
+  monitoring_interval: 30    # More frequent monitoring
+  save_monitoring_data: true
+  monitoring_output_file: "./logs_bookcorpus/resource_usage.json"
+
+# BookCorpus specific settings
+bookcorpus_settings:
+  # Dataset handling
+  streaming_mode: false      # Load full dataset for better shuffling
+  cache_processed_data: true # Cache tokenized BookCorpus for speed
+  cache_dir: "./cache_bookcorpus"
+  
+  # Quality filtering
+  filter_short_books: true   # Remove very short books
+  min_book_length: 1000      # Minimum tokens per book
+  filter_repetitive: true    # Remove highly repetitive content
+  
+  # Training adaptations
+  book_aware_batching: false # Group samples from same book (experimental)
+  chapter_boundaries: false  # Respect chapter boundaries (experimental)
+  
+  # Evaluation
+  book_completion_eval: true # Test book continuation capability
+  narrative_coherence_eval: true # Test story coherence

@@ -42,6 +42,13 @@ sys.path.append(str(project_root))
 from models.gpt_oss_moe import GPTOSSForCausalLM, GPTOSSMoEConfig, create_gpt_oss_moe
 from models.quantization import ModelQuantizer, QuantizationConfig
 
+# Import multi-dataset loader
+try:
+    from multi_dataset_loader import MultiDatasetLoader
+    MULTI_DATASET_AVAILABLE = True
+except ImportError:
+    MULTI_DATASET_AVAILABLE = False
+
 # Import resource monitoring
 import sys
 import os
@@ -174,11 +181,17 @@ class MacMiniTrainer:
         """Apply quantization to model for memory efficiency"""
         self.logger.info("Applying model quantization...")
         
+        quant_cfg = self.config.get('quantization', {})
+        # If config explicitly disables quantization, exit early
+        if not quant_cfg.get('enable_quantization', True):
+            self.logger.info("Quantization disabled by config")
+            return
+        
         quantization_config = QuantizationConfig(
-            bits=self.config['quantization'].get('bits', 4),
-            group_size=self.config['quantization'].get('group_size', 32),
-            quantize_moe_experts=self.config['quantization'].get('quantize_moe_weights', True),
-            quantize_attention=self.config['quantization'].get('quantize_attention', False),
+            bits=quant_cfg.get('bits', 4),
+            group_size=quant_cfg.get('group_size', 32),
+            quantize_moe_experts=quant_cfg.get('quantize_moe_weights', True),
+            quantize_attention=quant_cfg.get('quantize_attention', False),
             use_mps_kernels=self.config.get('mac_optimizations', {}).get('use_metal_performance_shaders', True)
         )
         
@@ -202,9 +215,71 @@ class MacMiniTrainer:
         self.logger.info(f"Tokenizer loaded: {tokenizer_name}")
     
     def setup_data(self):
-        """Setup training and evaluation data"""
+        """Setup training and evaluation data with multi-dataset support"""
         self.logger.info("Setting up datasets...")
         
+        # Check if multi-dataset mode is enabled
+        use_multi_datasets = self.config['training'].get('use_multi_datasets', False)
+        
+        if use_multi_datasets and MULTI_DATASET_AVAILABLE:
+            self.logger.info("Using multi-dataset loader")
+            self._setup_multi_datasets()
+        else:
+            self.logger.info("Using single dataset loader")
+            self._setup_single_dataset()
+    
+    def _setup_multi_datasets(self):
+        """Setup multiple datasets using MultiDatasetLoader"""
+        # Initialize multi-dataset loader
+        dataset_loader = MultiDatasetLoader(self.config)
+        
+        # Get dataset configurations
+        train_datasets = self.config['training'].get('train_datasets', [])
+        eval_datasets = self.config['training'].get('eval_datasets', [])
+        
+        if not train_datasets:
+            # Fallback to single dataset
+            self.logger.warning("No train_datasets specified, falling back to single dataset")
+            self._setup_single_dataset()
+            return
+        
+        # Create datasets
+        max_seq_length = self.config['training'].get('max_seq_length', 1024)
+        train_dataset, eval_dataset = dataset_loader.create_dataloaders(
+            train_datasets=train_datasets,
+            eval_datasets=eval_datasets,
+            tokenizer=self.tokenizer,
+            max_seq_length=max_seq_length
+        )
+        
+        # Create data loaders
+        self.train_dataloader = DataLoader(
+            train_dataset,
+            batch_size=self.config['training'].get('per_device_train_batch_size', 1),
+            shuffle=True,
+            collate_fn=default_data_collator,
+            num_workers=self.config.get('mac_optimizations', {}).get('num_workers', 2),
+            pin_memory=False
+        )
+        
+        if eval_dataset:
+            self.eval_dataloader = DataLoader(
+                eval_dataset,
+                batch_size=self.config['training'].get('per_device_eval_batch_size', 1),
+                shuffle=False,
+                collate_fn=default_data_collator,
+                num_workers=self.config.get('mac_optimizations', {}).get('num_workers', 2),
+                pin_memory=False
+            )
+        else:
+            self.eval_dataloader = None
+        
+        self.logger.info(f"Training samples: {len(train_dataset)}")
+        if eval_dataset:
+            self.logger.info(f"Evaluation samples: {len(eval_dataset)}")
+    
+    def _setup_single_dataset(self):
+        """Setup single dataset (original method)"""
         # Load dataset
         dataset_name = self.config['training'].get('dataset_name', 'wikitext-2')
         if dataset_name == 'wikitext-2':
