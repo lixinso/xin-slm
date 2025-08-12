@@ -1,0 +1,192 @@
+# Ultra-Fast 20-Hour Training Configuration for GPT-OSS MoE Model
+# Optimized for speed while maintaining training effectiveness
+
+training:
+  # Model configuration - smallest variant for speed
+  model_name: "gpt-oss-moe-ultra-fast-20h"
+  model_variant: "nano"  # Smallest model for fastest training
+  
+  # Multi-dataset configuration for 2 datasets
+  use_multi_datasets: true
+  train_datasets:
+    - name: "wikitext-103"
+      max_samples: 20000    # Limited for speed
+      weight: 0.7           # 70% WikiText-103
+      
+    - name: "wikitext-2" 
+      max_samples: null     # Use all of smaller dataset
+      weight: 0.3           # 30% WikiText-2
+  
+  eval_datasets:
+    - name: "wikitext-2"
+      max_samples: null
+      weight: 1.0
+  
+  # Data configuration - optimized for speed
+  tokenizer_name: "gpt2"
+  max_seq_length: 128     # Very short sequences for speed
+  
+  # Aggressive batch configuration for maximum throughput
+  per_device_train_batch_size: 8   # Larger batches
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 4   # Minimal accumulation
+  dataloader_num_workers: 0        # Mac compatibility
+  
+  # Training loop - designed for 20h completion
+  num_train_epochs: 3     # Multiple epochs on small dataset
+  max_steps: 5000        # Hard cap - target ~4 steps/minute = 20h
+  overwrite_output_dir: true
+  
+  # Optimizer configuration - aggressive for speed
+  optimizer: "adamw"
+  learning_rate: 5e-4     # Higher LR for faster convergence
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate schedule - fast warmup
+  lr_scheduler_type: "cosine"
+  warmup_steps: 100       # Very short warmup
+  warmup_ratio: 0.02
+  
+  # Mixed precision - essential for speed
+  fp16: true
+  bf16: false
+  fp16_opt_level: "O1"
+  
+  # Memory optimization for speed
+  gradient_checkpointing: false  # Disabled for speed
+  dataloader_pin_memory: false
+  remove_unused_columns: true
+  
+  # MoE specific - minimal complexity
+  moe_aux_loss_coef: 0.01      # Reduced
+  moe_z_loss_coef: 0.0005      # Reduced
+  router_aux_loss_coef: 0.01   # Reduced
+  
+  # Logging and saving - minimal overhead
+  logging_steps: 10         # Frequent logging for monitoring
+  save_steps: 1000          # Less frequent saves
+  eval_steps: 500           # Moderate evaluation
+  save_total_limit: 2       # Keep only 2 checkpoints
+  evaluation_strategy: "steps"
+  
+  # Output directories
+  output_dir: "./checkpoints_ultra_fast_20h"
+  logging_dir: "./logs_ultra_fast_20h"
+  
+  # No early stopping for time predictability
+  load_best_model_at_end: false
+
+# Mac Mini specific optimizations for maximum speed
+mac_optimizations:
+  # Device configuration
+  device: "mps"
+  cpu_fallback: true
+  
+  # Memory management - prioritize speed
+  empty_cache_interval: 100      # More frequent cleanup
+  max_memory_allocation: "12GB"  # Use more memory for speed
+  
+  # Threading - optimized for speed
+  num_workers: 0
+  persistent_workers: false
+  prefetch_factor: 1             # Minimal prefetch
+  
+  # Apple-specific optimizations
+  use_metal_performance_shaders: true
+  optimize_for_inference: false
+
+# Data preprocessing - minimal for speed
+data:
+  tokenizer_path: "gpt2"
+  add_special_tokens: true
+  padding_side: "right"
+  truncation: true
+  
+  # Data filtering - loose for speed
+  min_seq_length: 10     # Very short minimum
+  max_seq_length: 128    # Short maximum
+  filter_empty_examples: true
+
+# Checkpointing - minimal for speed
+checkpointing:
+  resume_from_checkpoint: null
+  
+  save_optimizer_states: false     # Skip for speed
+  save_scheduler_states: false     # Skip for speed
+  save_random_states: false        # Skip for speed
+  
+  save_best_model: false           # Skip for speed
+  save_last_model: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+# Evaluation configuration - minimal
+evaluation:
+  eval_datasets: ["wikitext-2"]
+  
+  metrics: ["loss"]                # Only essential metrics
+  
+  eval_during_training: true
+  eval_at_start: false             # Skip initial eval
+  eval_accumulation_steps: null
+  
+  # Skip generation evaluation for speed
+  eval_generation: false
+
+# Monitoring and logging - lightweight
+monitoring:
+  use_wandb: false
+  wandb_project: "xinslm-v06-ultra-fast-20h"
+  
+  use_tensorboard: false           # Disabled for speed
+  tensorboard_log_dir: "./logs_ultra_fast_20h/tensorboard"
+  
+  log_level: "WARNING"             # Minimal logging
+  log_predictions: false
+  log_model_architecture: false   # Skip for speed
+  
+  disable_tqdm: false
+  tqdm_update_interval: 10         # Less frequent updates
+
+# Resource monitoring - essential only
+resource_monitoring:
+  monitor_cpu: false               # Disabled for speed
+  monitor_memory: true             # Keep memory monitoring
+  monitor_gpu: false               # Disabled for speed
+  monitor_disk: false              # Disabled for speed
+  
+  # Conservative thresholds
+  memory_threshold: 0.90           # Higher threshold
+  temperature_threshold: 85        # Higher threshold
+  
+  monitoring_interval: 60          # Less frequent monitoring
+  save_monitoring_data: false      # Skip saving
+  monitoring_output_file: "./logs_ultra_fast_20h/resource_usage.json"
+
+# Model architecture - ultra-lightweight
+model:
+  # Transformer configuration - minimal
+  vocab_size: 50257
+  n_positions: 128                 # Short context
+  n_embd: 256                      # Small embedding
+  n_layer: 6                       # Few layers
+  n_head: 8                        # Few heads
+  n_inner: 512                     # Small MLP
+  
+  # MoE configuration - minimal
+  num_experts: 4                   # Fewer experts
+  top_k_experts: 2                 # Use fewer experts
+  expert_capacity_factor: 1.0
+  
+  # Regularization - minimal
+  dropout: 0.0                     # No dropout for speed
+  attention_dropout: 0.0
+  activation_dropout: 0.0
+  
+  # Initialization
+  initializer_range: 0.02
+  layer_norm_epsilon: 1e-5

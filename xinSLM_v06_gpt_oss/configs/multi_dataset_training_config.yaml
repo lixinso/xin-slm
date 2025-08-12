@@ -1,0 +1,231 @@
+# Multi-Dataset Training Configuration for GPT-OSS MoE Model
+# Uses WikiText + OpenWebText for long-form text training (BookCorpus alternative)
+
+training:
+  # Model configuration
+  model_name: "gpt-oss-moe-multi-dataset"
+  model_variant: "light"  # Use light variant for multi-dataset training
+  
+  # Multi-dataset configuration
+  use_multi_datasets: true
+  train_datasets:
+    - name: "openwebtext"
+      max_samples: 20000    # Reduced for faster training
+      weight: 0.6           # 60% OpenWebText (BookCorpus alternative)
+      
+    - name: "wikitext-103"
+      max_samples: 10000    # Reduced for faster training
+      weight: 0.3           # 30% from WikiText-103
+      
+    - name: "wikitext-2"
+      max_samples: 5000     # Capped for faster training
+      weight: 0.1           # 10% from WikiText-2
+  
+  eval_datasets:
+    - name: "wikitext-2"
+      max_samples: null
+      weight: 1.0
+  
+  # Data configuration
+  tokenizer_name: "gpt2"
+  max_seq_length: 256     # Reduced for faster training
+  
+  # Batch configuration - optimized for speed
+  per_device_train_batch_size: 4   # Increased for efficiency
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 12  # Reduced to maintain effective batch size
+  dataloader_num_workers: 0        # Simplified for Mac
+  
+  # Training loop - fast training for 20h target
+  num_train_epochs: 1     # Single epoch for speed
+  max_steps: 50000        # Hard cap for time control
+  overwrite_output_dir: true
+  
+  # Optimizer configuration - tuned for long-form text
+  optimizer: "adamw"
+  learning_rate: 2e-4     # Slightly lower LR for stability
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.95
+  epsilon: 1e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate schedule
+  lr_scheduler_type: "cosine"
+  warmup_steps: 1500      # More warmup for larger dataset
+  warmup_ratio: 0.05
+  
+  # Mixed precision training
+  fp16: true
+  bf16: false
+  fp16_opt_level: "O1"
+  
+  # Memory optimization - critical for multi-dataset
+  gradient_checkpointing: true
+  dataloader_pin_memory: false
+  remove_unused_columns: true
+  
+  # MoE specific training
+  moe_aux_loss_coef: 0.02
+  moe_z_loss_coef: 0.001
+  router_aux_loss_coef: 0.02
+  
+  # Logging and saving - adjusted for longer training
+  logging_steps: 20
+  save_steps: 500         
+  eval_steps: 250         
+  save_total_limit: 5     
+  evaluation_strategy: "steps"
+  
+  # Output directories
+  output_dir: "./checkpoints_multi_dataset"
+  logging_dir: "./logs_multi_dataset"
+  
+  # Early stopping
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.005
+
+# Knowledge distillation (optional)
+distillation:
+  enable_distillation: false
+  teacher_model: "microsoft/DialoGPT-medium"
+  distillation_alpha: 0.7
+  distillation_temperature: 4.0
+  
+  teacher_cache_dir: "./teacher_cache"
+  teacher_revision: "main"
+  
+  distill_attention: true
+  distill_hidden_states: true
+  layer_mapping: "uniform"
+
+# Data preprocessing
+data:
+  # Dataset paths
+  train_data_path: null
+  validation_data_path: null
+  test_data_path: null
+  
+  # Tokenization
+  tokenizer_path: "gpt2"
+  add_special_tokens: true
+  padding_side: "right"
+  truncation: true
+  
+  # Data filtering 
+  min_seq_length: 32     
+  max_seq_length: 512     
+  filter_empty_examples: true
+  
+  # Data augmentation
+  enable_data_augmentation: false
+  augmentation_probability: 0.1
+
+# Mac Mini specific optimizations
+mac_optimizations:
+  # Device configuration
+  device: "mps"
+  cpu_fallback: true
+  
+  # Memory management - critical for multi-dataset
+  empty_cache_interval: 50   
+  max_memory_allocation: "11GB"  # Slightly higher for multi-dataset
+  
+  # Threading
+  num_workers: 2
+  persistent_workers: true
+  prefetch_factor: 2         
+  
+  # Apple-specific optimizations
+  use_metal_performance_shaders: true
+  optimize_for_inference: false
+
+# Checkpointing and resuming
+checkpointing:
+  resume_from_checkpoint: null
+  
+  save_optimizer_states: true
+  save_scheduler_states: true
+  save_random_states: true
+  
+  save_best_model: true
+  save_last_model: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+# Evaluation configuration
+evaluation:
+  eval_datasets: ["wikitext-2"]
+  
+  metrics: ["perplexity", "loss"]
+  
+  eval_during_training: true
+  eval_at_start: true
+  eval_accumulation_steps: null
+  
+  # Generation evaluation
+  eval_generation: true
+  generation_max_length: 200  
+  generation_num_samples: 3
+  generation_prompts:
+    - "The story begins with a young woman who"
+    - "In the future, technology will"
+    - "The scientist made a discovery that would change"
+
+# Monitoring and logging
+monitoring:
+  use_wandb: false
+  wandb_project: "xinslm-v06-multi-dataset"
+  wandb_entity: null
+  wandb_run_name: "multi-dataset-light-training"
+  
+  use_tensorboard: true
+  tensorboard_log_dir: "./logs_multi_dataset/tensorboard"
+  
+  log_level: "INFO"
+  log_predictions: true      
+  log_model_architecture: true
+  
+  disable_tqdm: false
+  tqdm_update_interval: 1
+
+# Performance profiling
+profiling:
+  enable_profiling: false
+  profile_memory: true
+  profile_compute: true
+  profile_schedule: "torch.profiler.schedule(wait=1, warmup=1, active=3)"
+  
+  profile_output_dir: "./profiles_multi_dataset"
+  export_chrome_trace: true
+  export_stacks: false
+
+# Debugging and development
+debugging:
+  debug_mode: false
+  detect_anomaly: false
+  
+  validate_every_n_steps: 100  
+  run_validation_at_start: true
+  
+  log_memory_usage: true      
+  memory_profiling_interval: 50
+  
+  log_gradient_norms: false
+  log_parameter_stats: false
+  check_finite_gradients: true
+
+# Resource monitoring - enhanced for multi-dataset training
+resource_monitoring:
+  monitor_cpu: true
+  monitor_memory: true
+  monitor_gpu: true
+  monitor_disk: true
+  
+  # Safe thresholds
+  memory_threshold: 0.87     # Alert at 87%
+  temperature_threshold: 80  
+  
+  monitoring_interval: 30    
+  save_monitoring_data: true
+  monitoring_output_file: "./logs_multi_dataset/resource_usage.json"
