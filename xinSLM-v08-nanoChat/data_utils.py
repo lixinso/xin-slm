@@ -111,6 +111,23 @@ class ChatTemplate:
         return "\n"
 
 
+def render_messages_to_text(messages: List[Dict[str, str]], template: Optional[ChatTemplate] = None) -> str:
+    """Render messages to a single prompt string using the same template as SFT.
+
+    This is used for inference to ensure formatting matches training.
+    """
+
+    template = template or ChatTemplate()
+    out: List[str] = []
+    for msg in messages:
+        role = (msg.get("role") or "").strip()
+        content = msg.get("content") or ""
+        out.append(template.render_prefix(role))
+        out.append(content)
+        out.append(template.render_suffix())
+    return "".join(out)
+
+
 def render_conversation_with_labels(
     messages: List[Dict[str, str]],
     tokenizer,
