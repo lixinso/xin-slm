@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import Dict, Iterable, Iterator, List, Optional, Sequence
+from typing import Callable, Dict, Iterable, Iterator, List, Optional, Sequence, Union
 
 import torch
 from torch.utils.data import Dataset, IterableDataset
@@ -42,7 +42,7 @@ class PackedTextIterableDataset(IterableDataset):
 
     def __init__(
         self,
-        source: Iterable,
+        source: Union[Iterable, Callable[[], Iterable]],
         tokenizer,
         cfg: PackedTextConfig,
     ):
@@ -51,8 +51,13 @@ class PackedTextIterableDataset(IterableDataset):
         self.tokenizer = tokenizer
         self.cfg = cfg
 
+    def _get_source_iter(self) -> Iterator:
+        if callable(self.source):
+            return iter(self.source())
+        return iter(self.source)
+
     def _iter_text(self) -> Iterator[str]:
-        for ex in self.source:
+        for ex in self._get_source_iter():
             if isinstance(ex, str):
                 text = ex
             elif isinstance(ex, dict):

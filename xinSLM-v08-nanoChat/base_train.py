@@ -63,9 +63,9 @@ def main() -> None:
     )
     model = NanoChatModel(cfg)
 
-    source = read_text_lines(args.text)
+    source_factory = lambda: read_text_lines(args.text)
     ds_cfg = PackedTextConfig(seq_len=cfg.context_len, text_field="text")
-    dataset = PackedTextIterableDataset(source=source, tokenizer=tokenizer, cfg=ds_cfg)
+    dataset = PackedTextIterableDataset(source=source_factory, tokenizer=tokenizer, cfg=ds_cfg)
 
     loader = DataLoader(dataset, batch_size=args.batch_size)
 
