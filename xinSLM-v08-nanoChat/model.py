@@ -111,6 +111,8 @@ class CausalSelfAttention(nn.Module):
         self.config = config
         self.n_head = config.n_head
         self.n_kv_head = config.n_kv_head
+        if self.n_head % self.n_kv_head != 0:
+            raise ValueError(f"n_head ({self.n_head}) must be divisible by n_kv_head ({self.n_kv_head}) for GQA")
         self.head_dim = config.head_dim
         self.n_rep = self.n_head // self.n_kv_head  # repetition factor for GQA
 
@@ -285,7 +287,7 @@ class NanoChatModel(nn.Module):
         x = self.embed_norm(x)
 
         # Get RoPE frequencies for this sequence length
-        freqs_cis = self.freqs_cis[:T]
+        freqs_cis = self.freqs_cis[:T].to(device=x.device)
 
         # Transformer blocks
         for block in self.blocks:

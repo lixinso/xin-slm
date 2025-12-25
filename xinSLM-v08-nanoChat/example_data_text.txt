@@ -1,0 +1,3 @@
+Hello world.
+This is a tiny text file to validate the base pretraining data path.
+It is intentionally small.
